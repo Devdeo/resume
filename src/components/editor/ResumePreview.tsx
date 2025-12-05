@@ -391,11 +391,11 @@ export default function ResumePreview({ onDragStart, onDragOver, onDragEnd, drag
 
 
   return (
-    <div className="mx-auto my-0 sm:my-8 w-full sm:w-auto">
+    <div className="w-full h-full p-4 sm:p-8">
       <div
         id="resume-page"
-        className="a4-page w-full sm:w-[210mm] sm:h-[297mm] bg-white sm:shadow-lg origin-top scale-100 sm:scale-[0.8] md:scale-[0.9] lg:scale-[0.7] xl:scale-[1] transition-transform duration-300"
-        style={pageStyle}
+        className="a4-page w-full bg-white shadow-lg origin-top transition-transform duration-300"
+        style={{...pageStyle, aspectRatio: '1 / 1.414'}}
         onClick={() => setActiveAccordionItem('layout')}
       >
         <div

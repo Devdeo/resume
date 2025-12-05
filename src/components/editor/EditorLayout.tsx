@@ -61,7 +61,7 @@ export default function EditorLayout({ initialTemplate }: EditorLayoutProps) {
       <div className="flex h-screen w-full flex-col bg-muted/40">
         <EditorHeader />
         <main className="flex flex-1 overflow-hidden">
-          <div className="flex-1 overflow-y-auto p-0 sm:p-4 md:p-8 print-container">
+          <div className="flex-1 overflow-y-auto print-container">
             <ResumePreview 
               onDragStart={onDragStart}
               onDragOver={onDragOver}
