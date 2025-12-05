@@ -3,7 +3,7 @@
 import React from 'react';
 import { useResume } from '@/hooks/useResume';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
 import { googleFonts } from '@/lib/data';
@@ -73,12 +73,16 @@ export default function StyleControls() {
                 <Select value={style.fontFamily} onValueChange={handleStyleChange('fontFamily')}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
-                        <optgroup label="Custom Fonts">
-                            {customFonts.map(font => <SelectItem key={font} value={font}>{font}</SelectItem>)}
-                        </optgroup>
-                        <optgroup label="Google Fonts">
+                        {customFonts.length > 0 && (
+                          <SelectGroup>
+                              <SelectLabel>Custom Fonts</SelectLabel>
+                              {customFonts.map(font => <SelectItem key={font} value={font}>{font}</SelectItem>)}
+                          </SelectGroup>
+                        )}
+                        <SelectGroup>
+                            <SelectLabel>Google Fonts</SelectLabel>
                             {googleFonts.map(font => <SelectItem key={font} value={font}>{font}</SelectItem>)}
-                        </optgroup>
+                        </SelectGroup>
                     </SelectContent>
                 </Select>
             </div>
