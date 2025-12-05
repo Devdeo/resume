@@ -4,6 +4,7 @@ import { createContext, useContext, type Dispatch, type SetStateAction } from 'r
 import { type ResumeData, type ResumeStyle } from '@/lib/types';
 
 type ResumeContextType = {
+  initialData: ResumeData;
   data: ResumeData;
   setData: Dispatch<SetStateAction<ResumeData>>;
   style: ResumeStyle;

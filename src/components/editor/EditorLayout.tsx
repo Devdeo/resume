@@ -18,7 +18,10 @@ export default function EditorLayout({ initialTemplate }: EditorLayoutProps) {
   const [activeAccordionItem, setActiveAccordionItem] = useState<string>('');
   const [draggingItem, setDraggingItem] = useState<string | null>(null);
 
+  const initialData = useMemo(() => JSON.parse(JSON.stringify(initialTemplate.data)), [initialTemplate.data]);
+
   const contextValue = useMemo(() => ({
+    initialData,
     data,
     setData,
     style,
@@ -27,7 +30,7 @@ export default function EditorLayout({ initialTemplate }: EditorLayoutProps) {
     setActiveSection,
     activeAccordionItem,
     setActiveAccordionItem,
-  }), [data, style, activeSection, activeAccordionItem]);
+  }), [initialData, data, style, activeSection, activeAccordionItem]);
 
   const onDragStart = (id: string) => {
     setDraggingItem(id);
@@ -40,6 +43,8 @@ export default function EditorLayout({ initialTemplate }: EditorLayoutProps) {
     const newSections = Array.from(data.sections);
     const sourceIndex = newSections.findIndex(s => s.id === draggingItem);
     const targetIndex = newSections.findIndex(s => s.id === id);
+
+    if (sourceIndex === -1 || targetIndex === -1) return;
 
     const [reorderedItem] = newSections.splice(sourceIndex, 1);
     newSections.splice(targetIndex, 0, reorderedItem);

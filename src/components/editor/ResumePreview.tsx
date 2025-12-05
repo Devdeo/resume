@@ -59,7 +59,7 @@ const Section = ({ title, children, accentColor, onTitleChange, deletable, onDel
 );
 
 export default function ResumePreview({ onDragStart, onDragOver, onDragEnd, draggingItem }: ResumePreviewProps) {
-  const { data, setData, style, setActiveSection, setActiveAccordionItem } = useResume();
+  const { data, setData, style, setActiveSection, setActiveAccordionItem, initialData } = useResume();
   const imageInputRef = React.useRef<HTMLInputElement>(null);
 
   const handleSectionContentChange = (sectionId: string, newContent: SectionContent) => {
@@ -83,6 +83,12 @@ export default function ResumePreview({ onDragStart, onDragOver, onDragEnd, drag
   const handleFocus = (sectionId: string) => () => {
     setActiveSection(sectionId);
     setActiveAccordionItem('typography');
+  };
+
+  const handleClearOnFocus = (currentValue: string, initialValue: string, updater: () => void) => {
+    if (currentValue === initialValue) {
+      updater();
+    }
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -117,6 +123,8 @@ export default function ResumePreview({ onDragStart, onDragOver, onDragEnd, drag
     switch (section.type) {
       case 'personalInfo':
         const personalInfo = section.content as PersonalInfo;
+        const initialPersonalInfo = initialData.sections.find(s => s.type === 'personalInfo')?.content as PersonalInfo;
+        
         const handlePersonalInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             const { name, value } = e.target;
             handleSectionContentChange(section.id, { ...personalInfo, [name]: value });
@@ -139,12 +147,12 @@ export default function ResumePreview({ onDragStart, onDragOver, onDragEnd, drag
                   </div>
                 )}
             </div>
-            <Input name="name" value={personalInfo.name} onChange={handlePersonalInfoChange} placeholder="Your Name" className="font-headline text-4xl font-bold text-center border-none shadow-none focus-visible:ring-0 h-auto p-0" />
+            <Input name="name" value={personalInfo.name} onChange={handlePersonalInfoChange} onFocus={() => handleClearOnFocus(personalInfo.name, initialPersonalInfo.name, () => handleSectionContentChange(section.id, { ...personalInfo, name: '' }))} placeholder="Your Name" className="font-headline text-4xl font-bold text-center border-none shadow-none focus-visible:ring-0 h-auto p-0" />
             <div className="text-sm flex justify-center items-center gap-x-1 flex-wrap">
-              <Input name="address" value={personalInfo.address} onChange={handlePersonalInfoChange} placeholder="Address" className="border-none shadow-none focus-visible:ring-0 h-auto p-0 text-center" />
-              <Input name="zipCode" value={personalInfo.zipCode} onChange={handlePersonalInfoChange} placeholder="ZIP" className="border-none shadow-none focus-visible:ring-0 h-auto p-0 text-center w-16" />
-              <Input name="mobile" value={personalInfo.mobile} onChange={handlePersonalInfoChange} placeholder="Mobile" className="border-none shadow-none focus-visible:ring-0 h-auto p-0 text-center" />
-              <Input name="email" value={personalInfo.email} onChange={handlePersonalInfoChange} placeholder="Email" className="border-none shadow-none focus-visible:ring-0 h-auto p-0 text-center" />
+              <Input name="address" value={personalInfo.address} onChange={handlePersonalInfoChange} onFocus={() => handleClearOnFocus(personalInfo.address, initialPersonalInfo.address, () => handleSectionContentChange(section.id, { ...personalInfo, address: '' }))} placeholder="Address" className="border-none shadow-none focus-visible:ring-0 h-auto p-0 text-center" />
+              <Input name="zipCode" value={personalInfo.zipCode} onChange={handlePersonalInfoChange} onFocus={() => handleClearOnFocus(personalInfo.zipCode, initialPersonalInfo.zipCode, () => handleSectionContentChange(section.id, { ...personalInfo, zipCode: '' }))} placeholder="ZIP" className="border-none shadow-none focus-visible:ring-0 h-auto p-0 text-center w-16" />
+              <Input name="mobile" value={personalInfo.mobile} onChange={handlePersonalInfoChange} onFocus={() => handleClearOnFocus(personalInfo.mobile, initialPersonalInfo.mobile, () => handleSectionContentChange(section.id, { ...personalInfo, mobile: '' }))} placeholder="Mobile" className="border-none shadow-none focus-visible:ring-0 h-auto p-0 text-center" />
+              <Input name="email" value={personalInfo.email} onChange={handlePersonalInfoChange} onFocus={() => handleClearOnFocus(personalInfo.email, initialPersonalInfo.email, () => handleSectionContentChange(section.id, { ...personalInfo, email: '' }))} placeholder="Email" className="border-none shadow-none focus-visible:ring-0 h-auto p-0 text-center" />
             </div>
             <Separator className="my-2" style={{ backgroundColor: style.accentColor, height: '2px' }} />
           </header>
@@ -166,6 +174,7 @@ export default function ResumePreview({ onDragStart, onDragOver, onDragEnd, drag
   const renderEditableSection = (section: ResumeSection) => {
     const onTitleChange = (newTitle: string) => handleSectionTitleChange(section.id, newTitle);
     const onDelete = () => deleteSection(section.id);
+    const initialSection = initialData.sections.find(s => s.id === section.id);
 
     const isDraggable = section.type !== 'personalInfo';
 
@@ -196,6 +205,7 @@ export default function ResumePreview({ onDragStart, onDragOver, onDragEnd, drag
       case 'academicQualifications':
       case 'professionalQualifications':
         const qualifications = section.content as AcademicQualification[];
+        const initialQualifications = initialSection?.content as AcademicQualification[] || [];
         const handleQualificationChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
             const { name, value } = e.target;
             const updated = [...qualifications];
@@ -214,16 +224,25 @@ export default function ResumePreview({ onDragStart, onDragOver, onDragEnd, drag
           <div key={section.id} onFocus={handleFocus(section.id)} tabIndex={0}>
             <Section {...commonSectionProps}>
               <div className="space-y-2">
-                {qualifications.map((q, index) => (
-                  <div key={q.id} className="flex gap-2 items-center group">
-                    <Input name="exam" value={q.exam} onChange={(e) => handleQualificationChange(index, e)} placeholder="Exam/Degree" className="border-none shadow-none focus-visible:ring-0 p-0 flex-1" />
-                    <Input name="board" value={q.board} onChange={(e) => handleQualificationChange(index, e)} placeholder="Board/University" className="border-none shadow-none focus-visible:ring-0 p-0 flex-1" />
-                    <Input name="year" value={q.year} onChange={(e) => handleQualificationChange(index, e)} placeholder="Year" className="border-none shadow-none focus-visible:ring-0 p-0 w-16" />
-                    <Input name="marks" value={q.marks} onChange={(e) => handleQualificationChange(index, e)} placeholder="Marks %" className="border-none shadow-none focus-visible:ring-0 p-0 w-16" />
-                    <Input name="division" value={q.division} onChange={(e) => handleQualificationChange(index, e)} placeholder="Division" className="border-none shadow-none focus-visible:ring-0 p-0 w-20" />
-                    <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover:opacity-100" onClick={() => removeQualification(index)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
-                  </div>
-                ))}
+                {qualifications.map((q, index) => {
+                  const initialQ = initialQualifications.find(iq => iq.id === q.id) || { exam: '', board: '', year: '', marks: '', division: '' };
+                  const createUpdater = (fieldName: keyof AcademicQualification) => () => {
+                    const updated = [...qualifications];
+                    updated[index] = { ...updated[index], [fieldName]: '' };
+                    handleSectionContentChange(section.id, updated);
+                  }
+                  
+                  return (
+                    <div key={q.id} className="flex gap-2 items-center group">
+                      <Input name="exam" value={q.exam} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(q.exam, initialQ.exam, createUpdater('exam'))} placeholder="Exam/Degree" className="border-none shadow-none focus-visible:ring-0 p-0 flex-1" />
+                      <Input name="board" value={q.board} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(q.board, initialQ.board, createUpdater('board'))} placeholder="Board/University" className="border-none shadow-none focus-visible:ring-0 p-0 flex-1" />
+                      <Input name="year" value={q.year} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(q.year, initialQ.year, createUpdater('year'))} placeholder="Year" className="border-none shadow-none focus-visible:ring-0 p-0 w-16" />
+                      <Input name="marks" value={q.marks} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(q.marks, initialQ.marks, createUpdater('marks'))} placeholder="Marks %" className="border-none shadow-none focus-visible:ring-0 p-0 w-16" />
+                      <Input name="division" value={q.division} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(q.division, initialQ.division, createUpdater('division'))} placeholder="Division" className="border-none shadow-none focus-visible:ring-0 p-0 w-20" />
+                      <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover:opacity-100" onClick={() => removeQualification(index)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
+                    </div>
+                  )
+                })}
               </div>
               <Button variant="outline" size="sm" onClick={addQualification} className="mt-2"><PlusCircle className="mr-2 h-4 w-4" /> Add</Button>
             </Section>
@@ -235,13 +254,15 @@ export default function ResumePreview({ onDragStart, onDragOver, onDragEnd, drag
         return (
           <div key={section.id} onFocus={handleFocus(section.id)} tabIndex={0}>
             <Section {...commonSectionProps}>
-              <Textarea value={extraQualification} onChange={e => handleSectionContentChange(section.id, e.target.value)} className="border-none shadow-none focus-visible:ring-0 p-0" rows={2}/>
+              <Textarea value={extraQualification} onChange={e => handleSectionContentChange(section.id, e.target.value)} onFocus={() => handleClearOnFocus(extraQualification, initialSection?.content as string, () => handleSectionContentChange(section.id, ''))} className="border-none shadow-none focus-visible:ring-0 p-0" rows={2}/>
             </Section>
           </div>
         );
 
       case 'workExperience':
         const workExperience = section.content as WorkExperience[];
+        const initialWorkExperience = initialSection?.content as WorkExperience[] || [];
+
         const handleExperienceChange = (index: number, e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
             const { name, value } = e.target;
             const updated = [...workExperience];
@@ -260,22 +281,30 @@ export default function ResumePreview({ onDragStart, onDragOver, onDragEnd, drag
             <div key={section.id} onFocus={handleFocus(section.id)} tabIndex={0}>
                 <Section {...commonSectionProps}>
                 <div className="space-y-2">
-                    {workExperience.map((exp, index) => (
-                    <div key={exp.id} className="group flex flex-col">
-                        <div className="flex justify-between items-center">
-                            <div className="flex gap-1 items-center">
-                                <Input name="role" value={exp.role} onChange={(e) => handleExperienceChange(index, e)} placeholder="Role" className="font-bold border-none shadow-none focus-visible:ring-0 p-0" />
-                                <span>-</span>
-                                <Input name="company" value={exp.company} onChange={(e) => handleExperienceChange(index, e)} placeholder="Company" className="font-bold border-none shadow-none focus-visible:ring-0 p-0" />
+                    {workExperience.map((exp, index) => {
+                      const initialExp = initialWorkExperience.find(iwe => iwe.id === exp.id) || { role: '', company: '', duration: '', responsibilities: ''};
+                      const createUpdater = (fieldName: keyof WorkExperience) => () => {
+                        const updated = [...workExperience];
+                        updated[index] = { ...updated[index], [fieldName]: '' };
+                        handleSectionContentChange(section.id, updated);
+                      };
+                      return (
+                        <div key={exp.id} className="group flex flex-col">
+                            <div className="flex justify-between items-center">
+                                <div className="flex gap-1 items-center">
+                                    <Input name="role" value={exp.role} onChange={(e) => handleExperienceChange(index, e)} onFocus={() => handleClearOnFocus(exp.role, initialExp.role, createUpdater('role'))} placeholder="Role" className="font-bold border-none shadow-none focus-visible:ring-0 p-0" />
+                                    <span>-</span>
+                                    <Input name="company" value={exp.company} onChange={(e) => handleExperienceChange(index, e)} onFocus={() => handleClearOnFocus(exp.company, initialExp.company, createUpdater('company'))} placeholder="Company" className="font-bold border-none shadow-none focus-visible:ring-0 p-0" />
+                                </div>
+                                <Input name="duration" value={exp.duration} onChange={(e) => handleExperienceChange(index, e)} onFocus={() => handleClearOnFocus(exp.duration, initialExp.duration, createUpdater('duration'))} placeholder="Duration" className="text-xs font-semibold border-none shadow-none focus-visible:ring-0 p-0 text-right" style={{ color: style.accentColor }} />
                             </div>
-                            <Input name="duration" value={exp.duration} onChange={(e) => handleExperienceChange(index, e)} placeholder="Duration" className="text-xs font-semibold border-none shadow-none focus-visible:ring-0 p-0 text-right" style={{ color: style.accentColor }} />
+                            <div className="flex items-start">
+                            <Textarea name="responsibilities" value={exp.responsibilities} onChange={(e) => handleExperienceChange(index, e)} onFocus={() => handleClearOnFocus(exp.responsibilities, initialExp.responsibilities, createUpdater('responsibilities'))} placeholder="Responsibilities" className="text-sm border-none shadow-none focus-visible:ring-0 p-0 flex-1" rows={2} />
+                            <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover:opacity-100" onClick={() => removeExperience(index)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
+                            </div>
                         </div>
-                        <div className="flex items-start">
-                        <Textarea name="responsibilities" value={exp.responsibilities} onChange={(e) => handleExperienceChange(index, e)} placeholder="Responsibilities" className="text-sm border-none shadow-none focus-visible:ring-0 p-0 flex-1" rows={2} />
-                        <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover:opacity-100" onClick={() => removeExperience(index)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
-                        </div>
-                    </div>
-                    ))}
+                      )
+                    })}
                 </div>
                 <Button variant="outline" size="sm" onClick={addExperience} className="mt-2"><PlusCircle className="mr-2 h-4 w-4" /> Add</Button>
                 </Section>
@@ -317,7 +346,7 @@ export default function ResumePreview({ onDragStart, onDragOver, onDragEnd, drag
                     title={customSection.title}
                     onTitleChange={customSectionTitleChange}
                  >
-                    <Textarea value={customSection.content} onChange={handleCustomSectionChange} className="border-none shadow-none focus-visible:ring-0 p-0" rows={3}/>
+                    <Textarea value={customSection.content} onChange={handleCustomSectionChange} onFocus={() => handleClearOnFocus(customSection.content, 'This is your new custom section. Edit the title and content as you see fit.', () => handleSectionContentChange(section.id, { ...customSection, content: '' }))} className="border-none shadow-none focus-visible:ring-0 p-0" rows={3}/>
                 </Section>
             </div>
         );
