@@ -20,7 +20,7 @@ const Section = ({ title, children, accentColor }: { title: string; children: Re
 );
 
 export default function ResumePreview() {
-  const { data, setData, style, setActiveSection } = useResume();
+  const { data, setData, style, setActiveSection, setActiveAccordionItem } = useResume();
 
   const handlePersonalInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -77,13 +77,15 @@ export default function ResumePreview() {
     setData(prev => ({ ...prev, declaration: { ...prev.declaration, [name]: value } }));
   };
 
-  const handleFocus = (sectionId: string) => () => setActiveSection(sectionId);
+  const handleFocus = (sectionId: string) => () => {
+    setActiveSection(sectionId);
+    setActiveAccordionItem('typography');
+  };
 
   const pageStyle: React.CSSProperties = {
     fontFamily: `'${style.fontFamily}', sans-serif`,
     fontSize: `${style.fontSize}pt`,
     '--accent-color': style.accentColor,
-    padding: `${style.pageMargins}mm`,
     color: '#333'
   } as React.CSSProperties;
 
@@ -93,9 +95,9 @@ export default function ResumePreview() {
         id="resume-page"
         className="a4-page aspect-[210/297] w-[210mm] h-[297mm] bg-white shadow-lg origin-top scale-[0.4] sm:scale-[0.6] md:scale-[0.8] lg:scale-[1] transition-transform duration-300"
         style={pageStyle}
-        onClick={handleFocus('page')}
+        onClick={() => setActiveAccordionItem('layout')}
       >
-        <div className="p-8 h-full space-y-2">
+        <div className="p-8 h-full space-y-2" style={{padding: `${style.pageMargins}mm`}}>
           <header className="text-center mb-4" onFocus={handleFocus('personalInfo')} tabIndex={0}>
             {data.personalInfo.profilePicture && (
                 <div className="mx-auto mb-4 h-32 w-32 rounded-full overflow-hidden border-4" style={{ borderColor: style.accentColor }}>
@@ -103,10 +105,10 @@ export default function ResumePreview() {
                 </div>
             )}
             <Input name="name" value={data.personalInfo.name} onChange={handlePersonalInfoChange} placeholder="Your Name" className="font-headline text-4xl font-bold text-center border-none shadow-none focus-visible:ring-0 h-auto p-0" />
-            <div className="text-sm flex justify-center items-center gap-x-1">
-              <Input name="address" value={data.personalInfo.address} onChange={handlePersonalInfoChange} placeholder="Address" className="border-none shadow-none focus-visible:ring-0 h-auto p-0 text-center" />, 
-              <Input name="zipCode" value={data.personalInfo.zipCode} onChange={handlePersonalInfoChange} placeholder="ZIP" className="border-none shadow-none focus-visible:ring-0 h-auto p-0 text-center w-16" /> |
-              <Input name="mobile" value={data.personalInfo.mobile} onChange={handlePersonalInfoChange} placeholder="Mobile" className="border-none shadow-none focus-visible:ring-0 h-auto p-0 text-center" /> |
+            <div className="text-sm flex justify-center items-center gap-x-1 flex-wrap">
+              <Input name="address" value={data.personalInfo.address} onChange={handlePersonalInfoChange} placeholder="Address" className="border-none shadow-none focus-visible:ring-0 h-auto p-0 text-center" />
+              <Input name="zipCode" value={data.personalInfo.zipCode} onChange={handlePersonalInfoChange} placeholder="ZIP" className="border-none shadow-none focus-visible:ring-0 h-auto p-0 text-center w-16" />
+              <Input name="mobile" value={data.personalInfo.mobile} onChange={handlePersonalInfoChange} placeholder="Mobile" className="border-none shadow-none focus-visible:ring-0 h-auto p-0 text-center" />
               <Input name="email" value={data.personalInfo.email} onChange={handlePersonalInfoChange} placeholder="Email" className="border-none shadow-none focus-visible:ring-0 h-auto p-0 text-center" />
             </div>
           </header>
@@ -165,17 +167,19 @@ export default function ResumePreview() {
             <Section title="Work Experience" accentColor={style.accentColor}>
               <div className="space-y-2">
                 {data.workExperience.map((exp, index) => (
-                  <div key={exp.id} className="group">
+                  <div key={exp.id} className="group flex flex-col">
                     <div className="flex justify-between items-center">
                         <div className="flex gap-1 items-center">
                             <Input name="role" value={exp.role} onChange={(e) => handleExperienceChange(index, e)} placeholder="Role" className="font-bold border-none shadow-none focus-visible:ring-0 p-0" />
-                            -
+                            <span>-</span>
                             <Input name="company" value={exp.company} onChange={(e) => handleExperienceChange(index, e)} placeholder="Company" className="font-bold border-none shadow-none focus-visible:ring-0 p-0" />
                         </div>
                         <Input name="duration" value={exp.duration} onChange={(e) => handleExperienceChange(index, e)} placeholder="Duration" className="text-xs font-semibold border-none shadow-none focus-visible:ring-0 p-0 text-right" style={{ color: style.accentColor }} />
                     </div>
-                    <Textarea name="responsibilities" value={exp.responsibilities} onChange={(e) => handleExperienceChange(index, e)} placeholder="Responsibilities" className="text-sm border-none shadow-none focus-visible:ring-0 p-0" rows={2} />
-                    <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover:opacity-100" onClick={() => removeExperience(index)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
+                    <div className="flex items-start">
+                      <Textarea name="responsibilities" value={exp.responsibilities} onChange={(e) => handleExperienceChange(index, e)} placeholder="Responsibilities" className="text-sm border-none shadow-none focus-visible:ring-0 p-0 flex-1" rows={2} />
+                      <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover:opacity-100" onClick={() => removeExperience(index)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -183,7 +187,7 @@ export default function ResumePreview() {
             </Section>
           </div>
 
-          <div className="absolute bottom-8 left-8 right-8" onFocus={handleFocus('declaration')} tabIndex={0}>
+          <div className="pt-10" onFocus={handleFocus('declaration')} tabIndex={0}>
             <Section title="Declaration" accentColor={style.accentColor}>
                 <Textarea name="text" value={data.declaration.text} onChange={handleDeclarationChange} className="italic border-none shadow-none focus-visible:ring-0 p-0" rows={2}/>
                 <div className="flex justify-between mt-4">

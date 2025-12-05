@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
 import { googleFonts } from '@/lib/data';
 import { useToast } from '@/hooks/use-toast';
+import { AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
 
 export default function StyleControls() {
   const { style, setStyle } = useResume();
@@ -64,10 +65,10 @@ export default function StyleControls() {
 
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h3 className="text-lg font-semibold font-headline mb-4">Typography</h3>
-        <div className="space-y-4">
+    <div className="space-y-2">
+      <AccordionItem value="typography">
+        <AccordionTrigger>Typography</AccordionTrigger>
+        <AccordionContent className="space-y-4">
             <div className="space-y-2">
                 <Label>Font Family</Label>
                 <Select value={style.fontFamily} onValueChange={handleStyleChange('fontFamily')}>
@@ -94,12 +95,12 @@ export default function StyleControls() {
                 <Label>Font Size ({style.fontSize}pt)</Label>
                 <Slider min={8} max={16} step={0.5} value={[parseFloat(style.fontSize)]} onValueChange={handleSliderChange('fontSize')} />
             </div>
-        </div>
-      </div>
+        </AccordionContent>
+      </AccordionItem>
 
-       <div>
-        <h3 className="text-lg font-semibold font-headline mb-4">Colors & Layout</h3>
-        <div className="space-y-4">
+       <AccordionItem value="layout">
+        <AccordionTrigger>Layout & Colors</AccordionTrigger>
+        <AccordionContent className="space-y-4">
             <div className="space-y-2">
                 <Label>Accent Color</Label>
                 <div className="flex items-center gap-2">
@@ -115,8 +116,8 @@ export default function StyleControls() {
                 <Label>Section Spacing ({style.sectionSpacing}px)</Label>
                 <Slider min={10} max={40} step={2} value={[parseInt(style.sectionSpacing)]} onValueChange={handleSliderChange('sectionSpacing')} />
             </div>
-        </div>
-      </div>
+        </AccordionContent>
+      </AccordionItem>
     </div>
   );
 }

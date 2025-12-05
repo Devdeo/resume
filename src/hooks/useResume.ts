@@ -10,6 +10,8 @@ type ResumeContextType = {
   setStyle: Dispatch<SetStateAction<ResumeStyle>>;
   activeSection: string;
   setActiveSection: Dispatch<SetStateAction<string>>;
+  activeAccordionItem: string;
+  setActiveAccordionItem: Dispatch<SetStateAction<string>>;
 };
 
 const ResumeContext = createContext<ResumeContextType | null>(null);

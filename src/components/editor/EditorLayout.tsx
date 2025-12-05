@@ -15,6 +15,7 @@ export default function EditorLayout({ initialTemplate }: EditorLayoutProps) {
   const [data, setData] = useState<ResumeData>(initialTemplate.data);
   const [style, setStyle] = useState<ResumeStyle>(initialTemplate.style);
   const [activeSection, setActiveSection] = useState<string>('personalInfo');
+  const [activeAccordionItem, setActiveAccordionItem] = useState<string>('');
 
   const contextValue = useMemo(() => ({
     data,
@@ -23,7 +24,9 @@ export default function EditorLayout({ initialTemplate }: EditorLayoutProps) {
     setStyle,
     activeSection,
     setActiveSection,
-  }), [data, style, activeSection]);
+    activeAccordionItem,
+    setActiveAccordionItem,
+  }), [data, style, activeSection, activeAccordionItem]);
 
   return (
     <ResumeProvider value={contextValue}>
