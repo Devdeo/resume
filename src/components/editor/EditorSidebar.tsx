@@ -10,7 +10,7 @@ export default function EditorSidebar() {
   const { activeAccordionItem, setActiveAccordionItem } = useResume();
 
   return (
-    <aside className="w-96 border-l bg-background no-print flex flex-col">
+    <aside className="w-96 border-l bg-background no-print flex-col hidden md:flex">
       <div className="p-4 border-b">
         <h3 className="text-lg font-semibold font-headline">Style & Content</h3>
       </div>

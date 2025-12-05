@@ -90,14 +90,14 @@ export default function ResumePreview() {
   } as React.CSSProperties;
 
   return (
-    <div className="mx-auto my-8">
+    <div className="mx-auto my-0 sm:my-8">
       <div
         id="resume-page"
-        className="a4-page aspect-[210/297] w-[210mm] h-[297mm] bg-white shadow-lg origin-top scale-[0.4] sm:scale-[0.6] md:scale-[0.8] lg:scale-[1] transition-transform duration-300"
+        className="a4-page w-full sm:w-[210mm] sm:h-[297mm] bg-white sm:shadow-lg origin-top scale-100 sm:scale-[0.4] md:scale-[0.6] lg:scale-[0.8] xl:scale-[1] transition-transform duration-300"
         style={pageStyle}
         onClick={() => setActiveAccordionItem('layout')}
       >
-        <div className="p-8 h-full space-y-2" style={{padding: `${style.pageMargins}mm`}}>
+        <div className="p-4 sm:p-8 h-full space-y-2" style={{padding: `${style.pageMargins}mm`}}>
           <header className="text-center mb-4" onFocus={handleFocus('personalInfo')} tabIndex={0}>
             {data.personalInfo.profilePicture && (
                 <div className="mx-auto mb-4 h-32 w-32 rounded-full overflow-hidden border-4" style={{ borderColor: style.accentColor }}>
