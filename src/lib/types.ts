@@ -37,6 +37,8 @@ export interface Declaration {
   text: string;
   date: string;
   place: string;
+  showSignature: boolean;
+  signature: string;
 }
 
 export interface CustomSection {

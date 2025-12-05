@@ -18,6 +18,10 @@ import {
   type CustomSection
 } from '@/lib/types';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
+import SignaturePad from './SignaturePad';
+
 
 type ResumePreviewProps = {
   onDragStart: (id: string) => void;
@@ -317,13 +321,43 @@ export default function ResumePreview({ onDragStart, onDragOver, onDragEnd, drag
             const { name, value } = e.target;
             handleSectionContentChange(section.id, { ...declaration, [name]: value });
         };
+        const handleSignatureChange = (signature: string) => {
+             handleSectionContentChange(section.id, { ...declaration, signature });
+        }
+
         return (
           <div key={section.id} className="pt-10" onFocus={handleFocus(section.id)} tabIndex={0}>
             <Section {...commonSectionProps}>
                 <Textarea name="text" value={declaration.text} onChange={handleDeclarationChange} className="italic border-none shadow-none focus-visible:ring-0 p-0" rows={2}/>
-                <div className="flex justify-between mt-4">
-                    <div className="flex gap-1 items-center">Date: <Input name="date" type="date" value={declaration.date} onChange={handleDeclarationChange} className="border-none shadow-none focus-visible:ring-0 p-0" /></div>
-                    <div className="flex gap-1 items-center">Place: <Input name="place" value={declaration.place} onChange={handleDeclarationChange} className="border-none shadow-none focus-visible:ring-0 p-0" /></div>
+                <div className="flex items-center space-x-2 mt-4">
+                  <Checkbox 
+                    id="showSignature" 
+                    checked={declaration.showSignature} 
+                    onCheckedChange={(checked) => handleSectionContentChange(section.id, { ...declaration, showSignature: !!checked })}
+                  />
+                  <Label htmlFor="showSignature">Add Digital Signature</Label>
+                </div>
+
+                {declaration.showSignature && (
+                    <div className='mt-4'>
+                        <SignaturePad 
+                            signature={declaration.signature}
+                            onSignatureChange={handleSignatureChange}
+                        />
+                    </div>
+                )}
+                
+                <div className="flex justify-between mt-8">
+                    <div className="flex flex-col">
+                        <div className="flex gap-1 items-center">Date: <Input name="date" type="date" value={declaration.date} onChange={handleDeclarationChange} className="border-none shadow-none focus-visible:ring-0 p-0 w-auto" /></div>
+                        <div className="flex gap-1 items-center">Place: <Input name="place" value={declaration.place} onChange={handleDeclarationChange} onFocus={() => handleClearOnFocus(declaration.place, (initialSection?.content as Declaration).place, () => handleSectionContentChange(section.id, { ...declaration, place: '' }))} className="border-none shadow-none focus-visible:ring-0 p-0" /></div>
+                    </div>
+                    <div className="flex flex-col items-center">
+                        {declaration.signature && (
+                            <Image src={declaration.signature} alt="Signature" width={150} height={50} style={{ objectFit: 'contain' }} />
+                        )}
+                        <p className="border-t border-gray-400 pt-1 mt-2">Signature</p>
+                    </div>
                 </div>
             </Section>
           </div>

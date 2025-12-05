@@ -77,7 +77,9 @@ const baseData: ResumeData = {
       content: {
         text: "I hereby declare that all the statements made in this resume are true, complete, and correct to the best of my knowledge.",
         date: new Date().toLocaleDateString('en-CA'),
-        place: "Anytown"
+        place: "Anytown",
+        showSignature: false,
+        signature: ""
       }
     }
   ]
