@@ -6,11 +6,12 @@ import StyleControls from './StyleControls';
 import { Accordion } from '@/components/ui/accordion';
 import { useResume } from '@/hooks/useResume';
 import { Button } from '@/components/ui/button';
-import { PlusCircle } from 'lucide-react';
+import { PlusCircle, Palette } from 'lucide-react';
 import { type CustomSection, type ResumeSection } from '@/lib/types';
 
 export default function EditorSidebar() {
   const { data, setData, activeAccordionItem, setActiveAccordionItem } = useResume();
+  const [showStyles, setShowStyles] = React.useState(true);
 
   const addSection = () => {
     const newSection: ResumeSection = {
@@ -30,24 +31,32 @@ export default function EditorSidebar() {
   return (
     <aside className="w-96 border-l bg-background no-print flex-col hidden md:flex">
       <div className="p-4 border-b flex justify-between items-center">
-        <h3 className="text-lg font-semibold font-headline">Style & Content</h3>
-        <Button size="sm" variant="outline" onClick={addSection}>
-          <PlusCircle className="mr-2 h-4 w-4" />
-          Add Section
-        </Button>
+        <h3 className="text-lg font-semibold font-headline">Controls</h3>
+        <div className='flex gap-2'>
+          <Button size="sm" variant="outline" onClick={() => setShowStyles(prev => !prev)}>
+            <Palette className="mr-2 h-4 w-4" />
+            Styles
+          </Button>
+          <Button size="sm" variant="outline" onClick={addSection}>
+            <PlusCircle className="mr-2 h-4 w-4" />
+            Add Section
+          </Button>
+        </div>
       </div>
       <ScrollArea className="flex-1">
-        <Accordion
-          type="single"
-          collapsible
-          className="w-full"
-          value={activeAccordionItem}
-          onValueChange={setActiveAccordionItem}
-        >
-          <div className="p-4">
-            <StyleControls />
-          </div>
-        </Accordion>
+        {showStyles && (
+            <Accordion
+            type="single"
+            collapsible
+            className="w-full"
+            value={activeAccordionItem}
+            onValueChange={setActiveAccordionItem}
+            >
+            <div className="p-4">
+                <StyleControls />
+            </div>
+            </Accordion>
+        )}
       </ScrollArea>
     </aside>
   );

@@ -7,7 +7,7 @@ import { Separator } from '@/components/ui/separator';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { PlusCircle, Trash2 } from 'lucide-react';
+import { PlusCircle, Trash2, ImagePlus } from 'lucide-react';
 import {
   type AcademicQualification,
   type WorkExperience,
@@ -17,6 +17,7 @@ import {
   type SectionContent,
   type CustomSection
 } from '@/lib/types';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const Section = ({ title, children, accentColor, onTitleChange, deletable, onDelete }: { title: string; children: React.ReactNode; accentColor: string; onTitleChange: (newTitle: string) => void; deletable?: boolean; onDelete?: () => void; }) => (
   <div className="mb-4 group relative">
@@ -38,6 +39,7 @@ const Section = ({ title, children, accentColor, onTitleChange, deletable, onDel
 
 export default function ResumePreview() {
   const { data, setData, style, setActiveSection, setActiveAccordionItem } = useResume();
+  const imageInputRef = React.useRef<HTMLInputElement>(null);
 
   const handleSectionContentChange = (sectionId: string, newContent: SectionContent) => {
     setData(prev => ({
@@ -60,6 +62,22 @@ export default function ResumePreview() {
   const handleFocus = (sectionId: string) => () => {
     setActiveSection(sectionId);
     setActiveAccordionItem('typography');
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const personalInfoSection = data.sections.find(s => s.type === 'personalInfo');
+    if (!personalInfoSection) return;
+
+    if (e.target.files && e.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if(event.target?.result) {
+          const newContent = { ...(personalInfoSection.content as PersonalInfo), profilePicture: event.target.result as string };
+          handleSectionContentChange('personalInfo', newContent);
+        }
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    }
   };
 
   const pageStyle: React.CSSProperties = {
@@ -88,13 +106,21 @@ export default function ResumePreview() {
             const { name, value } = e.target;
             handleSectionContentChange(section.id, { ...personalInfo, [name]: value });
         };
+        const defaultProfilePic = PlaceHolderImages.find(img => img.id === 'profile-pic-default')?.imageUrl || '';
+
         return (
           <header key={section.id} className="text-center mb-4" onFocus={handleFocus(section.id)} tabIndex={0}>
-            {personalInfo.profilePicture && (
-              <div className="mx-auto mb-4 h-32 w-32 rounded-full overflow-hidden border-4" style={{ borderColor: style.accentColor }}>
-                <Image src={personalInfo.profilePicture} alt="Profile" width={128} height={128} className="object-cover w-full h-full" />
-              </div>
-            )}
+             <input type="file" ref={imageInputRef} onChange={handleImageUpload} accept="image/*" className="hidden" />
+             <div className="mx-auto mb-4 h-32 w-32 rounded-full overflow-hidden border-4 flex items-center justify-center" style={{ borderColor: style.accentColor }}>
+                {personalInfo.profilePicture && personalInfo.profilePicture !== defaultProfilePic ? (
+                  <Image src={personalInfo.profilePicture} alt="Profile" width={128} height={128} className="object-cover w-full h-full cursor-pointer" onClick={() => imageInputRef.current?.click()} />
+                ) : (
+                  <div className="w-full h-full bg-muted flex flex-col items-center justify-center text-muted-foreground cursor-pointer" onClick={() => imageInputRef.current?.click()}>
+                    <ImagePlus className="w-10 h-10" />
+                    <span className="text-xs mt-1">Add Photo</span>
+                  </div>
+                )}
+            </div>
             <Input name="name" value={personalInfo.name} onChange={handlePersonalInfoChange} placeholder="Your Name" className="font-headline text-4xl font-bold text-center border-none shadow-none focus-visible:ring-0 h-auto p-0" />
             <div className="text-sm flex justify-center items-center gap-x-1 flex-wrap">
               <Input name="address" value={personalInfo.address} onChange={handlePersonalInfoChange} placeholder="Address" className="border-none shadow-none focus-visible:ring-0 h-auto p-0 text-center" />
@@ -253,7 +279,7 @@ export default function ResumePreview() {
   };
 
   return (
-    <div className="mx-auto my-0 sm:my-8">
+    <div className="mx-auto my-0 sm:my-8 w-full sm:w-auto">
       <div
         id="resume-page"
         className="a4-page w-full sm:w-[210mm] sm:h-[297mm] bg-white sm:shadow-lg origin-top scale-100 sm:scale-[0.8] md:scale-[0.9] lg:scale-[0.7] xl:scale-[1] transition-transform duration-300"
