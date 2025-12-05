@@ -7,18 +7,30 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { PersonalInfo } from '@/lib/types';
 
 export default function PersonalInfoForm() {
   const { data, setData } = useResume();
-  const personalInfo = data.personalInfo;
+  const section = data.sections.find(s => s.type === 'personalInfo');
+
+  if (!section) return null;
+
+  const personalInfo = section.content as PersonalInfo;
+
+  const handleContentChange = (newContent: PersonalInfo) => {
+    setData(prev => ({
+      ...prev,
+      sections: prev.sections.map(s => s.id === section.id ? { ...s, content: newContent } : s)
+    }));
+  };
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setData(prev => ({ ...prev, personalInfo: { ...prev.personalInfo, [name]: value } }));
+    handleContentChange({ ...personalInfo, [name]: value });
   };
 
   const handleSelectChange = (name: string) => (value: string) => {
-    setData(prev => ({ ...prev, personalInfo: { ...prev.personalInfo, [name]: value } }));
+    handleContentChange({ ...personalInfo, [name]: value });
   };
   
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,15 +38,13 @@ export default function PersonalInfoForm() {
       const reader = new FileReader();
       reader.onload = (event) => {
         if(event.target?.result) {
-          setData(prev => ({ ...prev, personalInfo: { ...prev.personalInfo, profilePicture: event.target!.result as string } }));
+          handleContentChange({ ...personalInfo, profilePicture: event.target.result as string });
         }
       };
       reader.readAsDataURL(e.target.files[0]);
     }
   };
   
-  const defaultProfilePic = PlaceHolderImages.find(img => img.id === 'profile-pic-default')?.imageUrl || '';
-
   return (
     <AccordionItem value="personalInfo">
       <AccordionTrigger>Personal Information</AccordionTrigger>

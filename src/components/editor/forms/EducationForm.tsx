@@ -15,30 +15,43 @@ type EducationFormProps = {
 
 export default function EducationForm({ type }: EducationFormProps) {
   const { data, setData } = useResume();
-  const title = type === 'academic' ? 'Academic Qualifications' : 'Professional Qualifications';
   const dataKey = type === 'academic' ? 'academicQualifications' : 'professionalQualifications';
-  const qualifications = data[dataKey];
+  const section = data.sections.find(s => s.type === dataKey);
+
+  if (!section) return null;
+
+  const qualifications = section.content as AcademicQualification[];
   
   const handleChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const updatedQualifications = [...qualifications];
     updatedQualifications[index] = { ...updatedQualifications[index], [name]: value };
-    setData(prev => ({ ...prev, [dataKey]: updatedQualifications }));
+    setData(prev => ({
+      ...prev,
+      sections: prev.sections.map(s => s.id === section.id ? { ...s, content: updatedQualifications } : s)
+    }));
   };
 
   const addQualification = () => {
     const newQualification: AcademicQualification = { id: Date.now().toString(), exam: '', board: '', year: '', marks: '', division: '' };
-    setData(prev => ({ ...prev, [dataKey]: [...qualifications, newQualification] }));
+    const updatedQualifications = [...qualifications, newQualification];
+    setData(prev => ({
+      ...prev,
+      sections: prev.sections.map(s => s.id === section.id ? { ...s, content: updatedQualifications } : s)
+    }));
   };
 
   const removeQualification = (index: number) => {
     const updatedQualifications = qualifications.filter((_, i) => i !== index);
-    setData(prev => ({ ...prev, [dataKey]: updatedQualifications }));
+    setData(prev => ({
+      ...prev,
+      sections: prev.sections.map(s => s.id === section.id ? { ...s, content: updatedQualifications } : s)
+    }));
   };
 
   return (
     <AccordionItem value={dataKey}>
-      <AccordionTrigger>{title}</AccordionTrigger>
+      <AccordionTrigger>{section.title}</AccordionTrigger>
       <AccordionContent className="space-y-4">
         {qualifications.map((q, index) => (
           <div key={q.id} className="p-4 border rounded-md space-y-4 relative">

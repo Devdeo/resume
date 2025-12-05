@@ -6,14 +6,23 @@ import { AccordionContent, AccordionItem, AccordionTrigger } from '@/components/
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Declaration } from '@/lib/types';
 
 export default function DeclarationForm() {
   const { data, setData } = useResume();
-  const declaration = data.declaration;
+  const section = data.sections.find(s => s.type === 'declaration');
+
+  if (!section) return null;
+
+  const declaration = section.content as Declaration;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setData(prev => ({ ...prev, declaration: { ...prev.declaration, [name]: value } }));
+    const newContent = { ...declaration, [name]: value };
+    setData(prev => ({
+      ...prev,
+      sections: prev.sections.map(s => s.id === section.id ? { ...s, content: newContent } : s)
+    }));
   };
 
   return (

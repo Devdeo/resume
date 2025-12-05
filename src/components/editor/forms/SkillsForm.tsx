@@ -8,9 +8,18 @@ import { Textarea } from '@/components/ui/textarea';
 
 export default function SkillsForm() {
   const { data, setData } = useResume();
+  const section = data.sections.find(s => s.type === 'extraQualification');
+
+  if (!section) return null;
+
+  const extraQualification = section.content as string;
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setData(prev => ({ ...prev, extraQualification: e.target.value }));
+    const newContent = e.target.value;
+    setData(prev => ({
+      ...prev,
+      sections: prev.sections.map(s => s.id === section.id ? { ...s, content: newContent } : s)
+    }));
   };
 
   return (
@@ -20,7 +29,7 @@ export default function SkillsForm() {
         <div className="space-y-2">
           <Label>Skills or Qualifications</Label>
           <Textarea
-            value={data.extraQualification}
+            value={extraQualification}
             onChange={handleChange}
             rows={4}
             placeholder="e.g., Proficient in MERN Stack, Fluent in Spanish, etc."

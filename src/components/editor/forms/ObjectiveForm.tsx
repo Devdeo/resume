@@ -10,14 +10,26 @@ import { careerObjectives } from '@/lib/data';
 
 export default function ObjectiveForm() {
   const { data, setData } = useResume();
+  const section = data.sections.find(s => s.type === 'careerObjective');
+
+  if (!section) return null;
+
+  const careerObjective = section.content as string;
+
+  const handleContentChange = (newContent: string) => {
+    setData(prev => ({
+      ...prev,
+      sections: prev.sections.map(s => s.id === section.id ? { ...s, content: newContent } : s)
+    }));
+  };
 
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setData(prev => ({ ...prev, careerObjective: e.target.value }));
+    handleContentChange(e.target.value);
   };
   
   const handleSelectChange = (value: string) => {
     if (value !== 'custom') {
-      setData(prev => ({ ...prev, careerObjective: value }));
+      handleContentChange(value);
     }
   };
 
@@ -40,7 +52,7 @@ export default function ObjectiveForm() {
         <div className="space-y-2">
           <Label>Custom Objective</Label>
           <Textarea
-            value={data.careerObjective}
+            value={careerObjective}
             onChange={handleTextChange}
             rows={5}
           />

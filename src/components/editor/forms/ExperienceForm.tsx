@@ -12,23 +12,37 @@ import { type WorkExperience } from '@/lib/types';
 
 export default function ExperienceForm() {
   const { data, setData } = useResume();
-  const experiences = data.workExperience;
+  const section = data.sections.find(s => s.type === 'workExperience');
+
+  if (!section) return null;
+
+  const experiences = section.content as WorkExperience[];
   
   const handleChange = (index: number, e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     const updatedExperiences = [...experiences];
     updatedExperiences[index] = { ...updatedExperiences[index], [name]: value };
-    setData(prev => ({ ...prev, workExperience: updatedExperiences }));
+    setData(prev => ({
+      ...prev,
+      sections: prev.sections.map(s => s.id === section.id ? { ...s, content: updatedExperiences } : s)
+    }));
   };
 
   const addExperience = () => {
     const newExperience: WorkExperience = { id: Date.now().toString(), company: '', role: '', duration: '', responsibilities: '' };
-    setData(prev => ({ ...prev, workExperience: [...experiences, newExperience] }));
+    const updatedExperiences = [...experiences, newExperience];
+    setData(prev => ({
+      ...prev,
+      sections: prev.sections.map(s => s.id === section.id ? { ...s, content: updatedExperiences } : s)
+    }));
   };
 
   const removeExperience = (index: number) => {
     const updatedExperiences = experiences.filter((_, i) => i !== index);
-    setData(prev => ({ ...prev, workExperience: updatedExperiences }));
+    setData(prev => ({
+      ...prev,
+      sections: prev.sections.map(s => s.id === section.id ? { ...s, content: updatedExperiences } : s)
+    }));
   };
 
   return (

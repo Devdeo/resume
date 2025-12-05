@@ -39,14 +39,34 @@ export interface Declaration {
   place: string;
 }
 
+export interface CustomSection {
+  id: string;
+  title: string;
+  content: string;
+}
+
+export type SectionType =
+  | 'personalInfo'
+  | 'careerObjective'
+  | 'academicQualifications'
+  | 'professionalQualifications'
+  | 'extraQualification'
+  | 'workExperience'
+  | 'declaration'
+  | 'custom';
+
+export type SectionContent = PersonalInfo | string | AcademicQualification[] | WorkExperience[] | Declaration | CustomSection;
+
+export interface ResumeSection {
+  id: string;
+  type: SectionType;
+  title: string;
+  content: SectionContent;
+  deletable?: boolean;
+}
+
 export interface ResumeData {
-  personalInfo: PersonalInfo;
-  careerObjective: string;
-  academicQualifications: AcademicQualification[];
-  professionalQualifications: AcademicQualification[];
-  extraQualification: string;
-  workExperience: WorkExperience[];
-  declaration: Declaration;
+  sections: ResumeSection[];
 }
 
 export interface ResumeStyle {
