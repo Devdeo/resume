@@ -7,7 +7,7 @@ import { Separator } from '@/components/ui/separator';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { PlusCircle, Trash2, ImagePlus } from 'lucide-react';
+import { PlusCircle, Trash2, ImagePlus, GripVertical } from 'lucide-react';
 import {
   type AcademicQualification,
   type WorkExperience,
@@ -19,13 +19,34 @@ import {
 } from '@/lib/types';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
-const Section = ({ title, children, accentColor, onTitleChange, deletable, onDelete }: { title: string; children: React.ReactNode; accentColor: string; onTitleChange: (newTitle: string) => void; deletable?: boolean; onDelete?: () => void; }) => (
-  <div className="mb-4 group relative">
+type ResumePreviewProps = {
+  onDragStart: (id: string) => void;
+  onDragOver: (e: React.DragEvent, id: string) => void;
+  onDragEnd: () => void;
+  draggingItem: string | null;
+};
+
+
+const Section = ({ title, children, accentColor, onTitleChange, deletable, onDelete, onDragStart, onDragOver, onDragEnd, draggable, isDragging }: { title: string; children: React.ReactNode; accentColor: string; onTitleChange: (newTitle: string) => void; deletable?: boolean; onDelete?: () => void; onDragStart: () => void; onDragOver: (e: React.DragEvent) => void; onDragEnd: () => void; draggable?: boolean; isDragging: boolean; }) => (
+  <div 
+    className={`mb-4 group relative ${isDragging ? 'opacity-50' : ''}`}
+    draggable={draggable}
+    onDragStart={onDragStart}
+    onDragOver={onDragOver}
+    onDragEnd={onDragEnd}
+    onDrop={onDragEnd}
+  >
     <div className='flex items-center border-b-2' style={{ borderColor: accentColor }}>
+      {draggable && (
+         <div draggable onDragStart={onDragStart} className="cursor-grab opacity-0 group-hover:opacity-100 pr-2">
+           <GripVertical className="h-5 w-5 text-muted-foreground" />
+         </div>
+       )}
       <Input
         value={title}
         onChange={(e) => onTitleChange(e.target.value)}
         className="font-headline text-lg font-bold uppercase tracking-wider border-none shadow-none focus-visible:ring-0 p-0 h-auto"
+        style={{ paddingLeft: deletable ? 0 : '0.5rem' }}
       />
       {deletable && (
         <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover:opacity-100 absolute -right-8 top-0" onClick={onDelete}>
@@ -37,7 +58,7 @@ const Section = ({ title, children, accentColor, onTitleChange, deletable, onDel
   </div>
 );
 
-export default function ResumePreview() {
+export default function ResumePreview({ onDragStart, onDragOver, onDragEnd, draggingItem }: ResumePreviewProps) {
   const { data, setData, style, setActiveSection, setActiveAccordionItem } = useResume();
   const imageInputRef = React.useRef<HTMLInputElement>(null);
 
@@ -87,17 +108,11 @@ export default function ResumePreview() {
     color: '#333'
   } as React.CSSProperties;
 
-  const renderSection = (section: ResumeSection) => {
+  const renderSection = (section: ResumeSection, index: number) => {
     const onTitleChange = (newTitle: string) => handleSectionTitleChange(section.id, newTitle);
     const onDelete = () => deleteSection(section.id);
 
-    const commonSectionProps = {
-      title: section.title,
-      accentColor: style.accentColor,
-      onTitleChange,
-      deletable: section.deletable,
-      onDelete,
-    };
+    const isDraggable = section.type !== 'personalInfo';
     
     switch (section.type) {
       case 'personalInfo':
@@ -109,9 +124,12 @@ export default function ResumePreview() {
         const defaultProfilePic = PlaceHolderImages.find(img => img.id === 'profile-pic-default')?.imageUrl || '';
 
         return (
-          <header key={section.id} className="text-center mb-4" onFocus={handleFocus(section.id)} tabIndex={0}>
-             <input type="file" ref={imageInputRef} onChange={handleImageUpload} accept="image/*" className="hidden" />
-             <div className="mx-auto mb-4 h-32 w-32 rounded-full overflow-hidden border-4 flex items-center justify-center" style={{ borderColor: style.accentColor }}>
+          <header key={section.id} className="text-center mb-4 relative group" onFocus={handleFocus(section.id)} tabIndex={0} onDragOver={(e) => onDragOver(e, section.id)}>
+             <div draggable onDragStart={() => onDragStart(section.id)} className="cursor-grab opacity-0 group-hover:opacity-100 absolute left-2 top-2">
+               <GripVertical className="h-5 w-5 text-muted-foreground" />
+             </div>
+            <input type="file" ref={imageInputRef} onChange={handleImageUpload} accept="image/*" className="hidden" />
+            <div className="mx-auto mb-4 h-32 w-32 rounded-full overflow-hidden border-4 flex items-center justify-center" style={{ borderColor: style.accentColor }}>
                 {personalInfo.profilePicture && personalInfo.profilePicture !== defaultProfilePic ? (
                   <Image src={personalInfo.profilePicture} alt="Profile" width={128} height={128} className="object-cover w-full h-full cursor-pointer" onClick={() => imageInputRef.current?.click()} />
                 ) : (
@@ -133,6 +151,39 @@ export default function ResumePreview() {
         );
       
       case 'careerObjective':
+      case 'extraQualification':
+      case 'declaration':
+      case 'academicQualifications':
+      case 'professionalQualifications':
+      case 'workExperience':
+      case 'custom':
+        return renderEditableSection(section);
+      default:
+        return null;
+    }
+  };
+
+  const renderEditableSection = (section: ResumeSection) => {
+    const onTitleChange = (newTitle: string) => handleSectionTitleChange(section.id, newTitle);
+    const onDelete = () => deleteSection(section.id);
+
+    const isDraggable = section.type !== 'personalInfo';
+
+    const commonSectionProps = {
+      title: section.title,
+      accentColor: style.accentColor,
+      onTitleChange,
+      deletable: section.deletable,
+      onDelete,
+      draggable: isDraggable,
+      onDragStart: () => onDragStart(section.id),
+      onDragOver: (e: React.DragEvent) => onDragOver(e, section.id),
+      onDragEnd: onDragEnd,
+      isDragging: draggingItem === section.id
+    };
+
+    switch (section.type) {
+        case 'careerObjective':
         const careerObjective = section.content as string;
         return (
           <div key={section.id} onFocus={handleFocus(section.id)} tabIndex={0}>
@@ -262,21 +313,19 @@ export default function ResumePreview() {
         return (
             <div key={section.id} onFocus={handleFocus(section.id)} tabIndex={0}>
                  <Section 
+                    {...commonSectionProps}
                     title={customSection.title}
-                    accentColor={style.accentColor}
                     onTitleChange={customSectionTitleChange}
-                    deletable={section.deletable}
-                    onDelete={onDelete}
                  >
                     <Textarea value={customSection.content} onChange={handleCustomSectionChange} className="border-none shadow-none focus-visible:ring-0 p-0" rows={3}/>
                 </Section>
             </div>
         );
-
       default:
         return null;
     }
-  };
+  }
+
 
   return (
     <div className="mx-auto my-0 sm:my-8 w-full sm:w-auto">
@@ -286,8 +335,11 @@ export default function ResumePreview() {
         style={pageStyle}
         onClick={() => setActiveAccordionItem('layout')}
       >
-        <div className="p-4 sm:p-8 h-full" style={{padding: `${style.pageMargins}mm`, columnGap: `${style.sectionSpacing}px`}}>
-          {data.sections.map(section => renderSection(section))}
+        <div
+          className="p-4 sm:p-8 h-full"
+          style={{ padding: `${style.pageMargins}mm`, columnGap: `${style.sectionSpacing}px` }}
+        >
+          {data.sections.map((section, index) => renderSection(section, index))}
         </div>
       </div>
     </div>
