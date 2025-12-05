@@ -12,6 +12,7 @@ interface SignaturePadProps {
 export default function SignaturePad({ signature, onSignatureChange }: SignaturePadProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
+  const lastPos = useRef<{ x: number, y: number } | null>(null);
 
   const getCanvasContext = () => {
     const canvas = canvasRef.current;
@@ -36,29 +37,38 @@ export default function SignaturePad({ signature, onSignatureChange }: Signature
   const startDrawing = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
     const ctx = getCanvasContext();
     if (!ctx) return;
-
+    
+    e.preventDefault();
     const pos = getMousePos(e);
-    ctx.beginPath();
-    ctx.moveTo(pos.x, pos.y);
+    lastPos.current = pos;
     setIsDrawing(true);
   };
 
   const draw = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
-    if (!isDrawing) return;
+    if (!isDrawing || !lastPos.current) return;
     const ctx = getCanvasContext();
     if (!ctx) return;
-
+    
+    e.preventDefault();
     const pos = getMousePos(e);
+
+    ctx.beginPath();
+    ctx.moveTo(lastPos.current.x, lastPos.current.y);
     ctx.lineTo(pos.x, pos.y);
-    ctx.strokeStyle = '#000000';
+    ctx.strokeStyle = '#0000FF'; // Blue color
     ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
     ctx.stroke();
+    
+    lastPos.current = pos;
   };
 
   const stopDrawing = () => {
     const canvas = canvasRef.current;
     if (!canvas || !isDrawing) return;
     setIsDrawing(false);
+    lastPos.current = null;
     onSignatureChange(canvas.toDataURL());
   };
 
@@ -67,17 +77,23 @@ export default function SignaturePad({ signature, onSignatureChange }: Signature
     if (!canvas) return { x: 0, y: 0 };
     const rect = canvas.getBoundingClientRect();
 
+    let clientX, clientY;
+
     if ('touches' in e.nativeEvent) {
         const touch = e.nativeEvent.touches[0];
-        return {
-          x: touch.clientX - rect.left,
-          y: touch.clientY - rect.top,
-        };
+        clientX = touch.clientX;
+        clientY = touch.clientY;
+    } else {
+        clientX = e.clientX;
+        clientY = e.clientY;
     }
+    
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
 
     return {
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
+      x: (clientX - rect.left) * scaleX,
+      y: (clientY - rect.top) * scaleY,
     };
   };
 
