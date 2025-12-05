@@ -1,3 +1,40 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "profile-pic-default",
+      "description": "Default user profile picture",
+      "imageUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxwcm9maWxlJTIwcGljdHVyZXxlbnwwfHx8fDE3NjQ4NDgzODl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "profile picture"
+    },
+    {
+      "id": "template-modern",
+      "description": "Modern resume template preview",
+      "imageUrl": "https://images.unsplash.com/photo-1759317823564-269396db4cfd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxyZXN1bWUlMjB0ZW1wbGF0ZXxlbnwwfHx8fDE3NjQ5NDk0MjN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "resume template"
+    },
+    {
+      "id": "template-creative",
+      "description": "Creative resume template preview",
+      "imageUrl": "https://images.unsplash.com/photo-1641248867712-257e0aae767b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8cmVzdW1lJTIwZGVzaWdufGVufDB8fHx8MTc2NDkwNzQ4N3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "resume design"
+    },
+    {
+      "id": "template-professional",
+      "description": "Professional resume template preview",
+      "imageUrl": "https://images.unsplash.com/photo-1680051314819-f4ca2668428d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxjdiUyMGxheW91dHxlbnwwfHx8fDE3NjQ5MDc0ODd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "cv layout"
+    },
+    {
+      "id": "template-minimalist",
+      "description": "Minimalist resume template preview",
+      "imageUrl": "https://images.unsplash.com/photo-1587287720754-94bac45f0bff?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxzaW1wbGUlMjByZXN1bWV8ZW58MHx8fHwxNzY0OTQ5NDIzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "simple resume"
+    },
+    {
+      "id": "template-academic",
+      "description": "Academic resume template preview",
+      "imageUrl": "https://images.unsplash.com/photo-1719845853806-1c54b0ed37c5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxhY2FkZW1pYyUyMGN2fGVufDB8fHx8MTc2NDk0OTQyM3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "academic cv"
+    }
+  ]
 }
