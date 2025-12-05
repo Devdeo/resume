@@ -8,9 +8,9 @@ import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
 import { googleFonts } from '@/lib/data';
 import { useToast } from '@/hooks/use-toast';
-import { AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
+import { AccordionContent, AccordionTrigger } from '../ui/accordion';
 
-export default function StyleControls() {
+export default function StyleControls({ type }: { type: 'typography' | 'layout' }) {
   const { style, setStyle } = useResume();
   const { toast } = useToast();
   const [customFonts, setCustomFonts] = React.useState<string[]>([]);
@@ -63,10 +63,9 @@ export default function StyleControls() {
     }
   };
 
-
-  return (
-    <div className="space-y-2">
-      <AccordionItem value="typography">
+  if (type === 'typography') {
+    return (
+      <>
         <AccordionTrigger>Typography</AccordionTrigger>
         <AccordionContent className="space-y-4">
             <div className="space-y-2">
@@ -96,9 +95,13 @@ export default function StyleControls() {
                 <Slider min={8} max={16} step={0.5} value={[parseFloat(style.fontSize)]} onValueChange={handleSliderChange('fontSize')} />
             </div>
         </AccordionContent>
-      </AccordionItem>
+      </>
+    );
+  }
 
-       <AccordionItem value="layout">
+  if (type === 'layout') {
+    return (
+      <>
         <AccordionTrigger>Layout & Colors</AccordionTrigger>
         <AccordionContent className="space-y-4">
             <div className="space-y-2">
@@ -117,7 +120,9 @@ export default function StyleControls() {
                 <Slider min={10} max={40} step={2} value={[parseInt(style.sectionSpacing)]} onValueChange={handleSliderChange('sectionSpacing')} />
             </div>
         </AccordionContent>
-      </AccordionItem>
-    </div>
-  );
+      </>
+    );
+  }
+
+  return null;
 }

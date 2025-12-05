@@ -3,14 +3,14 @@
 import React from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import StyleControls from './StyleControls';
-import { Accordion } from '@/components/ui/accordion';
+import { Accordion, AccordionItem } from '@/components/ui/accordion';
 import { useResume } from '@/hooks/useResume';
 import { Button } from '@/components/ui/button';
 import { PlusCircle, Palette } from 'lucide-react';
 import { type CustomSection, type ResumeSection } from '@/lib/types';
 
 export default function EditorSidebar() {
-  const { data, setData, activeAccordionItem, setActiveAccordionItem } = useResume();
+  const { setData, activeAccordionItem, setActiveAccordionItem } = useResume();
   const [showStyles, setShowStyles] = React.useState(true);
 
   const addSection = () => {
@@ -52,9 +52,14 @@ export default function EditorSidebar() {
             value={activeAccordionItem}
             onValueChange={setActiveAccordionItem}
             >
-            <div className="p-4">
-                <StyleControls />
-            </div>
+              <div className="p-4 space-y-2">
+                <AccordionItem value="typography">
+                  <StyleControls type="typography" />
+                </AccordionItem>
+                <AccordionItem value="layout">
+                  <StyleControls type="layout" />
+                </AccordionItem>
+              </div>
             </Accordion>
         )}
       </ScrollArea>
