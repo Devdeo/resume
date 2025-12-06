@@ -31,11 +31,12 @@ export default function Home() {
               <Card className="group overflow-hidden transition-shadow hover:shadow-lg">
                 <CardContent className="p-0">
                   <div className="relative w-full overflow-hidden" style={{ aspectRatio: '1 / 1.414' }}>
-                    <div className="pointer-events-none absolute inset-0 -translate-y-1/4 scale-[0.5] origin-top">
+                    <div className="pointer-events-none absolute inset-0">
                        <ResumePreview
                           data={template.data}
                           style={template.style}
                           initialData={template.data}
+                          isPreview
                         />
                     </div>
                     <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity" />

@@ -30,6 +30,7 @@ type ResumePreviewProps = {
   data?: ResumeData;
   style?: ResumeStyle;
   initialData?: ResumeData;
+  isPreview?: boolean;
 };
 
 
@@ -67,7 +68,7 @@ const Section = ({ title, children, accentColor, onTitleChange, deletable, onDel
 export default function ResumePreview(props: ResumePreviewProps) {
   const resumeContext = useResume();
   
-  const isEditor = !!resumeContext;
+  const isEditor = !!resumeContext && !props.isPreview;
   
   const data = isEditor ? resumeContext.data : props.data!;
   const style = isEditor ? resumeContext.style : props.style!;
@@ -488,21 +489,30 @@ export default function ResumePreview(props: ResumePreviewProps) {
         return renderColumn(data.sections);
     }
   }
+  
+  const a4PageStyle: React.CSSProperties = {
+    ...pageStyle,
+    width: '210mm',
+    height: '297mm',
+  };
+  
+  if (props.isPreview) {
+    a4PageStyle.width = '100%';
+    a4PageStyle.height = '100%';
+    a4PageStyle.transform = 'scale(0.5)';
+    a4PageStyle.transformOrigin = 'top left';
+  } else if (isEditor) {
+    a4PageStyle.boxShadow = '0 0 10px rgba(0,0,0,0.1)';
+    a4PageStyle.margin = '2rem auto';
+  }
+
 
   return (
      <div className={editorWrapperClasses}>
       <div
         id="resume-page"
-        className="a4-page w-full h-full bg-white shadow-lg origin-top transition-transform duration-300"
-        style={{
-          ...pageStyle, 
-          transform: isEditor ? 'scale(1)' : 'scale(0.5)',
-          transformOrigin: 'top center',
-          width: isEditor ? '210mm' : '100%',
-          height: isEditor ? '297mm' : 'auto',
-          aspectRatio: '1 / 1.414',
-          margin: isEditor ? '0 auto' : '0'
-        }}
+        className="a4-page bg-white"
+        style={a4PageStyle}
         {...containerProps}
       >
         <div
@@ -515,5 +525,3 @@ export default function ResumePreview(props: ResumePreviewProps) {
     </div>
   );
 }
-
-    
