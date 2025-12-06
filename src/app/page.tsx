@@ -25,26 +25,32 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {templates.map((template) => (
             <Link href={`/editor/${template.id}`} key={template.id}>
               <Card className="group overflow-hidden transition-shadow hover:shadow-lg">
                 <CardContent className="p-0">
-                  <div className="relative aspect-[1/1.414] w-full overflow-hidden">
-                    <div className="absolute inset-0 origin-top-left" style={{ transform: 'scale(0.35)', transformOrigin: 'top left' }}>
-                       <ResumePreview
-                          data={template.data}
-                          style={template.style}
-                          initialData={template.data}
-                          isPreview
-                        />
+                  <div className="relative aspect-[1/1.414] w-full overflow-hidden bg-white">
+                    <div
+                      className="absolute inset-0 origin-top-left"
+                      style={{
+                        transform: 'scale(0.3)',
+                        transformOrigin: 'top left',
+                      }}
+                    >
+                      <ResumePreview
+                        data={template.data}
+                        style={template.style}
+                        initialData={template.data}
+                        isPreview
+                      />
                     </div>
-                    <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="absolute inset-0 bg-black/20 opacity-0 transition-opacity group-hover:opacity-100" />
                     <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center text-white opacity-0 transition-opacity group-hover:opacity-100">
                       <h3 className="font-headline text-2xl font-bold">{template.name}</h3>
-                        <Button variant="secondary" className="mt-4">
-                          Use Template <ArrowRight className="ml-2 h-4 w-4" />
-                        </Button>
+                      <Button variant="secondary" className="mt-4">
+                        Use Template <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
                     </div>
                   </div>
                 </CardContent>
