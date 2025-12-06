@@ -112,22 +112,45 @@ export default function ResumePreview(props: ResumePreviewProps) {
     setActiveAccordionItem('typography');
   };
 
-  const handleClearOnFocus = (sectionId: string, fieldName: string, currentValue: string) => {
-    const initialSectionData = initialData.sections.find(s => s.id === sectionId) || initialData.rightSections?.find(s => s.id === sectionId);
-    if (isEditor && initialSectionData) {
-        const initialValue = (initialSectionData.content as any)[fieldName];
+  const handleClearOnFocus = (sectionId: string, fieldName: string, currentValue: string, fieldId?: string) => {
+    if (!isEditor) return;
+    if (sectionId === 'careerObjective' || sectionId === 'declaration') return;
+
+    let initialSectionData;
+    if (fieldId) {
+        const initialParentSection = initialData.sections.find(s => s.id === sectionId) || initialData.rightSections?.find(s => s.id === sectionId);
+        if (initialParentSection && Array.isArray(initialParentSection.content)) {
+            initialSectionData = initialParentSection.content.find((item: any) => item.id === fieldId);
+        }
+    } else {
+        initialSectionData = initialData.sections.find(s => s.id === sectionId) || initialData.rightSections?.find(s => s.id === sectionId);
+    }
+    
+    if (initialSectionData) {
+        const initialValue = (initialSectionData.content as any)?.[fieldName] ?? (initialSectionData as any)?.[fieldName];
+
         if (currentValue === initialValue) {
-            const currentSection = data.sections.find(s => s.id === sectionId) || data.rightSections?.find(s => s.id === sectionId);
+            let currentSection = data.sections.find(s => s.id === sectionId) || data.rightSections?.find(s => s.id === sectionId);
             if (currentSection) {
-                const newContent = { ...currentSection.content as object, [fieldName]: '' };
+                let newContent;
+                if (fieldId && Array.isArray(currentSection.content)) {
+                    newContent = currentSection.content.map((item: any) => {
+                        if (item.id === fieldId) {
+                            return { ...item, [fieldName]: '' };
+                        }
+                        return item;
+                    });
+                } else {
+                    newContent = { ...currentSection.content as object, [fieldName]: '' };
+                }
                 handleSectionContentChange(sectionId, newContent as SectionContent);
             }
         }
     }
-  };
+};
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const personalInfoSection = data.sections.find(s => s.type === 'personalInfo');
+    const personalInfoSection = data.sections.find(s => s.type === 'personalInfo') || data.rightSections?.find(s => s.type === 'personalInfo');
     if (!personalInfoSection) return;
 
     if (e.target.files && e.target.files[0]) {
@@ -135,7 +158,7 @@ export default function ResumePreview(props: ResumePreviewProps) {
       reader.onload = (event) => {
         if(event.target?.result) {
           const newContent = { ...(personalInfoSection.content as PersonalInfo), profilePicture: event.target.result as string };
-          handleSectionContentChange('personalInfo', newContent);
+          handleSectionContentChange(personalInfoSection.id, newContent);
         }
       };
       reader.readAsDataURL(e.target.files[0]);
@@ -149,7 +172,7 @@ export default function ResumePreview(props: ResumePreviewProps) {
     color: '#333'
   } as React.CSSProperties;
 
-  const renderSection = (section: ResumeSection, index: number) => {
+  const renderSection = (section: ResumeSection) => {
     const onTitleChange = (newTitle: string) => handleSectionTitleChange(section.id, newTitle);
     const onDelete = () => deleteSection(section.id);
 
@@ -260,7 +283,7 @@ export default function ResumePreview(props: ResumePreviewProps) {
         return (
           <div key={section.id} onFocus={handleFocus(section.id)} tabIndex={0}>
             <Section {...commonSectionProps}>
-              <Textarea value={careerObjective} onChange={e => handleSectionContentChange(section.id, e.target.value)} className="border-none shadow-none focus-visible:ring-0 p-0" rows={2}/>
+              <Textarea value={careerObjective} onChange={e => handleSectionContentChange(section.id, e.target.value)} onFocus={() => handleClearOnFocus(section.id, 'content', careerObjective)} className="border-none shadow-none focus-visible:ring-0 p-0" rows={2}/>
             </Section>
           </div>
         );
@@ -269,7 +292,7 @@ export default function ResumePreview(props: ResumePreviewProps) {
       case 'professionalQualifications':
         const qualifications = section.content as AcademicQualification[];
         const addQualification = () => {
-            const newQualification: AcademicQualification = { id: Date.now().toString(), exam: '', board: '', year: '', marks: '', division: '' };
+            const newQualification: AcademicQualification = { id: Date.now().toString(), exam: 'New Degree', board: 'University Name', year: 'Year', marks: 'Grade', division: 'N/A' };
             handleSectionContentChange(section.id, [...qualifications, newQualification]);
         };
         const removeQualification = (index: number) => {
@@ -288,11 +311,11 @@ export default function ResumePreview(props: ResumePreviewProps) {
               <div className="space-y-2">
                 {qualifications.map((q, index) => (
                     <div key={q.id} className="flex gap-2 items-center group">
-                      <Input name="exam" value={q.exam} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(q.id, 'exam', q.exam)} placeholder="Exam/Degree" className="border-none shadow-none focus-visible:ring-0 p-0 flex-1" />
-                      <Input name="board" value={q.board} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(q.id, 'board', q.board)} placeholder="Board/University" className="border-none shadow-none focus-visible:ring-0 p-0 flex-1" />
-                      <Input name="year" value={q.year} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(q.id, 'year', q.year)} placeholder="Year" className="border-none shadow-none focus-visible:ring-0 p-0 w-16" />
-                      <Input name="marks" value={q.marks} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(q.id, 'marks', q.marks)} placeholder="Marks %" className="border-none shadow-none focus-visible:ring-0 p-0 w-16" />
-                      <Input name="division" value={q.division} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(q.id, 'division', q.division)} placeholder="Division" className="border-none shadow-none focus-visible:ring-0 p-0 w-20" />
+                      <Input name="exam" value={q.exam} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'exam', q.exam, q.id)} placeholder="Exam/Degree" className="border-none shadow-none focus-visible:ring-0 p-0 flex-1" />
+                      <Input name="board" value={q.board} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'board', q.board, q.id)} placeholder="Board/University" className="border-none shadow-none focus-visible:ring-0 p-0 flex-1" />
+                      <Input name="year" value={q.year} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'year', q.year, q.id)} placeholder="Year" className="border-none shadow-none focus-visible:ring-0 p-0 w-16" />
+                      <Input name="marks" value={q.marks} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'marks', q.marks, q.id)} placeholder="Marks %" className="border-none shadow-none focus-visible:ring-0 p-0 w-16" />
+                      <Input name="division" value={q.division} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'division', q.division, q.id)} placeholder="Division" className="border-none shadow-none focus-visible:ring-0 p-0 w-20" />
                       {isEditor && <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover:opacity-100" onClick={() => removeQualification(index)}><Trash2 className="h-4 w-4 text-destructive" /></Button>}
                     </div>
                 ))}
@@ -315,7 +338,7 @@ export default function ResumePreview(props: ResumePreviewProps) {
       case 'workExperience':
         const workExperience = section.content as WorkExperience[];
         const addExperience = () => {
-            const newExperience: WorkExperience = { id: Date.now().toString(), company: '', role: '', duration: '', responsibilities: '' };
+            const newExperience: WorkExperience = { id: Date.now().toString(), company: 'Company Name', role: 'Your Role', duration: 'From - To', responsibilities: 'Your responsibilities and achievements.' };
             handleSectionContentChange(section.id, [...workExperience, newExperience]);
         };
         const removeExperience = (index: number) => {
@@ -336,14 +359,14 @@ export default function ResumePreview(props: ResumePreviewProps) {
                         <div key={exp.id} className="group flex flex-col">
                             <div className="flex justify-between items-center">
                                 <div className="flex gap-1 items-center">
-                                    <Input name="role" value={exp.role} onChange={(e) => handleExperienceChange(index, e)} onFocus={() => handleClearOnFocus(exp.id, 'role', exp.role)} placeholder="Role" className="font-bold border-none shadow-none focus-visible:ring-0 p-0" />
+                                    <Input name="role" value={exp.role} onChange={(e) => handleExperienceChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'role', exp.role, exp.id)} placeholder="Role" className="font-bold border-none shadow-none focus-visible:ring-0 p-0" />
                                     <span>-</span>
-                                    <Input name="company" value={exp.company} onChange={(e) => handleExperienceChange(index, e)} onFocus={() => handleClearOnFocus(exp.id, 'company', exp.company)} placeholder="Company" className="font-bold border-none shadow-none focus-visible:ring-0 p-0" />
+                                    <Input name="company" value={exp.company} onChange={(e) => handleExperienceChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'company', exp.company, exp.id)} placeholder="Company" className="font-bold border-none shadow-none focus-visible:ring-0 p-0" />
                                 </div>
-                                <Input name="duration" value={exp.duration} onChange={(e) => handleExperienceChange(index, e)} onFocus={() => handleClearOnFocus(exp.id, 'duration', exp.duration)} placeholder="Duration" className="text-xs font-semibold border-none shadow-none focus-visible:ring-0 p-0 text-right" style={{ color: style.accentColor }} />
+                                <Input name="duration" value={exp.duration} onChange={(e) => handleExperienceChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'duration', exp.duration, exp.id)} placeholder="Duration" className="text-xs font-semibold border-none shadow-none focus-visible:ring-0 p-0 text-right" style={{ color: style.accentColor }} />
                             </div>
                             <div className="flex items-start">
-                            <Textarea name="responsibilities" value={exp.responsibilities} onChange={(e) => handleExperienceChange(index, e)} onFocus={() => handleClearOnFocus(exp.id, 'responsibilities', exp.responsibilities)} placeholder="Responsibilities" className="text-sm border-none shadow-none focus-visible:ring-0 p-0 flex-1" rows={2} />
+                            <Textarea name="responsibilities" value={exp.responsibilities} onChange={(e) => handleExperienceChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'responsibilities', exp.responsibilities, exp.id)} placeholder="Responsibilities" className="text-sm border-none shadow-none focus-visible:ring-0 p-0 flex-1" rows={2} />
                             {isEditor && <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover:opacity-100" onClick={() => removeExperience(index)}><Trash2 className="h-4 w-4 text-destructive" /></Button>}
                             </div>
                         </div>
@@ -367,7 +390,7 @@ export default function ResumePreview(props: ResumePreviewProps) {
         return (
           <div key={section.id} className="pt-10" onFocus={handleFocus(section.id)} tabIndex={0}>
             <Section {...commonSectionProps}>
-                <Textarea name="text" value={declaration.text} onChange={handleDeclarationChange} className="italic border-none shadow-none focus-visible:ring-0 p-0" rows={2}/>
+                <Textarea name="text" value={declaration.text} onChange={handleDeclarationChange} onFocus={() => handleClearOnFocus(section.id, 'text', declaration.text)} className="italic border-none shadow-none focus-visible:ring-0 p-0" rows={2}/>
                 {isEditor && (
                   <div className="flex items-center space-x-2 mt-4">
                     <Checkbox 
@@ -420,7 +443,7 @@ export default function ResumePreview(props: ResumePreviewProps) {
                     title={customSection.title}
                     onTitleChange={customSectionTitleChange}
                  >
-                    <Textarea value={customSection.content} onChange={handleCustomSectionChange} onFocus={() => handleClearOnFocus(section.id, 'content', customSection.content)} className="border-none shadow-none focus-visible:ring-0 p-0" rows={3}/>
+                    <Textarea value={customSection.content} onChange={handleCustomSectionChange} onFocus={() => handleClearOnFocus(section.id, 'content', customSection.content, customSection.id)} className="border-none shadow-none focus-visible:ring-0 p-0" rows={3}/>
                 </Section>
             </div>
         );
@@ -440,7 +463,7 @@ export default function ResumePreview(props: ResumePreviewProps) {
     
   const renderColumn = (sections: ResumeSection[]) => (
     <div className='flex flex-col'>
-      {sections.map((section, index) => renderSection(section, index))}
+      {sections.map((section) => renderSection(section))}
     </div>
   )
 
@@ -473,8 +496,12 @@ export default function ResumePreview(props: ResumePreviewProps) {
         className="a4-page w-full h-full bg-white shadow-lg origin-top transition-transform duration-300"
         style={{
           ...pageStyle, 
-          width: '100%', 
-          height: '100%',
+          transform: isEditor ? 'scale(1)' : 'scale(0.5)',
+          transformOrigin: 'top center',
+          width: isEditor ? '210mm' : '100%',
+          height: isEditor ? '297mm' : 'auto',
+          aspectRatio: '1 / 1.414',
+          margin: isEditor ? '0 auto' : '0'
         }}
         {...containerProps}
       >
@@ -488,3 +515,5 @@ export default function ResumePreview(props: ResumePreviewProps) {
     </div>
   );
 }
+
+    

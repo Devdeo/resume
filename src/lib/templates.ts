@@ -165,7 +165,20 @@ const professionalTemplate: ResumeTemplate = {
                 { id: 'aq1', exam: "MBA", board: "University of Business", year: "2010", marks: "3.8/4.0", division: "Distinction" },
                 { id: 'aq2', exam: "B.Eng", board: "Tech University", year: "2008", marks: "88%", division: "First" }
             ]
-        }
+        },
+        {
+          id: 'declaration',
+          type: 'declaration',
+          title: 'Declaration',
+          deletable: true,
+          content: {
+            text: "I hereby declare that all the statements made in this resume are true, complete, and correct to the best of my knowledge.",
+            date: new Date().toLocaleDateString('en-CA'),
+            place: "Business City",
+            showSignature: false,
+            signature: ""
+          }
+      }
       ]
     }
 };
@@ -237,6 +250,19 @@ const minimalistTemplate: ResumeTemplate = {
           deletable: true,
           content: "Figma, Sketch, Adobe XD, Prototyping, Wireframing"
         },
+        {
+            id: 'declaration',
+            type: 'declaration',
+            title: 'Declaration',
+            deletable: true,
+            content: {
+              text: "I hereby declare that the information provided is true and correct.",
+              date: new Date().toLocaleDateString('en-CA'),
+              place: "Clean City",
+              showSignature: false,
+              signature: ""
+            }
+        }
       ]
     }
 };
@@ -257,3 +283,5 @@ export const templates: ResumeTemplate[] = [
   professionalTemplate,
   minimalistTemplate
 ];
+
+    
