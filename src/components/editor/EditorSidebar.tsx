@@ -10,7 +10,10 @@ import { PlusCircle, Palette } from 'lucide-react';
 import { type CustomSection, type ResumeSection } from '@/lib/types';
 
 export default function EditorSidebar() {
-  const { setData, activeAccordionItem, setActiveAccordionItem } = useResume();
+  const resumeContext = useResume();
+  if (!resumeContext) return null; // Or some loading state
+
+  const { setData, activeAccordionItem, setActiveAccordionItem } = resumeContext;
   const [showStyles, setShowStyles] = React.useState(true);
 
   const addSection = () => {
@@ -29,7 +32,7 @@ export default function EditorSidebar() {
   };
 
   return (
-    <aside className="w-96 border-l bg-background no-print flex-col hidden md:flex">
+    <aside className="w-full h-full md:w-96 border-l bg-background no-print flex flex-col">
       <div className="p-4 border-b flex justify-between items-center">
         <h3 className="text-lg font-semibold font-headline">Controls</h3>
         <div className='flex gap-2'>

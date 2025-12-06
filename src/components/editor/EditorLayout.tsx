@@ -6,6 +6,7 @@ import { type ResumeTemplate, type ResumeData, type ResumeStyle } from '@/lib/ty
 import EditorHeader from './EditorHeader';
 import EditorSidebar from './EditorSidebar';
 import ResumePreview from './ResumePreview';
+import { Sheet, SheetContent } from '@/components/ui/sheet';
 
 type EditorLayoutProps = {
   initialTemplate: ResumeTemplate;
@@ -17,6 +18,7 @@ export default function EditorLayout({ initialTemplate }: EditorLayoutProps) {
   const [activeSection, setActiveSection] = useState<string>('personalInfo');
   const [activeAccordionItem, setActiveAccordionItem] = useState<string>('');
   const [draggingItem, setDraggingItem] = useState<string | null>(null);
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   const initialData = useMemo(() => JSON.parse(JSON.stringify(initialTemplate.data)), [initialTemplate.data]);
 
@@ -43,6 +45,8 @@ export default function EditorLayout({ initialTemplate }: EditorLayoutProps) {
   const onDragEnd = () => {
     setDraggingItem(null);
   };
+  
+  const toggleSidebar = () => setSidebarOpen(prev => !prev);
 
   const contextValue = useMemo(() => ({
     initialData,
@@ -64,12 +68,19 @@ export default function EditorLayout({ initialTemplate }: EditorLayoutProps) {
   return (
     <ResumeProvider value={contextValue}>
       <div className="flex h-screen w-full flex-col bg-muted/40">
-        <EditorHeader />
+        <EditorHeader onToggleSidebar={toggleSidebar} />
         <main className="flex flex-1 overflow-hidden">
           <div className="flex-1 overflow-y-auto print-container">
             <ResumePreview />
           </div>
-          <EditorSidebar />
+          <div className='hidden md:block'>
+            <EditorSidebar />
+          </div>
+          <Sheet open={isSidebarOpen} onOpenChange={setSidebarOpen}>
+              <SheetContent className='w-full max-w-sm p-0 md:hidden'>
+                  <EditorSidebar />
+              </SheetContent>
+          </Sheet>
         </main>
       </div>
     </ResumeProvider>

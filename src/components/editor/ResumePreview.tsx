@@ -499,24 +499,33 @@ export default function ResumePreview(props: ResumePreviewProps) {
   if (isEditor) {
     a4PageStyle.boxShadow = '0 0 10px rgba(0,0,0,0.1)';
     a4PageStyle.margin = '2rem auto';
+    a4PageStyle.transform = 'scale(1)';
+    a4PageStyle.transformOrigin = 'top center';
   }
 
 
   return (
      <div className={editorWrapperClasses}>
-      <div
-        id="resume-page"
-        className="a4-page bg-white"
-        style={a4PageStyle}
-        {...containerProps}
-      >
-        <div
-          className="p-4 sm:p-8 h-full"
-          style={{ padding: `${style.pageMargins}mm`}}
-        >
-          {renderLayout()}
+        <div className="md:hidden">
+            <div style={{ ...pageStyle, padding: `${style.pageMargins}mm` }}>
+                {renderLayout()}
+            </div>
         </div>
-      </div>
+        <div className="hidden md:block">
+            <div
+                id="resume-page"
+                className="a4-page bg-white"
+                style={a4PageStyle}
+                {...containerProps}
+            >
+                <div
+                className="p-4 sm:p-8 h-full"
+                style={{ padding: `${style.pageMargins}mm`}}
+                >
+                {renderLayout()}
+                </div>
+            </div>
+        </div>
     </div>
   );
 }

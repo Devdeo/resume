@@ -2,10 +2,16 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Download } from 'lucide-react';
+import { Download, PanelRightOpen } from 'lucide-react';
 import Link from 'next/link';
+import { useResume } from '@/hooks/useResume';
 
-export default function EditorHeader() {
+type EditorHeaderProps = {
+  onToggleSidebar: () => void;
+};
+
+
+export default function EditorHeader({ onToggleSidebar }: EditorHeaderProps) {
   const handlePrint = () => {
     window.print();
   };
@@ -21,6 +27,10 @@ export default function EditorHeader() {
         <Button onClick={handlePrint}>
           <Download className="mr-2 h-4 w-4" />
           Download PDF
+        </Button>
+         <Button variant="outline" size="icon" className="md:hidden" onClick={onToggleSidebar}>
+          <PanelRightOpen className="h-4 w-4" />
+          <span className="sr-only">Toggle sidebar</span>
         </Button>
       </div>
     </header>
