@@ -447,6 +447,252 @@
           }
         ]
       }
+    },
+    {
+      "id": "template-tech",
+      "name": "Tech",
+      "style": {
+        "fontFamily": "Roboto Mono",
+        "fontSize": "10.5",
+        "accentColor": "#007BFF",
+        "sectionSpacing": "22",
+        "pageMargins": "18"
+      },
+      "data": {
+        "layout": "two-column-right",
+        "sections": [
+          {
+            "id": "personalInfo-main",
+            "type": "personalInfo",
+            "title": "Personal Info",
+            "deletable": false,
+            "content": {
+              "name": "Alex Ryder",
+              "address": "", "mobile": "", "email": "", "dob": "", "fatherName": "", "motherName": "", "nationality": "", "gender": "Male", "maritalStatus": "Single", "languages": "", "hobbies": "", "zipCode": "", "profilePicture": ""
+            }
+          },
+          {
+            "id": "careerObjective",
+            "type": "careerObjective",
+            "title": "Summary",
+            "deletable": true,
+            "content": "Innovative and results-driven software engineer with experience in cloud computing and DevOps. Seeking to leverage expertise in automation and system architecture to contribute to a forward-thinking tech company."
+          },
+          {
+            "id": "workExperience",
+            "type": "workExperience",
+            "title": "Experience",
+            "deletable": true,
+            "content": [
+              { "id": "we1", "company": "CloudNine Solutions", "role": "DevOps Engineer", "duration": "2019 - Present", "responsibilities": "Implemented CI/CD pipelines, managed cloud infrastructure on AWS, and improved system reliability by 30%." },
+              { "id": "we2", "company": "CodeGenius", "role": "Junior Developer", "duration": "2017 - 2019", "responsibilities": "Contributed to the development of a SaaS platform using Node.js and React." }
+            ]
+          },
+          {
+            "id": "declaration",
+            "type": "declaration",
+            "title": "Declaration",
+            "deletable": true,
+            "content": {
+              "text": "I hereby declare that the information provided is true and correct.",
+              "date": "2024-07-29",
+              "place": "Tech City",
+              "showSignature": false,
+              "signature": ""
+            }
+          }
+        ],
+        "rightSections": [
+          {
+            "id": "personalInfo-contact",
+            "type": "custom",
+            "title": "Contact",
+            "deletable": true,
+            "content": {
+                "id": "c-1",
+                "title": "Contact",
+                "content": "101 Binary Blvd, Tech City\n+1 (555) 010-1010\nalex.ryder@email.dev"
+            }
+          },
+          {
+            "id": "extraQualification",
+            "type": "extraQualification",
+            "title": "Technical Skills",
+            "deletable": true,
+            "content": "Cloud: AWS, GCP\nCI/CD: Jenkins, GitLab CI\nIaC: Terraform, Ansible\nLanguages: Python, Go, TypeScript\nContainerization: Docker, Kubernetes"
+          },
+          {
+            "id": "academicQualifications",
+            "type": "academicQualifications",
+            "title": "Education",
+            "deletable": true,
+            "content": [
+              { "id": "aq1", "exam": "B.S. in Software Engineering", "board": "Institute of Technology", "year": "2017", "marks": "N/A", "division": "Honors" }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "template-elegant",
+      "name": "Elegant",
+      "style": {
+        "fontFamily": "Lora",
+        "fontSize": "11",
+        "accentColor": "#8B4513",
+        "sectionSpacing": "20",
+        "pageMargins": "25"
+      },
+      "data": {
+        "layout": "single-column",
+        "sections": [
+          {
+            "id": "personalInfo",
+            "type": "personalInfo",
+            "title": "Personal Info",
+            "deletable": false,
+            "content": {
+              "name": "Isabella Rossi",
+              "address": "789 Vineyard Valley",
+              "mobile": "+1 (555) 789-1234",
+              "email": "isabella.rossi@email.com",
+              "dob": "1992-06-25",
+              "fatherName": "N/A",
+              "motherName": "N/A",
+              "nationality": "Italian",
+              "gender": "Female",
+              "maritalStatus": "Single",
+              "languages": "Italian, English, French",
+              "hobbies": "Wine Tasting, Opera, Painting",
+              "zipCode": "67890",
+              "profilePicture": ""
+            }
+          },
+          {
+            "id": "careerObjective",
+            "type": "careerObjective",
+            "title": "Professional Profile",
+            "deletable": true,
+            "content": "A seasoned marketing director with a passion for luxury brands. Proven ability to create and execute strategies that drive growth and enhance brand prestige. Seeking a senior role in the premium lifestyle sector."
+          },
+          {
+            "id": "workExperience",
+            "type": "workExperience",
+            "title": "Professional Experience",
+            "deletable": true,
+            "content": [
+              { "id": "we1", "company": "Elysian Fields Co.", "role": "Marketing Director", "duration": "2018 - Present", "responsibilities": "Managed a portfolio of luxury cosmetic brands, increasing market share by 15% through targeted campaigns and strategic partnerships." }
+            ]
+          },
+          {
+            "id": "academicQualifications",
+            "type": "academicQualifications",
+            "title": "Education",
+            "deletable": true,
+            "content": [
+              { "id": "aq1", "exam": "Master in Marketing Management", "board": "Milan Business School", "year": "2016", "marks": "110/110 cum Laude", "division": "N/A" }
+            ]
+          },
+          {
+            "id": "declaration",
+            "type": "declaration",
+            "title": "Declaration",
+            "deletable": true,
+            "content": {
+              "text": "I hereby declare that the foregoing information is true and complete to the best of my knowledge.",
+              "date": "2024-07-29",
+              "place": "Milan",
+              "showSignature": false,
+              "signature": ""
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "template-bold",
+      "name": "Bold",
+      "style": {
+        "fontFamily": "Poppins",
+        "fontSize": "11.5",
+        "accentColor": "#D32F2F",
+        "sectionSpacing": "24",
+        "pageMargins": "15"
+      },
+      "data": {
+        "layout": "two-column-left",
+        "sections": [
+          {
+            "id": "personalInfo",
+            "type": "personalInfo",
+            "title": "Personal Info",
+            "deletable": false,
+            "content": {
+              "name": "Kenji Tanaka",
+              "address": "456 Neon Alley, Metro City",
+              "mobile": "+1 (555) 456-7890",
+              "email": "kenji.t@email.com",
+              "dob": "1998-03-30",
+              "fatherName": "N/A",
+              "motherName": "N/A",
+              "nationality": "Japanese",
+              "gender": "Male",
+              "maritalStatus": "Single",
+              "languages": "Japanese, English",
+              "hobbies": "Street Art, DJing, Urban Exploration",
+              "zipCode": "45678",
+              "profilePicture": ""
+            }
+          },
+          {
+            "id": "extraQualification",
+            "type": "extraQualification",
+            "title": "My Skills",
+            "deletable": true,
+            "content": "Brand Strategy\nSocial Media Marketing\nContent Creation\nEvent Management"
+          },
+          {
+            "id": "academicQualifications",
+            "type": "academicQualifications",
+            "title": "Education",
+            "deletable": true,
+            "content": [
+               { "id": "aq1", "exam": "B.A. in Communications", "board": "City University", "year": "2020", "marks": "N/A", "division": "N/A" }
+            ]
+          }
+        ],
+        "rightSections": [
+          {
+            "id": "careerObjective",
+            "type": "careerObjective",
+            "title": "Who I Am",
+            "deletable": true,
+            "content": "A high-energy marketing specialist with a knack for creating viral content and building authentic brand communities. I thrive in fast-paced environments and I'm ready to bring my passion for storytelling to an innovative brand."
+          },
+          {
+            "id": "workExperience",
+            "type": "workExperience",
+            "title": "My Work",
+            "deletable": true,
+            "content": [
+              { "id": "we1", "company": "Hype Factory", "role": "Social Media Manager", "duration": "2020 - Present", "responsibilities": "Grew brand's TikTok presence from 0 to 1M+ followers in 18 months. Executed influencer marketing campaigns with a 200% ROI." }
+            ]
+          },
+          {
+            "id": "declaration",
+            "type": "declaration",
+            "title": "Declaration",
+            "deletable": true,
+            "content": {
+              "text": "I hereby declare that the information provided is true and correct.",
+              "date": "2024-07-29",
+              "place": "Metro City",
+              "showSignature": false,
+              "signature": ""
+            }
+          }
+        ]
+      }
     }
   ]
 }
