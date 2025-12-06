@@ -415,7 +415,7 @@ export default function ResumePreview(props: ResumePreviewProps) {
 
   const editorWrapperClasses = isEditor 
     ? "p-4 sm:p-8" 
-    : "";
+    : "w-full h-full";
 
   return (
      <div className={editorWrapperClasses}>
@@ -424,9 +424,8 @@ export default function ResumePreview(props: ResumePreviewProps) {
         className="a4-page w-full h-full bg-white shadow-lg origin-top transition-transform duration-300"
         style={{
           ...pageStyle, 
-          width: isEditor ? undefined : '210mm', 
-          height: isEditor ? undefined : '297mm',
-          aspectRatio: isEditor ? '1 / 1.414' : undefined,
+          width: '100%', 
+          height: '100%',
         }}
         {...containerProps}
       >
