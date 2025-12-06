@@ -60,7 +60,7 @@ export default function Home() {
       </div>
        <footer className="w-full py-6 mt-auto bg-background border-t">
         <div className="container mx-auto text-center text-sm text-muted-foreground">
-          © {new Date().getFullYear()} resume.docupilot.co.in. All rights reserved.
+          © {new Date().getFullYear()} docupilot. All rights reserved.
         </div>
       </footer>
     </main>
