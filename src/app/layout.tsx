@@ -4,7 +4,7 @@ import './globals.css';
 import { googleFonts } from '@/lib/data';
 
 export const metadata: Metadata = {
-  title: 'ResumeForge AI',
+  title: 'resume.docupilot.co.in',
   description: 'Build your professional resume with AI-powered tools.',
 };
 

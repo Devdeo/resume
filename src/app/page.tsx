@@ -12,7 +12,7 @@ export default function Home() {
       <div className="w-full bg-background shadow-sm">
         <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
           <h1 className="font-headline text-2xl font-bold text-primary">
-            ResumeForge AI
+            resume.docupilot.co.in
           </h1>
           <p className="text-sm text-muted-foreground">Choose a template to begin</p>
         </div>
@@ -60,7 +60,7 @@ export default function Home() {
       </div>
        <footer className="w-full py-6 mt-auto bg-background border-t">
         <div className="container mx-auto text-center text-sm text-muted-foreground">
-          © {new Date().getFullYear()} ResumeForge AI. All rights reserved.
+          © {new Date().getFullYear()} resume.docupilot.co.in. All rights reserved.
         </div>
       </footer>
     </main>
