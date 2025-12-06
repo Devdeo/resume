@@ -84,59 +84,43 @@
   }
 }
 
-.pdf-export .no-export {
-  display: none !important;
-}
-
-/* Print styles for PDF export */
+/* Print styles */
 @media print {
   body {
+    background-color: #fff;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
-    background-color: white;
   }
+
   .no-print {
     display: none !important;
   }
-  .print-container {
-    display: block !important;
-    padding: 0;
-    margin: 0;
-    width: 100%;
-    height: 100%;
-    overflow: visible;
-    background-color: white;
-  }
-  #resume-page-mobile, #resume-page {
-    display: block !important;
-    transform: scale(1) !important;
-    box-shadow: none !important;
-    margin: 0 !important;
-    border: none !important;
-    width: 210mm;
-    min-height: 297mm;
-    height: auto;
-    page-break-after: always;
-  }
-  .a4-page {
-    visibility: visible !important;
-  }
 
-  .editor-main {
-    padding: 0;
-    margin: 0;
-    overflow: visible;
-  }
-
-  .editor-main > div {
+  body > div:not(.print-container) {
     display: none;
   }
 
-  .editor-main .print-container {
-    display: block;
+  .print-container,
+  .print-container .a4-page {
+    display: block !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    box-shadow: none !important;
+    border: none !important;
+    transform: scale(1) !important;
+    overflow: visible;
   }
 
-  input, textarea {
+  #resume-page {
+    width: 210mm !important;
+    min-height: 297mm !important;
+    height: auto !important;
+    page-break-after: always;
+  }
+
+  .editable-input, .editable-input:focus, .editable-input:hover {
     border: none !important;
     box-shadow: none !important;
     -webkit-appearance: none;
@@ -152,14 +136,19 @@
     width: 100%;
     resize: none;
   }
+  
+  .editable-input::placeholder {
+    color: transparent !important;
+  }
 
   input[type="date"]::-webkit-calendar-picker-indicator,
   input[type="date"]::-webkit-inner-spin-button {
-      display: none;
+      display: none !important;
   }
 
-  /* Ensure the text color is not overridden */
   .text-right {
     text-align: right;
   }
 }
+
+    

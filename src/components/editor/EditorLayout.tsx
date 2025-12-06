@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import { ResumeProvider } from '@/hooks/useResume';
 import { type ResumeTemplate, type ResumeData, type ResumeStyle } from '@/lib/types';
 import EditorHeader from './EditorHeader';
@@ -25,6 +25,8 @@ export default function EditorLayout({ initialTemplate }: EditorLayoutProps) {
   const [activeAccordionItem, setActiveAccordionItem] = useState<string>('');
   const [draggingItem, setDraggingItem] = useState<string | null>(null);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+  
+  const printContainerRef = useRef<HTMLDivElement>(null);
 
   const initialData = useMemo(() => JSON.parse(JSON.stringify(initialTemplate.data)), [initialTemplate.data]);
 
@@ -73,10 +75,10 @@ export default function EditorLayout({ initialTemplate }: EditorLayoutProps) {
 
   return (
     <ResumeProvider value={contextValue}>
-      <div className="flex h-screen w-full flex-col bg-muted/40">
+      <div className="flex h-screen w-full flex-col bg-muted/40 no-print">
         <EditorHeader onToggleSidebar={toggleSidebar} />
         <main className="flex flex-1 overflow-hidden editor-main">
-          <div className="flex-1 overflow-y-auto print-container bg-muted/40">
+          <div ref={printContainerRef} className="flex-1 overflow-y-auto print-container bg-muted/40">
             <ResumePreview />
           </div>
           <div className='hidden md:block no-print'>
@@ -96,6 +98,12 @@ export default function EditorLayout({ initialTemplate }: EditorLayoutProps) {
           </Sheet>
         </main>
       </div>
+       {/* This is the hidden container for printing */}
+      <div className="print-container" style={{ display: 'none' }}>
+        <ResumePreview isPreview={true} data={data} style={style} initialData={initialData} />
+      </div>
     </ResumeProvider>
   );
 }
+
+    
