@@ -16,13 +16,16 @@ export default function EditorHeader({ onToggleSidebar }: EditorHeaderProps) {
   const [isDownloading, setIsDownloading] = React.useState(false);
   
   const handleDownload = async () => {
-    const resumeElement = document.getElementById('resume-page-container');
+    const resumeElement = document.getElementById('resume-page');
     if (!resumeElement) {
       console.error("Resume element not found for download.");
       return;
     }
     setIsDownloading(true);
     
+    // Store original transform and apply temporary styles for export
+    const originalTransform = resumeElement.style.transform;
+    resumeElement.style.transform = 'scale(1)';
     document.body.classList.add('pdf-export');
 
     try {
@@ -30,7 +33,8 @@ export default function EditorHeader({ onToggleSidebar }: EditorHeaderProps) {
         scale: 2, // Higher scale for better quality
         useCORS: true,
         logging: false,
-        backgroundColor: null, // Use transparent background
+        width: resumeElement.offsetWidth,
+        height: resumeElement.offsetHeight,
       });
       
       const imgData = canvas.toDataURL('image/png');
@@ -50,6 +54,8 @@ export default function EditorHeader({ onToggleSidebar }: EditorHeaderProps) {
     } catch (error) {
       console.error("Error generating PDF:", error);
     } finally {
+      // Restore original styles
+      resumeElement.style.transform = originalTransform;
       setIsDownloading(false);
       document.body.classList.remove('pdf-export');
     }

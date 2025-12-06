@@ -221,13 +221,13 @@ export default function ResumePreview(props: ResumePreviewProps) {
             <input type="file" ref={imageInputRef} onChange={handleImageUpload} accept="image/*" className="hidden" />
             
             {hasProfilePic && (
-                <div className={`${photoClasses} rounded-full overflow-hidden border-4 flex items-center justify-center`} style={{ borderColor: style.accentColor }}>
+                <div className={`${photoClasses} rounded-full overflow-hidden border-4 flex items-center justify-center no-export`} style={{ borderColor: style.accentColor }}>
                     <Image src={personalInfo.profilePicture} alt="Profile" width={128} height={128} className="object-cover w-full h-full cursor-pointer" onClick={() => imageInputRef.current?.click()} />
                 </div>
             )}
             
             {isEditor && !hasProfilePic && (
-                <div className={`${photoClasses} rounded-full overflow-hidden border-4 flex items-center justify-center`} style={{ borderColor: style.accentColor }}>
+                <div className={`${photoClasses} rounded-full overflow-hidden border-4 flex items-center justify-center no-export`} style={{ borderColor: style.accentColor }}>
                     <div className="w-full h-full bg-muted flex flex-col items-center justify-center text-muted-foreground cursor-pointer" onClick={() => imageInputRef.current?.click()}>
                         <ImagePlus className="w-10 h-10" />
                         <span className="text-xs mt-1">Add Photo</span>
