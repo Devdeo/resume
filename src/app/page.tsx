@@ -30,7 +30,7 @@ export default function Home() {
             <Link href={`/editor/${template.id}`} key={template.id}>
               <Card className="group overflow-hidden transition-shadow hover:shadow-lg">
                 <CardContent className="p-0">
-                  <div className="relative w-full overflow-hidden" style={{ aspectRatio: '1 / 1.414' }}>
+                  <div className="relative w-full overflow-hidden aspect-[1/1.414]">
                     <div className="pointer-events-none absolute inset-0 transform scale-[0.3] sm:scale-[0.35] origin-top-left">
                        <ResumePreview
                           data={template.data}
