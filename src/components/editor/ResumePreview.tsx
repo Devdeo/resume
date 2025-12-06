@@ -110,7 +110,7 @@ export default function ResumePreview(props: ResumePreviewProps) {
   };
 
   const handleClearOnFocus = (currentValue: string, initialValue: string, updater: () => void) => {
-    if (currentValue === initialValue) {
+    if (isEditor && currentValue === initialValue) {
       updater();
     }
   };
@@ -417,12 +417,27 @@ export default function ResumePreview(props: ResumePreviewProps) {
   } : {};
 
 
+  const editorWrapperClasses = isEditor 
+    ? "p-4 sm:p-8" 
+    : "absolute inset-0 transform origin-top-left";
+  
+  const editorWrapperStyle: React.CSSProperties = isEditor ? {} : {
+    width: "210mm",
+    height: "297mm",
+    transform: "scale(var(--scale-factor, 0.3))"
+  };
+
   return (
-    <div className={`w-full h-full ${isEditor ? 'p-4 sm:p-8' : ''}`}>
+     <div className={editorWrapperClasses} style={editorWrapperStyle}>
       <div
         id="resume-page"
-        className="a4-page w-full bg-white shadow-lg origin-top transition-transform duration-300"
-        style={{...pageStyle, aspectRatio: '1 / 1.414'}}
+        className="a4-page w-full h-full bg-white shadow-lg origin-top transition-transform duration-300"
+        style={{
+          ...pageStyle, 
+          width: isEditor ? undefined : '210mm', 
+          height: isEditor ? undefined : '297mm',
+          aspectRatio: isEditor ? '1 / 1.414' : undefined,
+        }}
         {...containerProps}
       >
         <div

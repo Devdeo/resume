@@ -31,7 +31,7 @@ export default function Home() {
               <Card className="group overflow-hidden transition-shadow hover:shadow-lg">
                 <CardContent className="p-0">
                   <div className="relative aspect-[1/1.414] w-full overflow-hidden">
-                    <div className="pointer-events-none absolute inset-0 z-10 transform scale-[0.3] origin-top-left">
+                    <div className="pointer-events-none">
                        <ResumePreview
                           data={template.data}
                           style={template.style}
