@@ -1,5 +1,5 @@
 
-import { type ResumeTemplate, type ResumeData } from './types';
+import { type ResumeTemplate, type ResumeData, type CustomSection } from './types';
 import { PlaceHolderImages } from './placeholder-images';
 
 const defaultProfilePic = PlaceHolderImages.find(img => img.id === 'profile-pic-default')?.imageUrl || '';
@@ -194,27 +194,27 @@ const minimalistTemplate: ResumeTemplate = {
       pageMargins: "18"
     },
     data: {
-      layout: 'single-column',
+      layout: 'two-column-right',
       sections: [
         {
-          id: 'personalInfo',
+          id: 'personalInfo-main',
           type: 'personalInfo',
           title: 'Personal Info',
           deletable: false,
           content: {
             name: "Emily White",
-            address: "789 Simple St, Clean City",
-            mobile: "+1 (555) 555-5555",
-            email: "emily.white@example.com",
-            dob: "1998-06-25",
-            fatherName: "George White",
-            motherName: "Helen White",
-            nationality: "Australian",
+            address: "",
+            mobile: "",
+            email: "",
+            dob: "",
+            fatherName: "",
+            motherName: "",
+            nationality: "",
             gender: 'Female' as const,
             maritalStatus: 'Single' as const,
-            languages: "English",
-            hobbies: "Yoga, Painting",
-            zipCode: "67890",
+            languages: "",
+            hobbies: "",
+            zipCode: "",
             profilePicture: ''
           }
         },
@@ -234,6 +234,32 @@ const minimalistTemplate: ResumeTemplate = {
             { id: 'we1', company: "Creative Agency", role: "UI/UX Designer", duration: "2020 - Present", responsibilities: "Designing user interfaces for web and mobile applications." }
           ]
         },
+         {
+          id: 'declaration',
+          type: 'declaration',
+          title: 'Declaration',
+          deletable: true,
+          content: {
+            text: "I hereby declare that the information provided is true and correct.",
+            date: new Date().toLocaleDateString('en-CA'),
+            place: "Clean City",
+            showSignature: false,
+            signature: ""
+          }
+        }
+      ],
+      rightSections: [
+        {
+            id: 'personalInfo-contact',
+            type: 'custom',
+            title: 'Contact',
+            deletable: true,
+            content: {
+                id: 'c-1',
+                title: 'Contact',
+                content: "789 Simple St, Clean City\n+1 (555) 555-5555\nemily.white@example.com"
+            } as CustomSection
+        },
         {
           id: 'academicQualifications',
           type: 'academicQualifications',
@@ -248,20 +274,7 @@ const minimalistTemplate: ResumeTemplate = {
           type: 'extraQualification',
           title: 'Skills',
           deletable: true,
-          content: "Figma, Sketch, Adobe XD, Prototyping, Wireframing"
-        },
-        {
-            id: 'declaration',
-            type: 'declaration',
-            title: 'Declaration',
-            deletable: true,
-            content: {
-              text: "I hereby declare that the information provided is true and correct.",
-              date: new Date().toLocaleDateString('en-CA'),
-              place: "Clean City",
-              showSignature: false,
-              signature: ""
-            }
+          content: "Figma\nSketch\nAdobe XD\nPrototyping\nWireframing"
         }
       ]
     }
@@ -416,7 +429,7 @@ const academicTemplate: ResumeTemplate = {
           id: 'custom-content-pubs',
           title: 'Publications',
           content: "'The Silver Guilds of Oldenburg', Journal of Medieval Studies, 2018.\n'Trade Routes and Taxation in the 14th Century', Historical Review, 2016."
-        }
+        } as CustomSection
       },
       {
         id: 'workExperience',
