@@ -27,34 +27,34 @@ export default function Home() {
 
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {templates.map((template) => (
-            <Link href={`/editor/${template.id}`} key={template.id}>
-              <Card className="group overflow-hidden transition-shadow hover:shadow-lg">
-                <CardContent className="p-0">
-                  <div className="relative aspect-[1/1.414] w-full overflow-hidden bg-white">
-                    <div
-                      className="absolute inset-0 origin-top-left"
-                      style={{
-                        transform: 'scale(0.3)',
-                        transformOrigin: 'top left',
-                      }}
-                    >
-                      <ResumePreview
-                        data={template.data}
-                        style={template.style}
-                        initialData={template.data}
-                        isPreview
-                      />
-                    </div>
-                    <div className="absolute inset-0 bg-black/20 opacity-0 transition-opacity group-hover:opacity-100" />
-                    <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center text-white opacity-0 transition-opacity group-hover:opacity-100">
-                      <h3 className="font-headline text-2xl font-bold">{template.name}</h3>
-                      <Button variant="secondary" className="mt-4">
-                        Use Template <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
-                    </div>
+            <Link href={`/editor/${template.id}`} key={template.id} className="group block">
+              <div className="overflow-hidden rounded-lg bg-white shadow-md transition-shadow duration-300 ease-in-out hover:shadow-xl">
+                <div 
+                  className="overflow-hidden"
+                  style={{ 
+                    height: '420px', // A fixed height for all previews
+                  }}
+                >
+                  <div
+                    className="origin-top-left"
+                    style={{
+                      transform: 'scale(0.35)', // Uniformly scale the preview
+                      width: '210mm', // A4 width
+                      height: '297mm', // A4 height
+                    }}
+                  >
+                    <ResumePreview
+                      data={template.data}
+                      style={template.style}
+                      initialData={template.data}
+                      isPreview
+                    />
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+                <div className="p-4 bg-background">
+                  <h3 className="font-headline text-xl font-bold text-center">{template.name}</h3>
+                </div>
+              </div>
             </Link>
           ))}
         </div>
