@@ -693,6 +693,260 @@
           }
         ]
       }
+    },
+    {
+      "id": "template-monochrome",
+      "name": "Monochrome",
+      "style": {
+        "fontFamily": "Inter",
+        "fontSize": "10",
+        "accentColor": "#000000",
+        "sectionSpacing": "20",
+        "pageMargins": "20"
+      },
+      "data": {
+        "layout": "two-column-left",
+        "sections": [
+          {
+            "id": "personalInfo",
+            "type": "personalInfo",
+            "title": "Personal Info",
+            "deletable": false,
+            "content": {
+              "name": "Sam Smith",
+              "address": "789 Design District, Metroville",
+              "mobile": "+1 (555) 234-5678",
+              "email": "sam.smith@example.com",
+              "dob": "1992-11-10",
+              "fatherName": "George Smith",
+              "motherName": "Helen Smith",
+              "nationality": "Australian",
+              "gender": "Male",
+              "maritalStatus": "Single",
+              "languages": "English",
+              "hobbies": "Minimalist Design, Photography",
+              "zipCode": "67890",
+              "profilePicture": ""
+            }
+          },
+          {
+            "id": "extraQualification",
+            "type": "extraQualification",
+            "title": "Core Competencies",
+            "deletable": true,
+            "content": "Graphic Design\nUI/UX Principles\nTypography\nBrand Identity"
+          }
+        ],
+        "rightSections": [
+          {
+            "id": "careerObjective",
+            "type": "careerObjective",
+            "title": "Professional Summary",
+            "deletable": true,
+            "content": "A highly creative and detail-oriented graphic designer with a passion for clean aesthetics and user-centric design. Seeking to join a design-forward company to create impactful visual experiences."
+          },
+          {
+            "id": "workExperience",
+            "type": "workExperience",
+            "title": "Professional Experience",
+            "deletable": true,
+            "content": [
+              { "id": "we1", "company": "Minimalist Design Co.", "role": "Senior Designer", "duration": "2018 - Present", "responsibilities": "Led the design of major branding projects and mentored junior designers." }
+            ]
+          },
+          {
+            "id": "academicQualifications",
+            "type": "academicQualifications",
+            "title": "Education",
+            "deletable": true,
+            "content": [
+              { "id": "aq1", "exam": "Bachelor of Design", "board": "Institute of Arts", "year": "2018", "marks": "High Distinction", "division": "N/A" }
+            ]
+          },
+          {
+            "id": "declaration",
+            "type": "declaration",
+            "title": "Declaration",
+            "deletable": true,
+            "content": {
+              "text": "I certify that the information provided herein is true and accurate.",
+              "date": "2024-07-29",
+              "place": "Metroville",
+              "showSignature": false,
+              "signature": ""
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "template-corporate",
+      "name": "Corporate",
+      "style": {
+        "fontFamily": "Helvetica",
+        "fontSize": "11",
+        "accentColor": "#004080",
+        "sectionSpacing": "18",
+        "pageMargins": "22"
+      },
+      "data": {
+        "layout": "single-column",
+        "sections": [
+          {
+            "id": "personalInfo",
+            "type": "personalInfo",
+            "title": "Personal Info",
+            "deletable": false,
+            "content": {
+              "name": "David Chen",
+              "address": "123 Financial District, Corp City",
+              "mobile": "+1 (555) 876-5432",
+              "email": "david.chen@example.com",
+              "dob": "1988-05-25",
+              "fatherName": "N/A",
+              "motherName": "N/A",
+              "nationality": "American",
+              "gender": "Male",
+              "maritalStatus": "Married",
+              "languages": "English, Mandarin",
+              "hobbies": "Stock Analysis, Marathon Running",
+              "zipCode": "12345",
+              "profilePicture": ""
+            }
+          },
+          {
+            "id": "careerObjective",
+            "type": "careerObjective",
+            "title": "Executive Summary",
+            "deletable": true,
+            "content": "A results-oriented financial analyst with over 10 years of experience in investment banking. Seeking to leverage my analytical skills to drive strategic financial decisions in a senior role."
+          },
+          {
+            "id": "workExperience",
+            "type": "workExperience",
+            "title": "Work Experience",
+            "deletable": true,
+            "content": [
+              { "id": "we1", "company": "Global Investments Bank", "role": "Senior Financial Analyst", "duration": "2014 - Present", "responsibilities": "Conducted financial modeling and valuation for multi-billion dollar M&A deals." }
+            ]
+          },
+          {
+            "id": "academicQualifications",
+            "type": "academicQualifications",
+            "title": "Education",
+            "deletable": true,
+            "content": [
+              { "id": "aq1", "exam": "MBA, Finance", "board": "Wharton School", "year": "2014", "marks": "N/A", "division": "Honors" }
+            ]
+          },
+          {
+            "id": "extraQualification",
+            "type": "extraQualification",
+            "title": "Certifications",
+            "deletable": true,
+            "content": "Chartered Financial Analyst (CFA)"
+          },
+          {
+            "id": "declaration",
+            "type": "declaration",
+            "title": "Declaration",
+            "deletable": true,
+            "content": {
+              "text": "I hereby declare that the information provided is correct to the best of my knowledge.",
+              "date": "2024-07-29",
+              "place": "Corp City",
+              "showSignature": false,
+              "signature": ""
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "template-vibrant",
+      "name": "Vibrant",
+      "style": {
+        "fontFamily": "Montserrat",
+        "fontSize": "11",
+        "accentColor": "#8A2BE2",
+        "sectionSpacing": "22",
+        "pageMargins": "18"
+      },
+      "data": {
+        "layout": "two-column-right",
+        "sections": [
+          {
+            "id": "personalInfo-main",
+            "type": "personalInfo",
+            "title": "Personal Info",
+            "deletable": false,
+            "content": {
+              "name": "Chloe Davis",
+              "address": "", "mobile": "", "email": "", "dob": "", "fatherName": "", "motherName": "", "nationality": "", "gender": "Female", "maritalStatus": "Single", "languages": "", "hobbies": "", "zipCode": "", "profilePicture": ""
+            }
+          },
+          {
+            "id": "careerObjective",
+            "type": "careerObjective",
+            "title": "My Mission",
+            "deletable": true,
+            "content": "A dynamic and creative marketing coordinator with a passion for building engaging online communities. I thrive on creating content that sparks conversation and drives brand loyalty."
+          },
+          {
+            "id": "workExperience",
+            "type": "workExperience",
+            "title": "My Work",
+            "deletable": true,
+            "content": [
+              { "id": "we1", "company": "Buzz Media", "role": "Community Manager", "duration": "2021 - Present", "responsibilities": "Managed social media channels and grew audience engagement by 150%." }
+            ]
+          },
+          {
+            "id": "declaration",
+            "type": "declaration",
+            "title": "Declaration",
+            "deletable": true,
+            "content": {
+              "text": "I declare all the information here is true and reflects my abilities.",
+              "date": "2024-07-29",
+              "place": "Creative City",
+              "showSignature": false,
+              "signature": ""
+            }
+          }
+        ],
+        "rightSections": [
+          {
+            "id": "personalInfo-contact",
+            "type": "custom",
+            "title": "Get In Touch",
+            "deletable": true,
+            "content": {
+                "id": "c-1",
+                "title": "Get In Touch",
+                "content": "chloe.davis@email.com\n@chloedoesmedia"
+            }
+          },
+          {
+            "id": "extraQualification",
+            "type": "extraQualification",
+            "title": "Superpowers",
+            "deletable": true,
+            "content": "Social Media Strategy\nContent Creation\nCopywriting\nCommunity Management\nAnalytics"
+          },
+          {
+            "id": "academicQualifications",
+            "type": "academicQualifications",
+            "title": "Education",
+            "deletable": true,
+            "content": [
+              { "id": "aq1", "exam": "B.A. in Marketing", "board": "State University", "year": "2021", "marks": "N/A", "division": "N/A" }
+            ]
+          }
+        ]
+      }
     }
   ]
 }
+
+    
