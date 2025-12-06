@@ -72,15 +72,15 @@ export default function EditorLayout({ initialTemplate }: EditorLayoutProps) {
     <ResumeProvider value={contextValue}>
       <div className="flex h-screen w-full flex-col bg-muted/40">
         <EditorHeader onToggleSidebar={toggleSidebar} />
-        <main className="flex flex-1 overflow-hidden">
+        <main className="flex flex-1 overflow-hidden editor-main">
           <div className="flex-1 overflow-y-auto print-container bg-muted/40">
             <ResumePreview />
           </div>
-          <div className='hidden md:block'>
+          <div className='hidden md:block no-print'>
             <EditorSidebar />
           </div>
           <Sheet open={isSidebarOpen} onOpenChange={setSidebarOpen}>
-            <SheetContent className="w-full max-w-sm p-0 md:hidden flex flex-col">
+            <SheetContent className="w-full max-w-sm p-0 md:hidden flex flex-col no-print">
               <SheetHeader className="p-4 border-b">
                 <SheetTitle className='font-headline'>Controls</SheetTitle>
                  <SheetClose className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">

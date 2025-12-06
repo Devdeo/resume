@@ -93,11 +93,13 @@
   body {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
+    background-color: white;
   }
   .no-print {
     display: none !important;
   }
   .print-container {
+    display: block !important;
     padding: 0;
     margin: 0;
     width: 100%;
@@ -105,13 +107,59 @@
     overflow: visible;
     background-color: white;
   }
-  .a4-page {
+  #resume-page-mobile, #resume-page {
+    display: block !important;
     transform: scale(1) !important;
     box-shadow: none !important;
     margin: 0 !important;
     border: none !important;
     width: 210mm;
-    height: 297mm;
+    min-height: 297mm;
+    height: auto;
     page-break-after: always;
+  }
+  .a4-page {
+    visibility: visible !important;
+  }
+
+  .editor-main {
+    padding: 0;
+    margin: 0;
+    overflow: visible;
+  }
+
+  .editor-main > div {
+    display: none;
+  }
+
+  .editor-main .print-container {
+    display: block;
+  }
+
+  input, textarea {
+    border: none !important;
+    box-shadow: none !important;
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    color: inherit !important;
+    font-family: inherit !important;
+    font-size: inherit !important;
+    font-weight: inherit !important;
+    line-height: inherit !important;
+    width: 100%;
+    resize: none;
+  }
+
+  input[type="date"]::-webkit-calendar-picker-indicator,
+  input[type="date"]::-webkit-inner-spin-button {
+      display: none;
+  }
+
+  /* Ensure the text color is not overridden */
+  .text-right {
+    text-align: right;
   }
 }
