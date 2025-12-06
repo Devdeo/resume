@@ -333,12 +333,12 @@ export default function ResumePreview(props: ResumePreviewProps) {
                 {qualifications.map((q, index) => (
                     <div key={q.id} className="group relative">
                         {isFinalPreview ? (
-                            <div className="flex items-center">
-                                <p className="font-semibold" style={{ width: '35%' }}>{q.exam}</p>
-                                <p style={{ width: '30%' }}>{q.board}</p>
-                                <p style={{ width: '10%' }}>{q.year}</p>
-                                <p style={{ width: '10%' }}>{q.marks}</p>
-                                <p style={{ width: '15%' }}>{q.division}</p>
+                            <div>
+                                <div style={{ display: 'inline-block', width: '35%', fontWeight: 'bold' }}>{q.exam}</div>
+                                <div style={{ display: 'inline-block', width: '30%' }}>{q.board}</div>
+                                <div style={{ display: 'inline-block', width: '10%' }}>{q.year}</div>
+                                <div style={{ display: 'inline-block', width: '10%' }}>{q.marks}</div>
+                                <div style={{ display: 'inline-block', width: '15%' }}>{q.division}</div>
                             </div>
                         ) : (
                            <div className="flex gap-2 items-center">
@@ -592,4 +592,4 @@ export default function ResumePreview(props: ResumePreviewProps) {
   );
 }
 
-    
+  
