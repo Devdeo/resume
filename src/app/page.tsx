@@ -31,7 +31,7 @@ export default function Home() {
               <Card className="group overflow-hidden transition-shadow hover:shadow-lg">
                 <CardContent className="p-0">
                   <div className="relative aspect-[1/1.414] w-full overflow-hidden">
-                    <div className="pointer-events-none">
+                    <div className="pointer-events-none absolute inset-0 transform-gpu scale-[var(--scale-factor,0.25)] origin-top-left">
                        <ResumePreview
                           data={template.data}
                           style={template.style}
