@@ -31,7 +31,7 @@ export default function Home() {
               <Card className="group overflow-hidden transition-shadow hover:shadow-lg">
                 <CardContent className="p-0">
                   <div className="relative aspect-[1/1.414] w-full overflow-hidden">
-                    <div className="absolute inset-0 origin-top-left" style={{ transform: 'scale(0.35)' }}>
+                    <div className="absolute inset-0 origin-top-left" style={{ transform: 'scale(0.35)', transformOrigin: 'top left' }}>
                        <ResumePreview
                           data={template.data}
                           style={template.style}
