@@ -267,6 +267,184 @@ const minimalistTemplate: ResumeTemplate = {
     }
 };
 
+const creativeTemplate: ResumeTemplate = {
+  id: "template-creative",
+  name: "Creative",
+  style: {
+    fontFamily: "Playfair Display",
+    fontSize: "11",
+    accentColor: "#e58a00",
+    sectionSpacing: "24",
+    pageMargins: "25"
+  },
+  data: {
+    layout: 'two-column-right',
+    sections: [
+      {
+        id: 'careerObjective',
+        type: 'careerObjective',
+        title: 'My Vision',
+        deletable: true,
+        content: "A creative and passionate graphic designer with a strong portfolio in branding and digital media. Eager to join a dynamic team to create visually compelling narratives."
+      },
+      {
+        id: 'workExperience',
+        type: 'workExperience',
+        title: 'Journey',
+        deletable: true,
+        content: [
+          { id: 'we1', company: "PixelPerfect Studios", role: "Lead Designer", duration: "2019 - Present", responsibilities: "Led design projects from concept to completion, managing a team of junior designers and collaborating with marketing to produce award-winning campaigns." },
+          { id: 'we2', company: "Artisan Creatives", role: "Graphic Designer", duration: "2017 - 2019", responsibilities: "Developed branding materials, including logos, brochures, and websites for a variety of clients." }
+        ]
+      },
+      {
+        id: 'declaration',
+        type: 'declaration',
+        title: 'Declaration',
+        deletable: true,
+        content: {
+          text: "All the information provided in this portfolio is an accurate representation of my work and experience.",
+          date: new Date().toLocaleDateString('en-CA'),
+          place: "Artville",
+          showSignature: true,
+          signature: ""
+        }
+      }
+    ],
+    rightSections: [
+       {
+        id: 'personalInfo',
+        type: 'personalInfo',
+        title: 'Personal Info',
+        deletable: false,
+        content: {
+          name: "Jessica Lane",
+          address: "123 Creative Corner",
+          mobile: "+1 (555) 111-2222",
+          email: "jessica.lane@design.com",
+          dob: "1994-11-05",
+          fatherName: "N/A",
+          motherName: "N/A",
+          nationality: "British",
+          gender: 'Female' as const,
+          maritalStatus: 'Single' as const,
+          languages: "English",
+          hobbies: "Illustration, Pottery",
+          zipCode: "98765",
+          profilePicture: defaultProfilePic
+        }
+      },
+       {
+        id: 'academicQualifications',
+        type: 'academicQualifications',
+        title: 'Education',
+        deletable: true,
+        content: [
+          { id: 'aq1', exam: "BFA in Graphic Design", board: "Arts University", year: "2017", marks: "First Class", division: "N/A" }
+        ]
+      },
+      {
+        id: 'extraQualification',
+        type: 'extraQualification',
+        title: 'Toolkit',
+        deletable: true,
+        content: "Adobe Creative Suite\nIllustration\nBranding\nUI/UX Principles"
+      },
+    ]
+  }
+};
+
+const academicTemplate: ResumeTemplate = {
+  id: "template-academic",
+  name: "Academic",
+  style: {
+    fontFamily: "Merriweather",
+    fontSize: "10",
+    accentColor: "#4a4a4a",
+    sectionSpacing: "16",
+    pageMargins: "20"
+  },
+  data: {
+    layout: 'single-column',
+    sections: [
+      {
+        id: 'personalInfo',
+        type: 'personalInfo',
+        title: 'Personal Info',
+        deletable: false,
+        content: {
+          name: "Dr. Eleanor Vance",
+          address: "1 Research Parkway, University Town",
+          mobile: "+1 (555) 444-5555",
+          email: "e.vance@university.edu",
+          dob: "1985-03-12",
+          fatherName: "N/A",
+          motherName: "N/A",
+          nationality: "American",
+          gender: 'Female' as const,
+          maritalStatus: 'Single' as const,
+          languages: "English, German",
+          hobbies: "Classical Music, Reading",
+          zipCode: "11223",
+          profilePicture: ''
+        }
+      },
+      {
+        id: 'careerObjective',
+        type: 'careerObjective',
+        title: 'Research Statement',
+        deletable: true,
+        content: "Dedicated historian specializing in medieval European history, with a focus on socio-economic trends. Seeking a tenure-track position at a research-focused university."
+      },
+      {
+        id: 'academicQualifications',
+        type: 'academicQualifications',
+        title: 'Education',
+        deletable: true,
+        content: [
+          { id: 'aq1', exam: "Ph.D. in History", board: "Grand University", year: "2015", marks: "N/A", division: "Passed" },
+          { id: 'aq2', exam: "M.A. in History", board: "Grand University", year: "2011", marks: "4.0/4.0", division: "N/A" },
+          { id: 'aq3', exam: "B.A. in History", board: "State College", year: "2009", marks: "Summa Cum Laude", division: "N/A" }
+        ]
+      },
+      {
+        id: 'custom-publications',
+        type: 'custom',
+        title: 'Publications',
+        deletable: true,
+        content: {
+          id: 'custom-content-pubs',
+          title: 'Publications',
+          content: "'The Silver Guilds of Oldenburg', Journal of Medieval Studies, 2018.\n'Trade Routes and Taxation in the 14th Century', Historical Review, 2016."
+        }
+      },
+      {
+        id: 'workExperience',
+        type: 'workExperience',
+        title: 'Teaching Experience',
+        deletable: true,
+        content: [
+          { id: 'we1', company: "Grand University", role: "Lecturer", duration: "2015 - Present", responsibilities: "Taught undergraduate courses on medieval history and historiography. Supervised graduate student research." }
+        ]
+      },
+      {
+        id: 'declaration',
+        type: 'declaration',
+        title: 'Declaration',
+        deletable: true,
+        content: {
+          text: "I hereby confirm that the information provided is accurate and my original work.",
+          date: new Date().toLocaleDateString('en-CA'),
+          place: "University Town",
+          showSignature: false,
+          signature: ""
+        }
+      }
+    ]
+  }
+};
+
+
 export const templates: ResumeTemplate[] = [
   {
     id: "template-modern",
@@ -281,7 +459,9 @@ export const templates: ResumeTemplate[] = [
     }
   },
   professionalTemplate,
-  minimalistTemplate
+  minimalistTemplate,
+  creativeTemplate,
+  academicTemplate
 ];
 
     
