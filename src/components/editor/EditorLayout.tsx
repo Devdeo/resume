@@ -5,11 +5,14 @@ import React, { useState, useMemo } from 'react';
 import { ResumeProvider } from '@/hooks/useResume';
 import { type ResumeTemplate, type ResumeData, type ResumeStyle } from '@/lib/types';
 import EditorHeader from './EditorHeader';
-import EditorSidebar from './EditorSidebar';
 import ResumePreview from './ResumePreview';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetClose } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { X } from 'lucide-react';
+import dynamic from 'next/dynamic';
+
+const EditorSidebar = dynamic(() => import('./EditorSidebar'), { ssr: false });
+
 
 type EditorLayoutProps = {
   initialTemplate: ResumeTemplate;
