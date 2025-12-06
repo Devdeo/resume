@@ -20,7 +20,7 @@
             "title": "Personal Info",
             "deletable": false,
             "content": {
-              "name": "John Doe",
+              "name": "Dev Kumar",
               "address": "123 Main Street, Anytown, USA",
               "mobile": "+1 (555) 123-4567",
               "email": "john.doe@example.com",
@@ -112,7 +112,7 @@
             "title": "Personal Info",
             "deletable": false,
             "content": {
-              "name": "Robert Johnson",
+              "name": "Dev Kumar",
               "address": "456 Corporate Blvd, Business City",
               "mobile": "+1 (555) 987-6543",
               "email": "robert.j@example.com",
@@ -208,7 +208,7 @@
             "title": "Personal Info",
             "deletable": false,
             "content": {
-              "name": "Emily White",
+              "name": "Dev Kumar",
               "address": "", "mobile": "", "email": "", "dob": "", "fatherName": "", "motherName": "", "nationality": "", "gender": "Female", "maritalStatus": "Single", "languages": "", "hobbies": "", "zipCode": "", "profilePicture": ""
             }
           },
@@ -324,7 +324,7 @@
             "title": "Personal Info",
             "deletable": false,
             "content": {
-              "name": "Jessica Lane",
+              "name": "Dev Kumar",
               "address": "123 Creative Corner",
               "mobile": "+1 (555) 111-2222",
               "email": "jessica.lane@design.com",
@@ -378,7 +378,7 @@
             "title": "Personal Info",
             "deletable": false,
             "content": {
-              "name": "Dr. Eleanor Vance",
+              "name": "Dev Kumar",
               "address": "1 Research Parkway, University Town",
               "mobile": "+1 (555) 444-5555",
               "email": "e.vance@university.edu",
@@ -467,7 +467,7 @@
             "title": "Personal Info",
             "deletable": false,
             "content": {
-              "name": "Alex Ryder",
+              "name": "Dev Kumar",
               "address": "", "mobile": "", "email": "", "dob": "", "fatherName": "", "motherName": "", "nationality": "", "gender": "Male", "maritalStatus": "Single", "languages": "", "hobbies": "", "zipCode": "", "profilePicture": ""
             }
           },
@@ -552,7 +552,7 @@
             "title": "Personal Info",
             "deletable": false,
             "content": {
-              "name": "Isabella Rossi",
+              "name": "Dev Kumar",
               "address": "789 Vineyard Valley",
               "mobile": "+1 (555) 789-1234",
               "email": "isabella.rossi@email.com",
@@ -628,7 +628,7 @@
             "title": "Personal Info",
             "deletable": false,
             "content": {
-              "name": "Kenji Tanaka",
+              "name": "Dev Kumar",
               "address": "456 Neon Alley, Metro City",
               "mobile": "+1 (555) 456-7890",
               "email": "kenji.t@email.com",
@@ -713,7 +713,7 @@
             "title": "Personal Info",
             "deletable": false,
             "content": {
-              "name": "Sam Smith",
+              "name": "Dev Kumar",
               "address": "789 Design District, Metroville",
               "mobile": "+1 (555) 234-5678",
               "email": "sam.smith@example.com",
@@ -798,7 +798,7 @@
             "title": "Personal Info",
             "deletable": false,
             "content": {
-              "name": "David Chen",
+              "name": "Dev Kumar",
               "address": "123 Financial District, Corp City",
               "mobile": "+1 (555) 876-5432",
               "email": "david.chen@example.com",
@@ -881,7 +881,7 @@
             "title": "Personal Info",
             "deletable": false,
             "content": {
-              "name": "Chloe Davis",
+              "name": "Dev Kumar",
               "address": "", "mobile": "", "email": "", "dob": "", "fatherName": "", "motherName": "", "nationality": "", "gender": "Female", "maritalStatus": "Single", "languages": "", "hobbies": "", "zipCode": "", "profilePicture": ""
             }
           },
@@ -965,7 +965,7 @@
             "title": "Personal Info",
             "deletable": false,
             "content": {
-              "name": "John Doe",
+              "name": "Dev Kumar",
               "address": "", "mobile": "", "email": "", "dob": "", "fatherName": "", "motherName": "", "nationality": "", "gender": "Male", "maritalStatus": "Single", "languages": "", "hobbies": "", "zipCode": "", "profilePicture": ""
             }
           },
@@ -1049,7 +1049,7 @@
             "title": "Personal Info",
             "deletable": false,
             "content": {
-              "name": "John Doe",
+              "name": "Dev Kumar",
               "address": "123 Main Street, Anytown, USA",
               "mobile": "+1 (555) 123-4567",
               "email": "john.doe@example.com",
@@ -1132,7 +1132,7 @@
             "title": "Personal Info",
             "deletable": false,
             "content": {
-              "name": "John Doe",
+              "name": "Dev Kumar",
               "address": "123 Main Street, Anytown",
               "mobile": "+1 (555) 123-4567",
               "email": "john.doe@example.com",
@@ -1200,6 +1200,8 @@
     }
   ]
 }
+
+    
 
     
 
