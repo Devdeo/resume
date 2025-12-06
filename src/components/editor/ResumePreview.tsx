@@ -459,8 +459,8 @@ export default function ResumePreview(props: ResumePreviewProps) {
 
 
   const editorWrapperClasses = isEditor 
-    ? "p-4 sm:p-8 bg-white" 
-    : "w-full h-full";
+    ? "p-4 sm:p-8" 
+    : "w-full h-full bg-white";
     
   const renderColumn = (sections: ResumeSection[]) => (
     <div className='flex flex-col'>
@@ -494,14 +494,17 @@ export default function ResumePreview(props: ResumePreviewProps) {
     ...pageStyle,
     width: '210mm',
     minHeight: '297mm',
+    backgroundColor: 'white'
   };
   
   if (isEditor) {
-    a4PageStyle.margin = '0 auto';
     a4PageStyle.transform = 'scale(1)';
     a4PageStyle.transformOrigin = 'top center';
   } else {
-    a4PageStyle.boxShadow = '0 0 10px rgba(0,0,0,0.1)';
+    a4-page {
+      box-shadow: none !important;
+      border: none !important;
+    }
   }
 
 
