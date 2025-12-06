@@ -34,8 +34,8 @@ export default function EditorSidebar() {
   return (
     <aside className="w-full h-full md:w-96 border-l bg-background no-print flex flex-col">
       <div className="p-4 border-b flex justify-between items-center">
-        <h3 className="text-lg font-semibold font-headline">Controls</h3>
-        <div className='flex gap-2'>
+        <h3 className="text-lg font-semibold font-headline hidden md:block">Controls</h3>
+        <div className='flex gap-2 w-full justify-end'>
           <Button size="sm" variant="outline" onClick={() => setShowStyles(prev => !prev)}>
             <Palette className="mr-2 h-4 w-4" />
             Styles
