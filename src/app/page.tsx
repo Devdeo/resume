@@ -1,3 +1,4 @@
+
 import Link from 'next/link';
 import { templates } from '@/lib/templates';
 import { Card, CardContent } from '@/components/ui/card';
@@ -30,17 +31,15 @@ export default function Home() {
             <Link href={`/editor/${template.id}`} key={template.id} className="group block">
               <div className="overflow-hidden rounded-lg bg-white shadow-md transition-shadow duration-300 ease-in-out hover:shadow-xl">
                 <div 
-                  className="overflow-hidden"
-                  style={{ 
-                    height: '420px', // A fixed height for all previews
-                  }}
+                  className="overflow-hidden bg-white"
+                  style={{ height: '420px' }} 
                 >
                   <div
                     className="origin-top-left"
                     style={{
-                      transform: 'scale(0.35)', // Uniformly scale the preview
-                      width: '210mm', // A4 width
-                      height: '297mm', // A4 height
+                      transform: 'scale(0.35)',
+                      width: '210mm',
+                      height: '297mm',
                     }}
                   >
                     <ResumePreview
