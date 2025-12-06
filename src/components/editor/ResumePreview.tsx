@@ -333,12 +333,12 @@ export default function ResumePreview(props: ResumePreviewProps) {
                 {qualifications.map((q, index) => (
                     <div key={q.id} className="group relative">
                         {isFinalPreview ? (
-                            <div>
-                                <div style={{ display: 'inline-block', width: '35%', fontWeight: 'bold' }}>{q.exam}</div>
-                                <div style={{ display: 'inline-block', width: '30%' }}>{q.board}</div>
-                                <div style={{ display: 'inline-block', width: '10%' }}>{q.year}</div>
-                                <div style={{ display: 'inline-block', width: '10%' }}>{q.marks}</div>
-                                <div style={{ display: 'inline-block', width: '15%' }}>{q.division}</div>
+                            <div className="grid grid-cols-[35%_30%_10%_10%_15%]">
+                                <div className="font-bold">{q.exam}</div>
+                                <div>{q.board}</div>
+                                <div>{q.year}</div>
+                                <div>{q.marks}</div>
+                                <div>{q.division}</div>
                             </div>
                         ) : (
                            <div className="flex gap-2 items-center">
@@ -392,15 +392,14 @@ export default function ResumePreview(props: ResumePreviewProps) {
                         <div key={exp.id} className="group flex flex-col">
                             {isFinalPreview ? (
                                 <>
-                                    <div className="flex justify-between items-center">
-                                        <div className="flex gap-1 items-center">
+                                    <div className="flex justify-between items-start">
+                                        <div className="flex flex-col">
                                             <p className="font-bold">{exp.role}</p>
-                                            <span>-</span>
                                             <p className="font-bold">{exp.company}</p>
                                         </div>
-                                        <p className="text-xs font-semibold" style={{ color: style.accentColor }}>{exp.duration}</p>
+                                        <p className="text-xs font-semibold text-right" style={{ color: style.accentColor, minWidth: '80px' }}>{exp.duration}</p>
                                     </div>
-                                    <p className="text-sm flex-1">{exp.responsibilities}</p>
+                                    <p className="text-sm mt-1">{exp.responsibilities}</p>
                                 </>
                             ) : (
                                 <>
@@ -593,3 +592,5 @@ export default function ResumePreview(props: ResumePreviewProps) {
 }
 
   
+
+    
