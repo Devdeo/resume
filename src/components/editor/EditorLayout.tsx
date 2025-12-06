@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useMemo } from 'react';
@@ -72,7 +73,7 @@ export default function EditorLayout({ initialTemplate }: EditorLayoutProps) {
       <div className="flex h-screen w-full flex-col bg-muted/40">
         <EditorHeader onToggleSidebar={toggleSidebar} />
         <main className="flex flex-1 overflow-hidden">
-          <div className="flex-1 overflow-y-auto print-container">
+          <div className="flex-1 overflow-y-auto print-container bg-muted/40">
             <ResumePreview />
           </div>
           <div className='hidden md:block'>

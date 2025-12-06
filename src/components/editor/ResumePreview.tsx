@@ -459,7 +459,7 @@ export default function ResumePreview(props: ResumePreviewProps) {
 
 
   const editorWrapperClasses = isEditor 
-    ? "p-4 sm:p-8" 
+    ? "p-4 sm:p-8 bg-white" 
     : "w-full h-full";
     
   const renderColumn = (sections: ResumeSection[]) => (
@@ -493,14 +493,15 @@ export default function ResumePreview(props: ResumePreviewProps) {
   const a4PageStyle: React.CSSProperties = {
     ...pageStyle,
     width: '210mm',
-    height: '297mm',
+    minHeight: '297mm',
   };
   
   if (isEditor) {
-    a4PageStyle.boxShadow = '0 0 10px rgba(0,0,0,0.1)';
-    a4PageStyle.margin = '2rem auto';
+    a4PageStyle.margin = '0 auto';
     a4PageStyle.transform = 'scale(1)';
     a4PageStyle.transformOrigin = 'top center';
+  } else {
+    a4PageStyle.boxShadow = '0 0 10px rgba(0,0,0,0.1)';
   }
 
 
@@ -514,7 +515,7 @@ export default function ResumePreview(props: ResumePreviewProps) {
         <div className="hidden md:block">
             <div
                 id="resume-page"
-                className="a4-page bg-white"
+                className="a4-page"
                 style={a4PageStyle}
                 {...containerProps}
             >
