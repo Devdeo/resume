@@ -26,38 +26,41 @@ export default function EditorHeader({ onToggleSidebar }: EditorHeaderProps) {
     
     document.body.classList.add('pdf-export');
 
-    try {
-      const canvas = await html2canvas(resumeElement, {
-        scale: 2, // Higher scale for better quality
-        useCORS: true,
-        logging: false,
-        width: resumeElement.offsetWidth,
-        height: resumeElement.offsetHeight,
-        windowWidth: 210 * 3.77, // A4 width in pixels
-        windowHeight: 297 * 3.77, // A4 height in pixels
-        backgroundColor: null,
-      });
-      
-      const imgData = canvas.toDataURL('image/png');
-      
-      // A4 size in mm: 210 x 297
-      const pdf = new jsPDF({
-        orientation: 'portrait',
-        unit: 'mm',
-        format: 'a4',
-      });
-      
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-      
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight, undefined, 'FAST');
-      pdf.save('resume.pdf');
-    } catch (error) {
-      console.error("Error generating PDF:", error);
-    } finally {
-      setIsDownloading(false);
-      document.body.classList.remove('pdf-export');
-    }
+    // Give React time to re-render to the "preview" state
+    setTimeout(async () => {
+      try {
+        const canvas = await html2canvas(resumeElement, {
+          scale: 2, // Higher scale for better quality
+          useCORS: true,
+          logging: false,
+          width: resumeElement.offsetWidth,
+          height: resumeElement.offsetHeight,
+          windowWidth: resumeElement.scrollWidth,
+          windowHeight: resumeElement.scrollHeight,
+          backgroundColor: null,
+        });
+        
+        const imgData = canvas.toDataURL('image/png');
+        
+        // A4 size in mm: 210 x 297
+        const pdf = new jsPDF({
+          orientation: 'portrait',
+          unit: 'mm',
+          format: 'a4',
+        });
+        
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+        
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight, undefined, 'FAST');
+        pdf.save('resume.pdf');
+      } catch (error) {
+        console.error("Error generating PDF:", error);
+      } finally {
+        setIsDownloading(false);
+        document.body.classList.remove('pdf-export');
+      }
+    }, 100); // 100ms delay to ensure DOM updates
   };
 
   return (
