@@ -8,5 +8,5 @@ export const careerObjectives = [
 ];
 
 export const googleFonts = [
-  "Roboto", "Open Sans", "Lato", "Montserrat", "Oswald", "Raleway", "Merriweather", "PT Sans", "Playfair Display", "Nunito", "Poppins", "Source Sans Pro", "Noto Sans", "Ubuntu", "Inter", "Work Sans", "Space Grotesk", "Libre Baskerville", "Fira Sans", "Exo 2"
+  "Roboto", "Open Sans", "Lato", "Montserrat", "Oswald", "Raleway", "Merriweather", "PT Sans", "Playfair Display", "Nunito", "Poppins", "Source Sans Pro", "Noto Sans", "Ubuntu", "Inter", "Work Sans", "Space Grotesk", "Libre Baskerville", "Fira Sans", "Exo 2", "Arvo", "Bitter", "Cabin", "Crimson Text", "Dosis", "Droid Sans", "Droid Serif", "Josefin Sans", "Lobster", "Lora", "Muli", "Nunito Sans", "Overpass", "Oxygen", "Pacifico", "Quicksand", "Rubik", "Slabo 27px", "Titillium Web", "Varela Round", "Alegreya", "Anton", "Archivo", "Asap", "BioRhyme", "Catamaran", "Comfortaa", "EB Garamond", "Fjalla One", "IBM Plex Sans", "Inconsolata", "Karla", "Libre Franklin", "Maven Pro", "Merriweather Sans", "Noto Serif", "PT Mono", "PT Serif", "Questrial", "Rajdhani", "Signika", "Source Code Pro", "Teko", "Yanone Kaffeesatz"
 ];
