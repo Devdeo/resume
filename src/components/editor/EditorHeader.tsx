@@ -20,7 +20,7 @@ export default function EditorHeader({ onToggleSidebar }: EditorHeaderProps) {
     <header className="flex h-16 items-center border-b bg-background px-4 md:px-6 no-print">
       <div className="flex items-center gap-4">
         <Link href="/" className="font-headline text-lg font-bold text-primary">
-          resume.docupilot.co.in
+          docupilot
         </Link>
       </div>
       <div className="ml-auto flex items-center gap-4">

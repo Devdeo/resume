@@ -12,7 +12,7 @@ export default function Home() {
       <div className="w-full bg-background shadow-sm">
         <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
           <h1 className="font-headline text-2xl font-bold text-primary">
-            resume.docupilot.co.in
+            docupilot
           </h1>
           <p className="text-sm text-muted-foreground">Choose a template to begin</p>
         </div>
