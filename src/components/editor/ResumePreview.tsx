@@ -500,11 +500,6 @@ export default function ResumePreview(props: ResumePreviewProps) {
   if (isEditor) {
     a4PageStyle.transform = 'scale(1)';
     a4PageStyle.transformOrigin = 'top center';
-  } else {
-    a4-page {
-      box-shadow: none !important;
-      border: none !important;
-    }
   }
 
 
@@ -533,3 +528,5 @@ export default function ResumePreview(props: ResumePreviewProps) {
     </div>
   );
 }
+
+    
