@@ -16,18 +16,15 @@ export default function EditorHeader({ onToggleSidebar }: EditorHeaderProps) {
   const [isDownloading, setIsDownloading] = React.useState(false);
   
   const handleDownload = async () => {
-    const isMobile = window.innerWidth < 768;
-    const resumeElement = document.getElementById(isMobile ? 'resume-page-mobile' : 'resume-page');
+    const resumeElement = document.getElementById('resume-page');
 
     if (!resumeElement) {
-      console.error("Resume element not found for download. Looked for:", isMobile ? 'resume-page-mobile' : 'resume-page');
+      console.error("Resume element not found for download. Looked for: 'resume-page'");
       return;
     }
     setIsDownloading(true);
     
-    // For desktop, the element is already scaled correctly.
-    // For mobile, we might need adjustments if scaling is applied.
-    // The current approach assumes mobile view is 1:1 for this to work.
+    document.body.classList.add('pdf-export');
 
     try {
       const canvas = await html2canvas(resumeElement, {
@@ -36,7 +33,9 @@ export default function EditorHeader({ onToggleSidebar }: EditorHeaderProps) {
         logging: false,
         width: resumeElement.offsetWidth,
         height: resumeElement.offsetHeight,
-        backgroundColor: null, // Use transparent background
+        windowWidth: 210 * 3.77, // A4 width in pixels
+        windowHeight: 297 * 3.77, // A4 height in pixels
+        backgroundColor: null,
       });
       
       const imgData = canvas.toDataURL('image/png');
@@ -51,12 +50,13 @@ export default function EditorHeader({ onToggleSidebar }: EditorHeaderProps) {
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = pdf.internal.pageSize.getHeight();
       
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight, undefined, 'FAST');
       pdf.save('resume.pdf');
     } catch (error) {
       console.error("Error generating PDF:", error);
     } finally {
       setIsDownloading(false);
+      document.body.classList.remove('pdf-export');
     }
   };
 

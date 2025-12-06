@@ -34,7 +34,7 @@ type ResumePreviewProps = {
 };
 
 
-const Section = ({ title, children, accentColor, onTitleChange, deletable, onDelete, onDragStart, onDragOver, onDragEnd, draggable, isDragging }: { title: string; children: React.ReactNode; accentColor: string; onTitleChange: (newTitle: string) => void; deletable?: boolean; onDelete?: () => void; onDragStart: () => void; onDragOver: (e: React.DragEvent) => void; onDragEnd: () => void; draggable?: boolean; isDragging: boolean; }) => (
+const Section = ({ title, children, accentColor, onTitleChange, deletable, onDelete, onDragStart, onDragOver, onDragEnd, draggable, isDragging, isPreview }: { title: string; children: React.ReactNode; accentColor: string; onTitleChange: (newTitle: string) => void; deletable?: boolean; onDelete?: () => void; onDragStart: () => void; onDragOver: (e: React.DragEvent) => void; onDragEnd: () => void; draggable?: boolean; isDragging: boolean; isPreview?: boolean; }) => (
   <div 
     className={`mb-4 group relative ${isDragging ? 'opacity-50' : ''}`}
     draggable={draggable}
@@ -49,12 +49,16 @@ const Section = ({ title, children, accentColor, onTitleChange, deletable, onDel
            <GripVertical className="h-5 w-5 text-muted-foreground" />
          </div>
        )}
-      <Input
-        value={title}
-        onChange={(e) => onTitleChange(e.target.value)}
-        className="font-headline text-lg font-bold uppercase tracking-wider border-none shadow-none focus-visible:ring-0 p-0 h-auto"
-        style={{ paddingLeft: deletable ? 0 : '0.5rem' }}
-      />
+      {isPreview ? (
+        <h2 className="font-headline text-lg font-bold uppercase tracking-wider p-0 h-auto" style={{ paddingLeft: deletable ? 0 : '0.5rem' }}>{title}</h2>
+      ) : (
+        <Input
+          value={title}
+          onChange={(e) => onTitleChange(e.target.value)}
+          className="font-headline text-lg font-bold uppercase tracking-wider border-none shadow-none focus-visible:ring-0 p-0 h-auto"
+          style={{ paddingLeft: deletable ? 0 : '0.5rem' }}
+        />
+      )}
       {deletable && (
         <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover:opacity-100 absolute -right-8 top-0 no-export" onClick={onDelete}>
           <Trash2 className="h-4 w-4 text-destructive" />
@@ -81,6 +85,21 @@ export default function ResumePreview(props: ResumePreviewProps) {
   const onDragOver = isEditor ? resumeContext.onDragOver : () => {};
   const onDragEnd = isEditor ? resumeContext.onDragEnd : () => {};
 
+  const [isExporting, setIsExporting] = React.useState(false);
+
+  React.useEffect(() => {
+    const handlePdfExport = () => {
+      const isExporting = document.body.classList.contains('pdf-export');
+      setIsExporting(isExporting);
+    };
+
+    const observer = new MutationObserver(handlePdfExport);
+    observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
+    return () => observer.disconnect();
+  }, []);
+
+  const isFinalPreview = props.isPreview || isExporting;
 
   const imageInputRef = React.useRef<HTMLInputElement>(null);
 
@@ -221,12 +240,12 @@ export default function ResumePreview(props: ResumePreviewProps) {
             <input type="file" ref={imageInputRef} onChange={handleImageUpload} accept="image/*" className="hidden" />
             
             {hasProfilePic && (
-                <div className={`${photoClasses} rounded-full overflow-hidden border-4 flex items-center justify-center no-export`} style={{ borderColor: style.accentColor }}>
-                    <Image src={personalInfo.profilePicture} alt="Profile" width={128} height={128} className="object-cover w-full h-full cursor-pointer" onClick={() => imageInputRef.current?.click()} />
+                <div className={`${photoClasses} rounded-full overflow-hidden border-4 flex items-center justify-center`} style={{ borderColor: style.accentColor }}>
+                    <Image src={personalInfo.profilePicture} alt="Profile" width={128} height={128} className={`object-cover w-full h-full ${!isFinalPreview ? 'cursor-pointer' : ''}`} onClick={() => !isFinalPreview && imageInputRef.current?.click()} />
                 </div>
             )}
             
-            {isEditor && !hasProfilePic && (
+            {!isFinalPreview && !hasProfilePic && (
                 <div className={`${photoClasses} rounded-full overflow-hidden border-4 flex items-center justify-center no-export`} style={{ borderColor: style.accentColor }}>
                     <div className="w-full h-full bg-muted flex flex-col items-center justify-center text-muted-foreground cursor-pointer" onClick={() => imageInputRef.current?.click()}>
                         <ImagePlus className="w-10 h-10" />
@@ -235,12 +254,12 @@ export default function ResumePreview(props: ResumePreviewProps) {
                 </div>
             )}
 
-            <Input name="name" value={personalInfo.name} onChange={handlePersonalInfoChange} onFocus={() => handleClearOnFocus(section.id, 'name', personalInfo.name)} placeholder="Your Name" className={nameInputClasses} />
+            {isFinalPreview ? <h1 className={nameInputClasses.replace('border-none shadow-none focus-visible:ring-0 h-auto p-0', '')}>{personalInfo.name}</h1> : <Input name="name" value={personalInfo.name} onChange={handlePersonalInfoChange} onFocus={() => handleClearOnFocus(section.id, 'name', personalInfo.name)} placeholder="Your Name" className={nameInputClasses} />}
             <div className={contactInfoClasses}>
-              <Input name="address" value={personalInfo.address} onChange={handlePersonalInfoChange} onFocus={() => handleClearOnFocus(section.id, 'address', personalInfo.address)} placeholder="Address" className={contactInputClasses} />
-              <Input name="zipCode" value={personalInfo.zipCode} onChange={handlePersonalInfoChange} onFocus={() => handleClearOnFocus(section.id, 'zipCode', personalInfo.zipCode)} placeholder="ZIP" className={`${contactInputClasses} ${data.layout !== 'two-column-left' ? 'w-16' : ''}`} />
-              <Input name="mobile" value={personalInfo.mobile} onChange={handlePersonalInfoChange} onFocus={() => handleClearOnFocus(section.id, 'mobile', personalInfo.mobile)} placeholder="Mobile" className={contactInputClasses} />
-              <Input name="email" value={personalInfo.email} onChange={handlePersonalInfoChange} onFocus={() => handleClearOnFocus(section.id, 'email', personalInfo.email)} placeholder="Email" className={contactInputClasses} />
+                {isFinalPreview ? <p className={contactInputClasses}>{personalInfo.address}</p> : <Input name="address" value={personalInfo.address} onChange={handlePersonalInfoChange} onFocus={() => handleClearOnFocus(section.id, 'address', personalInfo.address)} placeholder="Address" className={contactInputClasses} />}
+                {isFinalPreview ? <p className={`${contactInputClasses} ${data.layout !== 'two-column-left' ? 'w-16' : ''}`}>{personalInfo.zipCode}</p> : <Input name="zipCode" value={personalInfo.zipCode} onChange={handlePersonalInfoChange} onFocus={() => handleClearOnFocus(section.id, 'zipCode', personalInfo.zipCode)} placeholder="ZIP" className={`${contactInputClasses} ${data.layout !== 'two-column-left' ? 'w-16' : ''}`} />}
+                {isFinalPreview ? <p className={contactInputClasses}>{personalInfo.mobile}</p> : <Input name="mobile" value={personalInfo.mobile} onChange={handlePersonalInfoChange} onFocus={() => handleClearOnFocus(section.id, 'mobile', personalInfo.mobile)} placeholder="Mobile" className={contactInputClasses} />}
+                {isFinalPreview ? <p className={contactInputClasses}>{personalInfo.email}</p> : <Input name="email" value={personalInfo.email} onChange={handlePersonalInfoChange} onFocus={() => handleClearOnFocus(section.id, 'email', personalInfo.email)} placeholder="Email" className={contactInputClasses} />}
             </div>
             {data.layout === 'single-column' && <Separator className="my-2" style={{ backgroundColor: style.accentColor, height: '2px' }} />}
           </header>
@@ -275,7 +294,8 @@ export default function ResumePreview(props: ResumePreviewProps) {
       onDragStart: () => onDragStart?.(section.id),
       onDragOver: (e: React.DragEvent) => onDragOver?.(e, section.id),
       onDragEnd: () => onDragEnd?.(),
-      isDragging: draggingItem === section.id
+      isDragging: draggingItem === section.id,
+      isPreview: isFinalPreview,
     };
 
     switch (section.type) {
@@ -284,7 +304,7 @@ export default function ResumePreview(props: ResumePreviewProps) {
         return (
           <div key={section.id} onFocus={handleFocus(section.id)} tabIndex={0}>
             <Section {...commonSectionProps}>
-              <Textarea value={careerObjective} onChange={e => handleSectionContentChange(section.id, e.target.value)} onFocus={() => handleClearOnFocus(section.id, 'content', careerObjective)} className="border-none shadow-none focus-visible:ring-0 p-0" rows={2}/>
+              {isFinalPreview ? <p className="p-0">{careerObjective}</p> : <Textarea value={careerObjective} onChange={e => handleSectionContentChange(section.id, e.target.value)} onFocus={() => handleClearOnFocus(section.id, 'content', careerObjective)} className="border-none shadow-none focus-visible:ring-0 p-0" rows={2}/>}
             </Section>
           </div>
         );
@@ -312,16 +332,16 @@ export default function ResumePreview(props: ResumePreviewProps) {
               <div className="space-y-2">
                 {qualifications.map((q, index) => (
                     <div key={q.id} className="flex gap-2 items-center group">
-                      <Input name="exam" value={q.exam} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'exam', q.exam, q.id)} placeholder="Exam/Degree" className="border-none shadow-none focus-visible:ring-0 p-0 flex-1" />
-                      <Input name="board" value={q.board} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'board', q.board, q.id)} placeholder="Board/University" className="border-none shadow-none focus-visible:ring-0 p-0 flex-1" />
-                      <Input name="year" value={q.year} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'year', q.year, q.id)} placeholder="Year" className="border-none shadow-none focus-visible:ring-0 p-0 w-16" />
-                      <Input name="marks" value={q.marks} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'marks', q.marks, q.id)} placeholder="Marks %" className="border-none shadow-none focus-visible:ring-0 p-0 w-16" />
-                      <Input name="division" value={q.division} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'division', q.division, q.id)} placeholder="Division" className="border-none shadow-none focus-visible:ring-0 p-0 w-20" />
-                      {isEditor && <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover:opacity-100 no-export" onClick={() => removeQualification(index)}><Trash2 className="h-4 w-4 text-destructive" /></Button>}
+                      {isFinalPreview ? <p className="flex-1 font-semibold">{q.exam}</p> : <Input name="exam" value={q.exam} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'exam', q.exam, q.id)} placeholder="Exam/Degree" className="border-none shadow-none focus-visible:ring-0 p-0 flex-1 font-semibold" />}
+                      {isFinalPreview ? <p className="flex-1">{q.board}</p> : <Input name="board" value={q.board} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'board', q.board, q.id)} placeholder="Board/University" className="border-none shadow-none focus-visible:ring-0 p-0 flex-1" />}
+                      {isFinalPreview ? <p className="w-16">{q.year}</p> : <Input name="year" value={q.year} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'year', q.year, q.id)} placeholder="Year" className="border-none shadow-none focus-visible:ring-0 p-0 w-16" />}
+                      {isFinalPreview ? <p className="w-16">{q.marks}</p> : <Input name="marks" value={q.marks} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'marks', q.marks, q.id)} placeholder="Marks %" className="border-none shadow-none focus-visible:ring-0 p-0 w-16" />}
+                      {isFinalPreview ? <p className="w-20">{q.division}</p> : <Input name="division" value={q.division} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'division', q.division, q.id)} placeholder="Division" className="border-none shadow-none focus-visible:ring-0 p-0 w-20" />}
+                      {isEditor && !isFinalPreview && <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover:opacity-100 no-export" onClick={() => removeQualification(index)}><Trash2 className="h-4 w-4 text-destructive" /></Button>}
                     </div>
                 ))}
               </div>
-              {isEditor && <Button variant="outline" size="sm" onClick={addQualification} className="mt-2 no-export"><PlusCircle className="mr-2 h-4 w-4" /> Add</Button>}
+              {isEditor && !isFinalPreview && <Button variant="outline" size="sm" onClick={addQualification} className="mt-2 no-export"><PlusCircle className="mr-2 h-4 w-4" /> Add</Button>}
             </Section>
           </div>
         );
@@ -331,7 +351,7 @@ export default function ResumePreview(props: ResumePreviewProps) {
         return (
           <div key={section.id} onFocus={handleFocus(section.id)} tabIndex={0}>
             <Section {...commonSectionProps}>
-              <Textarea value={extraQualification} onChange={e => handleSectionContentChange(section.id, e.target.value)} onFocus={() => handleClearOnFocus(section.id, 'content', extraQualification)} className="border-none shadow-none focus-visible:ring-0 p-0" rows={2}/>
+              {isFinalPreview ? <p className="p-0">{extraQualification}</p> : <Textarea value={extraQualification} onChange={e => handleSectionContentChange(section.id, e.target.value)} onFocus={() => handleClearOnFocus(section.id, 'content', extraQualification)} className="border-none shadow-none focus-visible:ring-0 p-0" rows={2}/>}
             </Section>
           </div>
         );
@@ -360,20 +380,20 @@ export default function ResumePreview(props: ResumePreviewProps) {
                         <div key={exp.id} className="group flex flex-col">
                             <div className="flex justify-between items-center">
                                 <div className="flex gap-1 items-center">
-                                    <Input name="role" value={exp.role} onChange={(e) => handleExperienceChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'role', exp.role, exp.id)} placeholder="Role" className="font-bold border-none shadow-none focus-visible:ring-0 p-0" />
+                                    {isFinalPreview ? <p className="font-bold">{exp.role}</p> : <Input name="role" value={exp.role} onChange={(e) => handleExperienceChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'role', exp.role, exp.id)} placeholder="Role" className="font-bold border-none shadow-none focus-visible:ring-0 p-0" />}
                                     <span>-</span>
-                                    <Input name="company" value={exp.company} onChange={(e) => handleExperienceChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'company', exp.company, exp.id)} placeholder="Company" className="font-bold border-none shadow-none focus-visible:ring-0 p-0" />
+                                    {isFinalPreview ? <p className="font-bold">{exp.company}</p> : <Input name="company" value={exp.company} onChange={(e) => handleExperienceChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'company', exp.company, exp.id)} placeholder="Company" className="font-bold border-none shadow-none focus-visible:ring-0 p-0" />}
                                 </div>
-                                <Input name="duration" value={exp.duration} onChange={(e) => handleExperienceChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'duration', exp.duration, exp.id)} placeholder="Duration" className="text-xs font-semibold border-none shadow-none focus-visible:ring-0 p-0 text-right" style={{ color: style.accentColor }} />
+                                {isFinalPreview ? <p className="text-xs font-semibold" style={{ color: style.accentColor }}>{exp.duration}</p> : <Input name="duration" value={exp.duration} onChange={(e) => handleExperienceChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'duration', exp.duration, exp.id)} placeholder="Duration" className="text-xs font-semibold border-none shadow-none focus-visible:ring-0 p-0 text-right" style={{ color: style.accentColor }} />}
                             </div>
                             <div className="flex items-start">
-                            <Textarea name="responsibilities" value={exp.responsibilities} onChange={(e) => handleExperienceChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'responsibilities', exp.responsibilities, exp.id)} placeholder="Responsibilities" className="text-sm border-none shadow-none focus-visible:ring-0 p-0 flex-1" rows={2} />
-                            {isEditor && <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover:opacity-100 no-export" onClick={() => removeExperience(index)}><Trash2 className="h-4 w-4 text-destructive" /></Button>}
+                            {isFinalPreview ? <p className="text-sm flex-1">{exp.responsibilities}</p> : <Textarea name="responsibilities" value={exp.responsibilities} onChange={(e) => handleExperienceChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'responsibilities', exp.responsibilities, exp.id)} placeholder="Responsibilities" className="text-sm border-none shadow-none focus-visible:ring-0 p-0 flex-1" rows={2} />}
+                            {isEditor && !isFinalPreview && <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover:opacity-100 no-export" onClick={() => removeExperience(index)}><Trash2 className="h-4 w-4 text-destructive" /></Button>}
                             </div>
                         </div>
                     ))}
                 </div>
-                {isEditor && <Button variant="outline" size="sm" onClick={addExperience} className="mt-2 no-export"><PlusCircle className="mr-2 h-4 w-4" /> Add</Button>}
+                {isEditor && !isFinalPreview && <Button variant="outline" size="sm" onClick={addExperience} className="mt-2 no-export"><PlusCircle className="mr-2 h-4 w-4" /> Add</Button>}
                 </Section>
             </div>
         );
@@ -391,8 +411,9 @@ export default function ResumePreview(props: ResumePreviewProps) {
         return (
           <div key={section.id} className="pt-10" onFocus={handleFocus(section.id)} tabIndex={0}>
             <Section {...commonSectionProps}>
-                <Textarea name="text" value={declaration.text} onChange={handleDeclarationChange} onFocus={() => handleClearOnFocus(section.id, 'text', declaration.text)} className="italic border-none shadow-none focus-visible:ring-0 p-0" rows={2}/>
-                {isEditor && (
+                {isFinalPreview ? <p className="italic">{declaration.text}</p> : <Textarea name="text" value={declaration.text} onChange={handleDeclarationChange} onFocus={() => handleClearOnFocus(section.id, 'text', declaration.text)} className="italic border-none shadow-none focus-visible:ring-0 p-0" rows={2}/>}
+                
+                {!isFinalPreview && isEditor && (
                   <div className="flex items-center space-x-2 mt-4 no-export">
                     <Checkbox 
                       id="showSignature" 
@@ -402,7 +423,7 @@ export default function ResumePreview(props: ResumePreviewProps) {
                     <Label htmlFor="showSignature">Add Digital Signature</Label>
                   </div>
                 )}
-                {isEditor && declaration.showSignature && (
+                {!isFinalPreview && isEditor && declaration.showSignature && (
                     <div className='mt-4 no-export'>
                         <SignaturePad 
                             signature={declaration.signature}
@@ -413,8 +434,8 @@ export default function ResumePreview(props: ResumePreviewProps) {
                 
                 <div className="flex justify-between mt-8">
                     <div className="flex flex-col">
-                        <div className="flex gap-1 items-center">Date: <Input name="date" type="date" value={declaration.date} onChange={handleDeclarationChange} className="border-none shadow-none focus-visible:ring-0 p-0 w-auto" /></div>
-                        <div className="flex gap-1 items-center">Place: <Input name="place" value={declaration.place} onChange={handleDeclarationChange} onFocus={() => handleClearOnFocus(section.id, 'place', declaration.place)} className="border-none shadow-none focus-visible:ring-0 p-0" /></div>
+                        <div className="flex gap-1 items-center">Date: {isFinalPreview ? declaration.date : <Input name="date" type="date" value={declaration.date} onChange={handleDeclarationChange} className="border-none shadow-none focus-visible:ring-0 p-0 w-auto" />}</div>
+                        <div className="flex gap-1 items-center">Place: {isFinalPreview ? declaration.place : <Input name="place" value={declaration.place} onChange={handleDeclarationChange} onFocus={() => handleClearOnFocus(section.id, 'place', declaration.place)} className="border-none shadow-none focus-visible:ring-0 p-0" />}</div>
                     </div>
                     <div className="flex flex-col items-center">
                         {declaration.signature && declaration.showSignature && (
@@ -444,7 +465,7 @@ export default function ResumePreview(props: ResumePreviewProps) {
                     title={customSection.title}
                     onTitleChange={customSectionTitleChange}
                  >
-                    <Textarea value={customSection.content} onChange={handleCustomSectionChange} onFocus={() => handleClearOnFocus(section.id, 'content', customSection.content, customSection.id)} className="border-none shadow-none focus-visible:ring-0 p-0" rows={3}/>
+                    {isFinalPreview ? <p className="p-0">{customSection.content}</p> : <Textarea value={customSection.content} onChange={handleCustomSectionChange} onFocus={() => handleClearOnFocus(section.id, 'content', customSection.content, customSection.id)} className="border-none shadow-none focus-visible:ring-0 p-0" rows={3}/>}
                 </Section>
             </div>
         );
@@ -505,7 +526,7 @@ export default function ResumePreview(props: ResumePreviewProps) {
 
   const a4PageEditorStyle: React.CSSProperties = { ...a4PageStyle };
 
-  if (isEditor) {
+  if (isEditor && !isExporting) {
     a4PageEditorStyle.transform = 'scale(0.8)';
     a4PageEditorStyle.transformOrigin = 'top center';
     a4PageEditorStyle.margin = '2rem auto';
@@ -528,7 +549,7 @@ export default function ResumePreview(props: ResumePreviewProps) {
             <div
                 id="resume-page"
                 className="a4-page"
-                style={isEditor ? a4PageEditorStyle : a4PageStyle}
+                style={(isEditor && !isExporting) ? a4PageEditorStyle : a4PageStyle}
                 {...containerProps}
             >
                 <div
