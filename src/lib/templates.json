@@ -945,6 +945,258 @@
           }
         ]
       }
+    },
+    {
+      "id": "template-crisp-clean",
+      "name": "Crisp & Clean",
+      "style": {
+        "fontFamily": "Nunito Sans",
+        "fontSize": "10.5",
+        "accentColor": "#38A169",
+        "sectionSpacing": "20",
+        "pageMargins": "20"
+      },
+      "data": {
+        "layout": "two-column-right",
+        "sections": [
+          {
+            "id": "personalInfo-main",
+            "type": "personalInfo",
+            "title": "Personal Info",
+            "deletable": false,
+            "content": {
+              "name": "John Doe",
+              "address": "", "mobile": "", "email": "", "dob": "", "fatherName": "", "motherName": "", "nationality": "", "gender": "Male", "maritalStatus": "Single", "languages": "", "hobbies": "", "zipCode": "", "profilePicture": ""
+            }
+          },
+          {
+            "id": "careerObjective",
+            "type": "careerObjective",
+            "title": "Career Objective",
+            "deletable": true,
+            "content": "Secure a responsible career opportunity to fully utilize my training and skills, while making a significant contribution to the success of the company."
+          },
+          {
+            "id": "workExperience",
+            "type": "workExperience",
+            "title": "Work Experience",
+            "deletable": true,
+            "content": [
+              { "id": "we1", "company": "Tech Solutions Inc.", "role": "Software Engineer", "duration": "2018 - Present", "responsibilities": "Developed and maintained web applications, collaborated with cross-functional teams, and implemented new features." }
+            ]
+          },
+          {
+            "id": "declaration",
+            "type": "declaration",
+            "title": "Declaration",
+            "deletable": true,
+            "content": {
+              "text": "I hereby declare that all the statements made in this resume are true, complete, and correct to the best of my knowledge.",
+              "date": "2024-07-29",
+              "place": "Anytown",
+              "showSignature": false,
+              "signature": ""
+            }
+          }
+        ],
+        "rightSections": [
+          {
+            "id": "personalInfo-contact",
+            "type": "custom",
+            "title": "Contact",
+            "deletable": true,
+            "content": {
+                "id": "c-1",
+                "title": "Contact",
+                "content": "123 Main Street, Anytown\n+1 (555) 123-4567\njohn.doe@example.com"
+            }
+          },
+          {
+            "id": "academicQualifications",
+            "type": "academicQualifications",
+            "title": "Academic Qualifications",
+            "deletable": true,
+            "content": [
+              { "id": "aq1", "exam": "B.S. in Computer Science", "board": "State University", "year": "2017", "marks": "85%", "division": "First" }
+            ]
+          },
+          {
+            "id": "extraQualification",
+            "type": "extraQualification",
+            "title": "Skills & Expertise",
+            "deletable": true,
+            "content": "Proficient in MERN stack, Next.js, and TypeScript."
+          }
+        ]
+      }
+    },
+    {
+      "id": "template-classic-serif",
+      "name": "Classic Serif",
+      "style": {
+        "fontFamily": "EB Garamond",
+        "fontSize": "12",
+        "accentColor": "#2C3E50",
+        "sectionSpacing": "22",
+        "pageMargins": "24"
+      },
+      "data": {
+        "layout": "single-column",
+        "sections": [
+          {
+            "id": "personalInfo",
+            "type": "personalInfo",
+            "title": "Personal Info",
+            "deletable": false,
+            "content": {
+              "name": "John Doe",
+              "address": "123 Main Street, Anytown, USA",
+              "mobile": "+1 (555) 123-4567",
+              "email": "john.doe@example.com",
+              "dob": "1995-08-15",
+              "fatherName": "Richard Doe",
+              "motherName": "Jane Doe",
+              "nationality": "American",
+              "gender": "Male",
+              "maritalStatus": "Single",
+              "languages": "English, Spanish",
+              "hobbies": "Reading, Hiking, Photography",
+              "zipCode": "12345",
+              "profilePicture": ""
+            }
+          },
+          {
+            "id": "careerObjective",
+            "type": "careerObjective",
+            "title": "Career Objective",
+            "deletable": true,
+            "content": "Secure a responsible career opportunity to fully utilize my training and skills, while making a significant contribution to the success of the company."
+          },
+          {
+            "id": "workExperience",
+            "type": "workExperience",
+            "title": "Work Experience",
+            "deletable": true,
+            "content": [
+              { "id": "we1", "company": "Tech Solutions Inc.", "role": "Software Engineer", "duration": "2018 - Present", "responsibilities": "Developed and maintained web applications, collaborated with cross-functional teams, and implemented new features." }
+            ]
+          },
+          {
+            "id": "academicQualifications",
+            "type": "academicQualifications",
+            "title": "Academic Qualifications",
+            "deletable": true,
+            "content": [
+              { "id": "aq1", "exam": "Bachelor of Science in Computer Science", "board": "State University", "year": "2017", "marks": "85%", "division": "First" }
+            ]
+          },
+          {
+            "id": "extraQualification",
+            "type": "extraQualification",
+            "title": "Skills & Expertise",
+            "deletable": true,
+            "content": "Proficient in MERN stack, Next.js, and TypeScript."
+          },
+          {
+            "id": "declaration",
+            "type": "declaration",
+            "title": "Declaration",
+            "deletable": true,
+            "content": {
+              "text": "I hereby declare that all the statements made in this resume are true, complete, and correct to the best of my knowledge.",
+              "date": "2024-07-29",
+              "place": "Anytown",
+              "showSignature": false,
+              "signature": ""
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "template-friendly-modern",
+      "name": "Friendly & Modern",
+      "style": {
+        "fontFamily": "Quicksand",
+        "fontSize": "11",
+        "accentColor": "#F56565",
+        "sectionSpacing": "20",
+        "pageMargins": "20"
+      },
+      "data": {
+        "layout": "two-column-left",
+        "sections": [
+          {
+            "id": "personalInfo",
+            "type": "personalInfo",
+            "title": "Personal Info",
+            "deletable": false,
+            "content": {
+              "name": "John Doe",
+              "address": "123 Main Street, Anytown",
+              "mobile": "+1 (555) 123-4567",
+              "email": "john.doe@example.com",
+              "dob": "1995-08-15",
+              "fatherName": "Richard Doe",
+              "motherName": "Jane Doe",
+              "nationality": "American",
+              "gender": "Male",
+              "maritalStatus": "Single",
+              "languages": "English, Spanish",
+              "hobbies": "Reading, Hiking, Photography",
+              "zipCode": "12345",
+              "profilePicture": ""
+            }
+          },
+          {
+            "id": "extraQualification",
+            "type": "extraQualification",
+            "title": "Skills",
+            "deletable": true,
+            "content": "MERN Stack\nNext.js\nTypeScript\nTeam Collaboration\nProblem Solving"
+          }
+        ],
+        "rightSections": [
+          {
+            "id": "careerObjective",
+            "type": "careerObjective",
+            "title": "My Goal",
+            "deletable": true,
+            "content": "To join a creative and collaborative team where I can apply my development skills to build exciting products and grow as an engineer."
+          },
+          {
+            "id": "workExperience",
+            "type": "workExperience",
+            "title": "My Experience",
+            "deletable": true,
+            "content": [
+              { "id": "we1", "company": "Tech Solutions Inc.", "role": "Software Engineer", "duration": "2018 - Present", "responsibilities": "Developed and maintained web applications, collaborated with cross-functional teams, and implemented new features." }
+            ]
+          },
+          {
+            "id": "academicQualifications",
+            "type": "academicQualifications",
+            "title": "My Education",
+            "deletable": true,
+            "content": [
+              { "id": "aq1", "exam": "B.S. in Computer Science", "board": "State University", "year": "2017", "marks": "85%", "division": "First" }
+            ]
+          },
+          {
+            "id": "declaration",
+            "type": "declaration",
+            "title": "Declaration",
+            "deletable": true,
+            "content": {
+              "text": "I hereby declare that all the statements made in this resume are true, complete, and correct to the best of my knowledge.",
+              "date": "2024-07-29",
+              "place": "Anytown",
+              "showSignature": false,
+              "signature": ""
+            }
+          }
+        ]
+      }
     }
   ]
 }
