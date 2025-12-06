@@ -331,24 +331,24 @@ export default function ResumePreview(props: ResumePreviewProps) {
             <Section {...commonSectionProps}>
               <div className="space-y-2">
                 {isFinalPreview ? (
-                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9em' }}>
                         <thead>
                             <tr style={{ textAlign: 'left', fontWeight: 'bold' }}>
-                                <th style={{ width: '35%' }}>Exam/Degree</th>
-                                <th style={{ width: '30%' }}>Board/University</th>
-                                <th style={{ width: '10%' }}>Year</th>
-                                <th style={{ width: '10%' }}>Marks</th>
-                                <th style={{ width: '15%' }}>Division</th>
+                                <th style={{ width: '35%', padding: '4px 0' }}>Exam/Degree</th>
+                                <th style={{ width: '30%', padding: '4px 0' }}>Board/University</th>
+                                <th style={{ width: '10%', padding: '4px 0' }}>Year</th>
+                                <th style={{ width: '10%', padding: '4px 0' }}>Marks</th>
+                                <th style={{ width: '15%', padding: '4px 0' }}>Division</th>
                             </tr>
                         </thead>
                         <tbody>
                             {qualifications.map((q) => (
-                                <tr key={q.id}>
-                                    <td>{q.exam}</td>
-                                    <td>{q.board}</td>
-                                    <td>{q.year}</td>
-                                    <td>{q.marks}</td>
-                                    <td>{q.division}</td>
+                                <tr key={q.id} style={{ borderTop: '1px solid #eee' }}>
+                                    <td style={{ padding: '4px 0' }}>{q.exam}</td>
+                                    <td style={{ padding: '4px 0' }}>{q.board}</td>
+                                    <td style={{ padding: '4px 0' }}>{q.year}</td>
+                                    <td style={{ padding: '4px 0' }}>{q.marks}</td>
+                                    <td style={{ padding: '4px 0' }}>{q.division}</td>
                                 </tr>
                             ))}
                         </tbody>
@@ -406,16 +406,16 @@ export default function ResumePreview(props: ResumePreviewProps) {
                     {workExperience.map((exp, index) => (
                         <div key={exp.id} className="group flex flex-col">
                             {isFinalPreview ? (
-                                <>
-                                    <div className="flex justify-between items-start">
-                                        <div className="flex flex-col">
-                                            <p className="font-bold">{exp.role}</p>
-                                            <p className="font-bold">{exp.company}</p>
+                                <div className="flex flex-col mb-2">
+                                    <div className="flex justify-between items-baseline">
+                                        <div className="flex items-baseline">
+                                            <p className="font-bold mr-2">{exp.role}</p>
+                                            <p className="font-semibold">{exp.company}</p>
                                         </div>
-                                        <p className="text-xs font-semibold text-right" style={{ color: style.accentColor, minWidth: '80px' }}>{exp.duration}</p>
+                                        <p className="text-xs font-medium" style={{ color: style.accentColor, minWidth: '80px', textAlign: 'right' }}>{exp.duration}</p>
                                     </div>
                                     <p className="text-sm mt-1">{exp.responsibilities}</p>
-                                </>
+                                </div>
                             ) : (
                                 <>
                                     <div className="flex justify-between items-center">
@@ -605,9 +605,3 @@ export default function ResumePreview(props: ResumePreviewProps) {
     </div>
   );
 }
-
-  
-
-    
-
-    
