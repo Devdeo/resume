@@ -97,53 +97,5 @@ export const templates: ResumeTemplate[] = [
       sectionSpacing: "20",
       pageMargins: "20"
     }
-  },
-  {
-    id: "template-creative",
-    name: "Creative",
-    data: JSON.parse(JSON.stringify(baseData)),
-    style: {
-      fontFamily: "Playfair Display",
-      fontSize: "12",
-      accentColor: "#D4A274",
-      sectionSpacing: "24",
-      pageMargins: "25"
-    }
-  },
-  {
-    id: "template-professional",
-    name: "Professional",
-    data: JSON.parse(JSON.stringify(baseData)),
-    style: {
-      fontFamily: "Lato",
-      fontSize: "10.5",
-      accentColor: "#334155",
-      sectionSpacing: "18",
-      pageMargins: "20"
-    }
-  },
-  {
-    id: "template-minimalist",
-    name: "Minimalist",
-    data: JSON.parse(JSON.stringify(baseData)),
-    style: {
-      fontFamily: "Inter",
-      fontSize: "10",
-      accentColor: "#111827",
-      sectionSpacing: "22",
-      pageMargins: "22"
-    }
-  },
-  {
-    id: "template-academic",
-    name: "Academic",
-    data: JSON.parse(JSON.stringify(baseData)),
-    style: {
-      fontFamily: "Merriweather",
-      fontSize: "11.5",
-      accentColor: "#4338CA",
-      sectionSpacing: "20",
-      pageMargins: "20"
-    }
   }
 ];
