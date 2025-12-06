@@ -56,7 +56,7 @@ const baseData: ResumeData = {
     {
       id: 'extraQualification',
       type: 'extraQualification',
-      title: 'Extra Qualification',
+      title: 'Skills & Expertise',
       deletable: true,
       content: "Proficient in MERN stack, Next.js, and TypeScript."
     },
@@ -85,6 +85,35 @@ const baseData: ResumeData = {
   ]
 };
 
+const creativeData = JSON.parse(JSON.stringify(baseData));
+const creativePersonalInfo = creativeData.sections.find(s => s.type === 'personalInfo');
+if(creativePersonalInfo) {
+  (creativePersonalInfo.content as any).name = "Jane Smith";
+  (creativePersonalInfo.content as any).email = "jane.smith@example.com";
+}
+
+const professionalData = JSON.parse(JSON.stringify(baseData));
+const professionalPersonalInfo = professionalData.sections.find(s => s.type === 'personalInfo');
+if(professionalPersonalInfo) {
+    (professionalPersonalInfo.content as any).name = "Robert Johnson";
+    (professionalPersonalInfo.content as any).email = "robert.j@example.com";
+}
+// Reorder for professional template
+const expIndex = professionalData.sections.findIndex(s => s.type === 'workExperience');
+const [expSection] = professionalData.sections.splice(expIndex, 1);
+professionalData.sections.splice(1, 0, expSection); // Move experience after personal info
+
+
+const minimalistData = JSON.parse(JSON.stringify(baseData));
+const minimalistPersonalInfo = minimalistData.sections.find(s => s.type === 'personalInfo');
+if(minimalistPersonalInfo) {
+    (minimalistPersonalInfo.content as any).name = "Emily White";
+    (minimalistPersonalInfo.content as any).email = "emily.white@example.com";
+}
+// Remove some sections for minimalist template
+minimalistData.sections = minimalistData.sections.filter(s => !['professionalQualifications', 'declaration'].includes(s.type));
+
+
 export const templates: ResumeTemplate[] = [
   {
     id: "template-modern",
@@ -96,6 +125,42 @@ export const templates: ResumeTemplate[] = [
       accentColor: "#008080",
       sectionSpacing: "20",
       pageMargins: "20"
+    }
+  },
+  {
+    id: "template-creative",
+    name: "Creative",
+    data: creativeData,
+    style: {
+      fontFamily: "Playfair Display",
+      fontSize: "12",
+      accentColor: "#D2691E",
+      sectionSpacing: "24",
+      pageMargins: "25"
+    }
+  },
+  {
+    id: "template-professional",
+    name: "Professional",
+    data: professionalData,
+    style: {
+      fontFamily: "Lato",
+      fontSize: "10",
+      accentColor: "#2c3e50",
+      sectionSpacing: "18",
+      pageMargins: "22"
+    }
+  },
+  {
+    id: "template-minimalist",
+    name: "Minimalist",
+    data: minimalistData,
+    style: {
+      fontFamily: "Inter",
+      fontSize: "10.5",
+      accentColor: "#333333",
+      sectionSpacing: "28",
+      pageMargins: "18"
     }
   }
 ];
