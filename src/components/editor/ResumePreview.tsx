@@ -115,7 +115,7 @@ export default function ResumePreview(props: ResumePreviewProps) {
 
   const handleClearOnFocus = (sectionId: string, fieldName: string, currentValue: string, fieldId?: string) => {
     if (!isEditor) return;
-    if (sectionId === 'careerObjective' || sectionId === 'declaration') return;
+    if (sectionId === 'careerObjective' || sectionId.startsWith('declaration')) return;
 
     let initialSectionData;
     if (fieldId) {
@@ -496,12 +496,7 @@ export default function ResumePreview(props: ResumePreviewProps) {
     height: '297mm',
   };
   
-  if (props.isPreview) {
-    a4PageStyle.width = '100%';
-    a4PageStyle.height = '100%';
-    a4PageStyle.transform = 'scale(0.5)';
-    a4PageStyle.transformOrigin = 'top left';
-  } else if (isEditor) {
+  if (isEditor) {
     a4PageStyle.boxShadow = '0 0 10px rgba(0,0,0,0.1)';
     a4PageStyle.margin = '2rem auto';
   }
