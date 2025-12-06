@@ -20,18 +20,6 @@ export default function EditorLayout({ initialTemplate }: EditorLayoutProps) {
 
   const initialData = useMemo(() => JSON.parse(JSON.stringify(initialTemplate.data)), [initialTemplate.data]);
 
-  const contextValue = useMemo(() => ({
-    initialData,
-    data,
-    setData,
-    style,
-    setStyle,
-    activeSection,
-    setActiveSection,
-    activeAccordionItem,
-    setActiveAccordionItem,
-  }), [initialData, data, style, activeSection, activeAccordionItem]);
-
   const onDragStart = (id: string) => {
     setDraggingItem(id);
   };
@@ -56,18 +44,30 @@ export default function EditorLayout({ initialTemplate }: EditorLayoutProps) {
     setDraggingItem(null);
   };
 
+  const contextValue = useMemo(() => ({
+    initialData,
+    data,
+    setData,
+    style,
+    setStyle,
+    activeSection,
+    setActiveSection,
+    activeAccordionItem,
+    setActiveAccordionItem,
+    draggingItem,
+    onDragStart,
+    onDragOver,
+    onDragEnd,
+  }), [initialData, data, style, activeSection, activeAccordionItem, draggingItem]);
+
+
   return (
     <ResumeProvider value={contextValue}>
       <div className="flex h-screen w-full flex-col bg-muted/40">
         <EditorHeader />
         <main className="flex flex-1 overflow-hidden">
           <div className="flex-1 overflow-y-auto print-container">
-            <ResumePreview 
-              onDragStart={onDragStart}
-              onDragOver={onDragOver}
-              onDragEnd={onDragEnd}
-              draggingItem={draggingItem}
-            />
+            <ResumePreview />
           </div>
           <EditorSidebar />
         </main>

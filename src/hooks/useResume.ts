@@ -13,6 +13,10 @@ type ResumeContextType = {
   setActiveSection: Dispatch<SetStateAction<string>>;
   activeAccordionItem: string;
   setActiveAccordionItem: Dispatch<SetStateAction<string>>;
+  draggingItem: string | null;
+  onDragStart: (id: string) => void;
+  onDragOver: (e: React.DragEvent, id: string) => void;
+  onDragEnd: () => void;
 };
 
 const ResumeContext = createContext<ResumeContextType | null>(null);
@@ -21,8 +25,5 @@ export const ResumeProvider = ResumeContext.Provider;
 
 export const useResume = () => {
   const context = useContext(ResumeContext);
-  if (!context) {
-    throw new Error('useResume must be used within a ResumeProvider');
-  }
   return context;
 };

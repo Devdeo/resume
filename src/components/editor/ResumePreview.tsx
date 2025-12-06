@@ -15,7 +15,9 @@ import {
   type Declaration,
   type ResumeSection,
   type SectionContent,
-  type CustomSection
+  type CustomSection,
+  type ResumeData,
+  type ResumeStyle
 } from '@/lib/types';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -24,10 +26,13 @@ import SignaturePad from './SignaturePad';
 
 
 type ResumePreviewProps = {
-  onDragStart: (id: string) => void;
-  onDragOver: (e: React.DragEvent, id: string) => void;
-  onDragEnd: () => void;
-  draggingItem: string | null;
+  data?: ResumeData;
+  style?: ResumeStyle;
+  initialData?: ResumeData;
+  onDragStart?: (id: string) => void;
+  onDragOver?: (e: React.DragEvent, id: string) => void;
+  onDragEnd?: () => void;
+  draggingItem?: string | null;
 };
 
 
@@ -62,8 +67,23 @@ const Section = ({ title, children, accentColor, onTitleChange, deletable, onDel
   </div>
 );
 
-export default function ResumePreview({ onDragStart, onDragOver, onDragEnd, draggingItem }: ResumePreviewProps) {
-  const { data, setData, style, setActiveSection, setActiveAccordionItem, initialData } = useResume();
+export default function ResumePreview(props: ResumePreviewProps) {
+  const resumeContext = useResume();
+  
+  const isEditor = !!resumeContext;
+  
+  const data = isEditor ? resumeContext.data : props.data!;
+  const style = isEditor ? resumeContext.style : props.style!;
+  const initialData = isEditor ? resumeContext.initialData : props.initialData!;
+  const setData = isEditor ? resumeContext.setData : () => {};
+  const setActiveSection = isEditor ? resumeContext.setActiveSection : () => {};
+  const setActiveAccordionItem = isEditor ? resumeContext.setActiveAccordionItem : () => {};
+  const draggingItem = isEditor ? resumeContext.draggingItem : null;
+  const onDragStart = isEditor ? resumeContext.onDragStart : () => {};
+  const onDragOver = isEditor ? resumeContext.onDragOver : () => {};
+  const onDragEnd = isEditor ? resumeContext.onDragEnd : () => {};
+
+
   const imageInputRef = React.useRef<HTMLInputElement>(null);
 
   const handleSectionContentChange = (sectionId: string, newContent: SectionContent) => {
@@ -136,10 +156,12 @@ export default function ResumePreview({ onDragStart, onDragOver, onDragEnd, drag
         const defaultProfilePic = PlaceHolderImages.find(img => img.id === 'profile-pic-default')?.imageUrl || '';
 
         return (
-          <header key={section.id} className="text-center mb-4 relative group" onFocus={handleFocus(section.id)} tabIndex={0} onDragOver={(e) => onDragOver(e, section.id)}>
-             <div draggable onDragStart={() => onDragStart(section.id)} className="cursor-grab opacity-0 group-hover:opacity-100 absolute left-2 top-2">
-               <GripVertical className="h-5 w-5 text-muted-foreground" />
-             </div>
+          <header key={section.id} className="text-center mb-4 relative group" onFocus={handleFocus(section.id)} tabIndex={0} onDragOver={(e) => onDragOver?.(e, section.id)}>
+             {isEditor && onDragStart && (
+                <div draggable onDragStart={() => onDragStart(section.id)} className="cursor-grab opacity-0 group-hover:opacity-100 absolute left-2 top-2">
+                    <GripVertical className="h-5 w-5 text-muted-foreground" />
+                </div>
+             )}
             <input type="file" ref={imageInputRef} onChange={handleImageUpload} accept="image/*" className="hidden" />
             <div className="mx-auto mb-4 h-32 w-32 rounded-full overflow-hidden border-4 flex items-center justify-center" style={{ borderColor: style.accentColor }}>
                 {personalInfo.profilePicture && personalInfo.profilePicture !== defaultProfilePic ? (
@@ -186,12 +208,12 @@ export default function ResumePreview({ onDragStart, onDragOver, onDragEnd, drag
       title: section.title,
       accentColor: style.accentColor,
       onTitleChange,
-      deletable: section.deletable,
+      deletable: isEditor && section.deletable,
       onDelete,
-      draggable: isDraggable,
-      onDragStart: () => onDragStart(section.id),
-      onDragOver: (e: React.DragEvent) => onDragOver(e, section.id),
-      onDragEnd: onDragEnd,
+      draggable: isEditor && isDraggable,
+      onDragStart: () => onDragStart?.(section.id),
+      onDragOver: (e: React.DragEvent) => onDragOver?.(e, section.id),
+      onDragEnd: () => onDragEnd?.(),
       isDragging: draggingItem === section.id
     };
 
@@ -243,12 +265,12 @@ export default function ResumePreview({ onDragStart, onDragOver, onDragEnd, drag
                       <Input name="year" value={q.year} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(q.year, initialQ.year, createUpdater('year'))} placeholder="Year" className="border-none shadow-none focus-visible:ring-0 p-0 w-16" />
                       <Input name="marks" value={q.marks} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(q.marks, initialQ.marks, createUpdater('marks'))} placeholder="Marks %" className="border-none shadow-none focus-visible:ring-0 p-0 w-16" />
                       <Input name="division" value={q.division} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(q.division, initialQ.division, createUpdater('division'))} placeholder="Division" className="border-none shadow-none focus-visible:ring-0 p-0 w-20" />
-                      <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover:opacity-100" onClick={() => removeQualification(index)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
+                      {isEditor && <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover:opacity-100" onClick={() => removeQualification(index)}><Trash2 className="h-4 w-4 text-destructive" /></Button>}
                     </div>
                   )
                 })}
               </div>
-              <Button variant="outline" size="sm" onClick={addQualification} className="mt-2"><PlusCircle className="mr-2 h-4 w-4" /> Add</Button>
+              {isEditor && <Button variant="outline" size="sm" onClick={addQualification} className="mt-2"><PlusCircle className="mr-2 h-4 w-4" /> Add</Button>}
             </Section>
           </div>
         );
@@ -304,13 +326,13 @@ export default function ResumePreview({ onDragStart, onDragOver, onDragEnd, drag
                             </div>
                             <div className="flex items-start">
                             <Textarea name="responsibilities" value={exp.responsibilities} onChange={(e) => handleExperienceChange(index, e)} onFocus={() => handleClearOnFocus(exp.responsibilities, initialExp.responsibilities, createUpdater('responsibilities'))} placeholder="Responsibilities" className="text-sm border-none shadow-none focus-visible:ring-0 p-0 flex-1" rows={2} />
-                            <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover:opacity-100" onClick={() => removeExperience(index)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
+                            {isEditor && <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover:opacity-100" onClick={() => removeExperience(index)}><Trash2 className="h-4 w-4 text-destructive" /></Button>}
                             </div>
                         </div>
                       )
                     })}
                 </div>
-                <Button variant="outline" size="sm" onClick={addExperience} className="mt-2"><PlusCircle className="mr-2 h-4 w-4" /> Add</Button>
+                {isEditor && <Button variant="outline" size="sm" onClick={addExperience} className="mt-2"><PlusCircle className="mr-2 h-4 w-4" /> Add</Button>}
                 </Section>
             </div>
         );
@@ -329,16 +351,17 @@ export default function ResumePreview({ onDragStart, onDragOver, onDragEnd, drag
           <div key={section.id} className="pt-10" onFocus={handleFocus(section.id)} tabIndex={0}>
             <Section {...commonSectionProps}>
                 <Textarea name="text" value={declaration.text} onChange={handleDeclarationChange} className="italic border-none shadow-none focus-visible:ring-0 p-0" rows={2}/>
-                <div className="flex items-center space-x-2 mt-4">
-                  <Checkbox 
-                    id="showSignature" 
-                    checked={declaration.showSignature} 
-                    onCheckedChange={(checked) => handleSectionContentChange(section.id, { ...declaration, showSignature: !!checked })}
-                  />
-                  <Label htmlFor="showSignature">Add Digital Signature</Label>
-                </div>
-
-                {declaration.showSignature && (
+                {isEditor && (
+                  <div className="flex items-center space-x-2 mt-4">
+                    <Checkbox 
+                      id="showSignature" 
+                      checked={declaration.showSignature} 
+                      onCheckedChange={(checked) => handleSectionContentChange(section.id, { ...declaration, showSignature: !!checked })}
+                    />
+                    <Label htmlFor="showSignature">Add Digital Signature</Label>
+                  </div>
+                )}
+                {isEditor && declaration.showSignature && (
                     <div className='mt-4'>
                         <SignaturePad 
                             signature={declaration.signature}
@@ -353,7 +376,7 @@ export default function ResumePreview({ onDragStart, onDragOver, onDragEnd, drag
                         <div className="flex gap-1 items-center">Place: <Input name="place" value={declaration.place} onChange={handleDeclarationChange} onFocus={() => handleClearOnFocus(declaration.place, (initialSection?.content as Declaration).place, () => handleSectionContentChange(section.id, { ...declaration, place: '' }))} className="border-none shadow-none focus-visible:ring-0 p-0" /></div>
                     </div>
                     <div className="flex flex-col items-center">
-                        {declaration.signature && (
+                        {declaration.signature && declaration.showSignature && (
                             <Image src={declaration.signature} alt="Signature" width={150} height={50} style={{ objectFit: 'contain' }} />
                         )}
                         <p className="border-t border-gray-400 pt-1 mt-2">Signature</p>
@@ -389,14 +412,18 @@ export default function ResumePreview({ onDragStart, onDragOver, onDragEnd, drag
     }
   }
 
+  const containerProps = isEditor ? {
+    onClick: () => setActiveAccordionItem('layout')
+  } : {};
+
 
   return (
-    <div className="w-full h-full p-4 sm:p-8">
+    <div className={`w-full h-full ${isEditor ? 'p-4 sm:p-8' : ''}`}>
       <div
         id="resume-page"
         className="a4-page w-full bg-white shadow-lg origin-top transition-transform duration-300"
         style={{...pageStyle, aspectRatio: '1 / 1.414'}}
-        onClick={() => setActiveAccordionItem('layout')}
+        {...containerProps}
       >
         <div
           className="p-4 sm:p-8 h-full"
