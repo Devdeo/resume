@@ -330,28 +330,43 @@ export default function ResumePreview(props: ResumePreviewProps) {
           <div key={section.id} onFocus={handleFocus(section.id)} tabIndex={0}>
             <Section {...commonSectionProps}>
               <div className="space-y-2">
-                {qualifications.map((q, index) => (
-                    <div key={q.id} className="group relative">
-                        {isFinalPreview ? (
-                            <div className="grid grid-cols-[35%_30%_10%_10%_15%]">
-                                <div className="font-bold">{q.exam}</div>
-                                <div>{q.board}</div>
-                                <div>{q.year}</div>
-                                <div>{q.marks}</div>
-                                <div>{q.division}</div>
-                            </div>
-                        ) : (
-                           <div className="flex gap-2 items-center">
-                                <Input name="exam" value={q.exam} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'exam', q.exam, q.id)} placeholder="Exam/Degree" className="border-none shadow-none focus-visible:ring-0 p-0 flex-1 font-semibold" />
-                                <Input name="board" value={q.board} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'board', q.board, q.id)} placeholder="Board/University" className="border-none shadow-none focus-visible:ring-0 p-0 flex-1" />
-                                <Input name="year" value={q.year} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'year', q.year, q.id)} placeholder="Year" className="border-none shadow-none focus-visible:ring-0 p-0 w-16" />
-                                <Input name="marks" value={q.marks} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'marks', q.marks, q.id)} placeholder="Marks %" className="border-none shadow-none focus-visible:ring-0 p-0 w-16" />
-                                <Input name="division" value={q.division} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'division', q.division, q.id)} placeholder="Division" className="border-none shadow-none focus-visible:ring-0 p-0 w-20" />
-                                <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover:opacity-100 no-export" onClick={() => removeQualification(index)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
-                            </div>
-                        )}
-                    </div>
-                ))}
+                {isFinalPreview ? (
+                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                        <thead>
+                            <tr style={{ textAlign: 'left', fontWeight: 'bold' }}>
+                                <th style={{ width: '35%' }}>Exam/Degree</th>
+                                <th style={{ width: '30%' }}>Board/University</th>
+                                <th style={{ width: '10%' }}>Year</th>
+                                <th style={{ width: '10%' }}>Marks</th>
+                                <th style={{ width: '15%' }}>Division</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {qualifications.map((q) => (
+                                <tr key={q.id}>
+                                    <td>{q.exam}</td>
+                                    <td>{q.board}</td>
+                                    <td>{q.year}</td>
+                                    <td>{q.marks}</td>
+                                    <td>{q.division}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                ) : (
+                    qualifications.map((q, index) => (
+                      <div key={q.id} className="group relative">
+                        <div className="flex gap-2 items-center">
+                              <Input name="exam" value={q.exam} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'exam', q.exam, q.id)} placeholder="Exam/Degree" className="border-none shadow-none focus-visible:ring-0 p-0 flex-1 font-semibold" />
+                              <Input name="board" value={q.board} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'board', q.board, q.id)} placeholder="Board/University" className="border-none shadow-none focus-visible:ring-0 p-0 flex-1" />
+                              <Input name="year" value={q.year} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'year', q.year, q.id)} placeholder="Year" className="border-none shadow-none focus-visible:ring-0 p-0 w-16" />
+                              <Input name="marks" value={q.marks} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'marks', q.marks, q.id)} placeholder="Marks %" className="border-none shadow-none focus-visible:ring-0 p-0 w-16" />
+                              <Input name="division" value={q.division} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'division', q.division, q.id)} placeholder="Division" className="border-none shadow-none focus-visible:ring-0 p-0 w-20" />
+                              <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover:opacity-100 no-export" onClick={() => removeQualification(index)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
+                          </div>
+                      </div>
+                    ))
+                )}
               </div>
               {isEditor && !isFinalPreview && <Button variant="outline" size="sm" onClick={addQualification} className="mt-2 no-export"><PlusCircle className="mr-2 h-4 w-4" /> Add</Button>}
             </Section>
@@ -592,5 +607,7 @@ export default function ResumePreview(props: ResumePreviewProps) {
 }
 
   
+
+    
 
     
