@@ -84,6 +84,10 @@
   }
 }
 
+.pdf-export .no-export {
+  display: none !important;
+}
+
 /* Print styles for PDF export */
 @media print {
   body {

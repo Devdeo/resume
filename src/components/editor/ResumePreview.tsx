@@ -45,7 +45,7 @@ const Section = ({ title, children, accentColor, onTitleChange, deletable, onDel
   >
     <div className='flex items-center border-b-2' style={{ borderColor: accentColor }}>
       {draggable && (
-         <div draggable onDragStart={onDragStart} className="cursor-grab opacity-0 group-hover:opacity-100 pr-2">
+         <div draggable onDragStart={onDragStart} className="cursor-grab opacity-0 group-hover:opacity-100 pr-2 no-export">
            <GripVertical className="h-5 w-5 text-muted-foreground" />
          </div>
        )}
@@ -56,7 +56,7 @@ const Section = ({ title, children, accentColor, onTitleChange, deletable, onDel
         style={{ paddingLeft: deletable ? 0 : '0.5rem' }}
       />
       {deletable && (
-        <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover:opacity-100 absolute -right-8 top-0" onClick={onDelete}>
+        <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover:opacity-100 absolute -right-8 top-0 no-export" onClick={onDelete}>
           <Trash2 className="h-4 w-4 text-destructive" />
         </Button>
       )}
@@ -214,7 +214,7 @@ export default function ResumePreview(props: ResumePreviewProps) {
         return (
           <header key={section.id} className={`${personalInfoContainerClasses} relative group`} onFocus={handleFocus(section.id)} tabIndex={0} onDragOver={(e) => onDragOver?.(e, section.id)}>
              {isEditor && onDragStart && (
-                <div draggable onDragStart={() => onDragStart(section.id)} className="cursor-grab opacity-0 group-hover:opacity-100 absolute left-2 top-2">
+                <div draggable onDragStart={() => onDragStart(section.id)} className="cursor-grab opacity-0 group-hover:opacity-100 absolute left-2 top-2 no-export">
                     <GripVertical className="h-5 w-5 text-muted-foreground" />
                 </div>
              )}
@@ -317,11 +317,11 @@ export default function ResumePreview(props: ResumePreviewProps) {
                       <Input name="year" value={q.year} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'year', q.year, q.id)} placeholder="Year" className="border-none shadow-none focus-visible:ring-0 p-0 w-16" />
                       <Input name="marks" value={q.marks} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'marks', q.marks, q.id)} placeholder="Marks %" className="border-none shadow-none focus-visible:ring-0 p-0 w-16" />
                       <Input name="division" value={q.division} onChange={(e) => handleQualificationChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'division', q.division, q.id)} placeholder="Division" className="border-none shadow-none focus-visible:ring-0 p-0 w-20" />
-                      {isEditor && <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover:opacity-100" onClick={() => removeQualification(index)}><Trash2 className="h-4 w-4 text-destructive" /></Button>}
+                      {isEditor && <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover:opacity-100 no-export" onClick={() => removeQualification(index)}><Trash2 className="h-4 w-4 text-destructive" /></Button>}
                     </div>
                 ))}
               </div>
-              {isEditor && <Button variant="outline" size="sm" onClick={addQualification} className="mt-2"><PlusCircle className="mr-2 h-4 w-4" /> Add</Button>}
+              {isEditor && <Button variant="outline" size="sm" onClick={addQualification} className="mt-2 no-export"><PlusCircle className="mr-2 h-4 w-4" /> Add</Button>}
             </Section>
           </div>
         );
@@ -368,12 +368,12 @@ export default function ResumePreview(props: ResumePreviewProps) {
                             </div>
                             <div className="flex items-start">
                             <Textarea name="responsibilities" value={exp.responsibilities} onChange={(e) => handleExperienceChange(index, e)} onFocus={() => handleClearOnFocus(section.id, 'responsibilities', exp.responsibilities, exp.id)} placeholder="Responsibilities" className="text-sm border-none shadow-none focus-visible:ring-0 p-0 flex-1" rows={2} />
-                            {isEditor && <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover:opacity-100" onClick={() => removeExperience(index)}><Trash2 className="h-4 w-4 text-destructive" /></Button>}
+                            {isEditor && <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover:opacity-100 no-export" onClick={() => removeExperience(index)}><Trash2 className="h-4 w-4 text-destructive" /></Button>}
                             </div>
                         </div>
                     ))}
                 </div>
-                {isEditor && <Button variant="outline" size="sm" onClick={addExperience} className="mt-2"><PlusCircle className="mr-2 h-4 w-4" /> Add</Button>}
+                {isEditor && <Button variant="outline" size="sm" onClick={addExperience} className="mt-2 no-export"><PlusCircle className="mr-2 h-4 w-4" /> Add</Button>}
                 </Section>
             </div>
         );
@@ -393,7 +393,7 @@ export default function ResumePreview(props: ResumePreviewProps) {
             <Section {...commonSectionProps}>
                 <Textarea name="text" value={declaration.text} onChange={handleDeclarationChange} onFocus={() => handleClearOnFocus(section.id, 'text', declaration.text)} className="italic border-none shadow-none focus-visible:ring-0 p-0" rows={2}/>
                 {isEditor && (
-                  <div className="flex items-center space-x-2 mt-4">
+                  <div className="flex items-center space-x-2 mt-4 no-export">
                     <Checkbox 
                       id="showSignature" 
                       checked={declaration.showSignature} 
@@ -403,7 +403,7 @@ export default function ResumePreview(props: ResumePreviewProps) {
                   </div>
                 )}
                 {isEditor && declaration.showSignature && (
-                    <div className='mt-4'>
+                    <div className='mt-4 no-export'>
                         <SignaturePad 
                             signature={declaration.signature}
                             onSignatureChange={handleSignatureChange}
@@ -491,20 +491,28 @@ export default function ResumePreview(props: ResumePreviewProps) {
   }
   
   const a4PageStyle: React.CSSProperties = {
-    ...pageStyle,
     width: '210mm',
     minHeight: '297mm',
     backgroundColor: 'white'
   };
   
+  const pageContentStyle: React.CSSProperties = {
+    ...pageStyle,
+    padding: `${style.pageMargins}mm`,
+    width: '100%',
+    height: '100%'
+  };
+
   if (isEditor) {
-    a4PageStyle.transform = 'scale(1)';
+    a4PageStyle.transform = 'scale(0.8)';
     a4PageStyle.transformOrigin = 'top center';
+    a4PageStyle.margin = '2rem auto';
+    a4PageStyle.boxShadow = '0 0 10px rgba(0, 0, 0, 0.1)';
   }
 
 
   return (
-     <div className={editorWrapperClasses}>
+     <div className={editorWrapperClasses} id="resume-page-container">
         <div className="md:hidden">
             <div style={{ ...pageStyle, padding: `${style.pageMargins}mm` }}>
                 {renderLayout()}
@@ -518,8 +526,8 @@ export default function ResumePreview(props: ResumePreviewProps) {
                 {...containerProps}
             >
                 <div
-                className="p-4 sm:p-8 h-full"
-                style={{ padding: `${style.pageMargins}mm`}}
+                className="h-full"
+                style={pageContentStyle}
                 >
                 {renderLayout()}
                 </div>
@@ -528,5 +536,3 @@ export default function ResumePreview(props: ResumePreviewProps) {
     </div>
   );
 }
-
-    

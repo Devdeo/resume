@@ -14,32 +14,45 @@ type EditorHeaderProps = {
 
 export default function EditorHeader({ onToggleSidebar }: EditorHeaderProps) {
   const [isDownloading, setIsDownloading] = React.useState(false);
+  
   const handleDownload = async () => {
-    const resumeElement = document.getElementById('resume-page');
+    const resumeElement = document.getElementById('resume-page-container');
     if (!resumeElement) {
+      console.error("Resume element not found for download.");
       return;
     }
     setIsDownloading(true);
+    
+    document.body.classList.add('pdf-export');
 
-    const canvas = await html2canvas(resumeElement, {
-      scale: 2, // Higher scale for better quality
-      useCORS: true,
-      logging: false,
-    });
-    
-    const imgData = canvas.toDataURL('image/png');
-    const pdf = new jsPDF({
-      orientation: 'portrait',
-      unit: 'mm',
-      format: 'a4',
-    });
-    
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = pdf.internal.pageSize.getHeight();
-    
-    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-    pdf.save('resume.pdf');
-    setIsDownloading(false);
+    try {
+      const canvas = await html2canvas(resumeElement, {
+        scale: 2, // Higher scale for better quality
+        useCORS: true,
+        logging: false,
+        backgroundColor: null, // Use transparent background
+      });
+      
+      const imgData = canvas.toDataURL('image/png');
+      
+      // A4 size in mm: 210 x 297
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4',
+      });
+      
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save('resume.pdf');
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+    } finally {
+      setIsDownloading(false);
+      document.body.classList.remove('pdf-export');
+    }
   };
 
   return (
