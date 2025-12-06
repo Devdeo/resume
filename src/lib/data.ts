@@ -8,5 +8,5 @@ export const careerObjectives = [
 ];
 
 export const googleFonts = [
-  "Roboto", "Open Sans", "Lato", "Montserrat", "Oswald", "Raleway", "Merriweather", "PT Sans", "Playfair Display", "Nunito", "Poppins", "Source Sans Pro", "Noto Sans", "Ubuntu", "Inter"
+  "Roboto", "Open Sans", "Lato", "Montserrat", "Oswald", "Raleway", "Merriweather", "PT Sans", "Playfair Display", "Nunito", "Poppins", "Source Sans Pro", "Noto Sans", "Ubuntu", "Inter", "Work Sans", "Space Grotesk", "Libre Baskerville", "Fira Sans", "Exo 2"
 ];
