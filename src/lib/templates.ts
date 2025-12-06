@@ -5,6 +5,7 @@ import { PlaceHolderImages } from './placeholder-images';
 const defaultProfilePic = PlaceHolderImages.find(img => img.id === 'profile-pic-default')?.imageUrl || '';
 
 const baseData: ResumeData = {
+  layout: 'single-column',
   sections: [
     {
       id: 'personalInfo',
@@ -36,6 +37,15 @@ const baseData: ResumeData = {
       content: "Secure a responsible career opportunity to fully utilize my training and skills, while making a significant contribution to the success of the company."
     },
     {
+      id: 'workExperience',
+      type: 'workExperience',
+      title: 'Work Experience',
+      deletable: true,
+      content: [
+        { id: 'we1', company: "Tech Solutions Inc.", role: "Software Engineer", duration: "2018 - Present", responsibilities: "Developed and maintained web applications, collaborated with cross-functional teams, and implemented new features." }
+      ]
+    },
+    {
       id: 'academicQualifications',
       type: 'academicQualifications',
       title: 'Academic Qualifications',
@@ -61,15 +71,6 @@ const baseData: ResumeData = {
       content: "Proficient in MERN stack, Next.js, and TypeScript."
     },
     {
-      id: 'workExperience',
-      type: 'workExperience',
-      title: 'Work Experience',
-      deletable: true,
-      content: [
-        { id: 'we1', company: "Tech Solutions Inc.", role: "Software Engineer", duration: "2018 - Present", responsibilities: "Developed and maintained web applications, collaborated with cross-functional teams, and implemented new features." }
-      ]
-    },
-    {
       id: 'declaration',
       type: 'declaration',
       title: 'Declaration',
@@ -85,34 +86,160 @@ const baseData: ResumeData = {
   ]
 };
 
-const creativeData = JSON.parse(JSON.stringify(baseData));
-const creativePersonalInfo = creativeData.sections.find(s => s.type === 'personalInfo');
-if(creativePersonalInfo) {
-  (creativePersonalInfo.content as any).name = "Jane Smith";
-  (creativePersonalInfo.content as any).email = "jane.smith@example.com";
-}
+const professionalTemplate: ResumeTemplate = {
+    id: "template-professional",
+    name: "Professional",
+    style: {
+      fontFamily: "Lato",
+      fontSize: "10",
+      accentColor: "#2c3e50",
+      sectionSpacing: "18",
+      pageMargins: "22"
+    },
+    data: {
+      layout: 'two-column-left',
+      sections: [
+        {
+          id: 'personalInfo',
+          type: 'personalInfo',
+          title: 'Personal Info',
+          deletable: false,
+          content: {
+            name: "Robert Johnson",
+            address: "456 Corporate Blvd, Business City",
+            mobile: "+1 (555) 987-6543",
+            email: "robert.j@example.com",
+            dob: "1990-01-20",
+            fatherName: "Charles Johnson",
+            motherName: "Mary Johnson",
+            nationality: "Canadian",
+            gender: 'Male' as const,
+            maritalStatus: 'Married' as const,
+            languages: "English, French",
+            hobbies: "Golf, Chess",
+            zipCode: "54321",
+            profilePicture: defaultProfilePic
+          }
+        },
+        {
+          id: 'extraQualification',
+          type: 'extraQualification',
+          title: 'Skills',
+          deletable: true,
+          content: "Project Management\nAgile Methodologies\nTeam Leadership\nBudgeting & Forecasting"
+        },
+        {
+          id: 'professionalQualifications',
+          type: 'professionalQualifications',
+          title: 'Certifications',
+          deletable: true,
+          content: [
+            { id: 'pq1', exam: "PMP", board: "PMI", year: "2019", marks: "N/A", division: "Certified" }
+          ]
+        },
+      ],
+      rightSections: [
+        {
+            id: 'careerObjective',
+            type: 'careerObjective',
+            title: 'Career Summary',
+            deletable: true,
+            content: "Experienced project manager with over 10 years of experience in the tech industry, seeking to leverage my skills in a challenging senior leadership role."
+        },
+        {
+            id: 'workExperience',
+            type: 'workExperience',
+            title: 'Work Experience',
+            deletable: true,
+            content: [
+                { id: 'we1', company: "Innovate Corp", role: "Senior Project Manager", duration: "2015 - Present", responsibilities: "Led cross-functional teams to deliver complex software projects on time and within budget." },
+                { id: 'we2', company: "Data Systems", role: "Project Manager", duration: "2010 - 2015", responsibilities: "Managed software development lifecycle for various client projects." }
+            ]
+        },
+        {
+            id: 'academicQualifications',
+            type: 'academicQualifications',
+            title: 'Education',
+            deletable: true,
+            content: [
+                { id: 'aq1', exam: "MBA", board: "University of Business", year: "2010", marks: "3.8/4.0", division: "Distinction" },
+                { id: 'aq2', exam: "B.Eng", board: "Tech University", year: "2008", marks: "88%", division: "First" }
+            ]
+        }
+      ]
+    }
+};
 
-const professionalData = JSON.parse(JSON.stringify(baseData));
-const professionalPersonalInfo = professionalData.sections.find(s => s.type === 'personalInfo');
-if(professionalPersonalInfo) {
-    (professionalPersonalInfo.content as any).name = "Robert Johnson";
-    (professionalPersonalInfo.content as any).email = "robert.j@example.com";
-}
-// Reorder for professional template
-const expIndex = professionalData.sections.findIndex(s => s.type === 'workExperience');
-const [expSection] = professionalData.sections.splice(expIndex, 1);
-professionalData.sections.splice(1, 0, expSection); // Move experience after personal info
-
-
-const minimalistData = JSON.parse(JSON.stringify(baseData));
-const minimalistPersonalInfo = minimalistData.sections.find(s => s.type === 'personalInfo');
-if(minimalistPersonalInfo) {
-    (minimalistPersonalInfo.content as any).name = "Emily White";
-    (minimalistPersonalInfo.content as any).email = "emily.white@example.com";
-}
-// Remove some sections for minimalist template
-minimalistData.sections = minimalistData.sections.filter(s => !['professionalQualifications', 'declaration'].includes(s.type));
-
+const minimalistTemplate: ResumeTemplate = {
+    id: "template-minimalist",
+    name: "Minimalist",
+    style: {
+      fontFamily: "Inter",
+      fontSize: "10.5",
+      accentColor: "#333333",
+      sectionSpacing: "28",
+      pageMargins: "18"
+    },
+    data: {
+      layout: 'single-column',
+      sections: [
+        {
+          id: 'personalInfo',
+          type: 'personalInfo',
+          title: 'Personal Info',
+          deletable: false,
+          content: {
+            name: "Emily White",
+            address: "789 Simple St, Clean City",
+            mobile: "+1 (555) 555-5555",
+            email: "emily.white@example.com",
+            dob: "1998-06-25",
+            fatherName: "George White",
+            motherName: "Helen White",
+            nationality: "Australian",
+            gender: 'Female' as const,
+            maritalStatus: 'Single' as const,
+            languages: "English",
+            hobbies: "Yoga, Painting",
+            zipCode: "67890",
+            profilePicture: ''
+          }
+        },
+        {
+          id: 'careerObjective',
+          type: 'careerObjective',
+          title: 'Objective',
+          deletable: true,
+          content: "A detail-oriented designer seeking to apply my skills in UI/UX to create intuitive and beautiful user experiences."
+        },
+        {
+          id: 'workExperience',
+          type: 'workExperience',
+          title: 'Experience',
+          deletable: true,
+          content: [
+            { id: 'we1', company: "Creative Agency", role: "UI/UX Designer", duration: "2020 - Present", responsibilities: "Designing user interfaces for web and mobile applications." }
+          ]
+        },
+        {
+          id: 'academicQualifications',
+          type: 'academicQualifications',
+          title: 'Education',
+          deletable: true,
+          content: [
+            { id: 'aq1', exam: "Bachelor of Design", board: "Design College", year: "2020", marks: "N/A", division: "Honors" }
+          ]
+        },
+        {
+          id: 'extraQualification',
+          type: 'extraQualification',
+          title: 'Skills',
+          deletable: true,
+          content: "Figma, Sketch, Adobe XD, Prototyping, Wireframing"
+        },
+      ]
+    }
+};
 
 export const templates: ResumeTemplate[] = [
   {
@@ -127,40 +254,6 @@ export const templates: ResumeTemplate[] = [
       pageMargins: "20"
     }
   },
-  {
-    id: "template-creative",
-    name: "Creative",
-    data: creativeData,
-    style: {
-      fontFamily: "Playfair Display",
-      fontSize: "12",
-      accentColor: "#D2691E",
-      sectionSpacing: "24",
-      pageMargins: "25"
-    }
-  },
-  {
-    id: "template-professional",
-    name: "Professional",
-    data: professionalData,
-    style: {
-      fontFamily: "Lato",
-      fontSize: "10",
-      accentColor: "#2c3e50",
-      sectionSpacing: "18",
-      pageMargins: "22"
-    }
-  },
-  {
-    id: "template-minimalist",
-    name: "Minimalist",
-    data: minimalistData,
-    style: {
-      fontFamily: "Inter",
-      fontSize: "10.5",
-      accentColor: "#333333",
-      sectionSpacing: "28",
-      pageMargins: "18"
-    }
-  }
+  professionalTemplate,
+  minimalistTemplate
 ];

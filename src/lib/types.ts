@@ -68,7 +68,9 @@ export interface ResumeSection {
 }
 
 export interface ResumeData {
+  layout: 'single-column' | 'two-column-right' | 'two-column-left';
   sections: ResumeSection[];
+  rightSections?: ResumeSection[];
 }
 
 export interface ResumeStyle {
