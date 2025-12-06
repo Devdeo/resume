@@ -78,7 +78,7 @@ export default function EditorLayout({ initialTemplate }: EditorLayoutProps) {
       <div className="flex h-screen w-full flex-col bg-muted/40 no-print">
         <EditorHeader onToggleSidebar={toggleSidebar} />
         <main className="flex flex-1 overflow-hidden editor-main">
-          <div ref={printContainerRef} className="flex-1 overflow-y-auto print-container bg-muted/40">
+          <div ref={printContainerRef} className="flex-1 overflow-y-auto bg-muted/40">
             <ResumePreview />
           </div>
           <div className='hidden md:block no-print'>
@@ -98,12 +98,9 @@ export default function EditorLayout({ initialTemplate }: EditorLayoutProps) {
           </Sheet>
         </main>
       </div>
-       {/* This is the hidden container for printing */}
       <div className="print-container" style={{ display: 'none' }}>
         <ResumePreview isPreview={true} data={data} style={style} initialData={initialData} />
       </div>
     </ResumeProvider>
   );
 }
-
-    

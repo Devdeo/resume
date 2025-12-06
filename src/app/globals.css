@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -86,37 +87,42 @@
 
 /* Print styles */
 @media print {
-  body {
-    background-color: #fff;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
+  html, body {
+    height: auto !important;
+    overflow: visible !important;
+    background-color: #fff !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 
   .no-print {
     display: none !important;
   }
-
+  
   body > div:not(.print-container) {
-    display: none;
+    display: none !important;
   }
 
-  .print-container,
-  .print-container .a4-page {
+  .print-container {
     display: block !important;
+    position: static !important;
     padding: 0 !important;
     margin: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    box-shadow: none !important;
-    border: none !important;
-    transform: scale(1) !important;
-    overflow: visible;
+  }
+
+  .editor-main {
+      display: contents !important;
   }
 
   #resume-page {
     width: 210mm !important;
     min-height: 297mm !important;
     height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    transform: scale(1) !important;
     page-break-after: always;
   }
 
@@ -150,5 +156,3 @@
     text-align: right;
   }
 }
-
-    
