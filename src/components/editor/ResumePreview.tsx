@@ -492,7 +492,7 @@ export default function ResumePreview(props: ResumePreviewProps) {
   
   const a4PageStyle: React.CSSProperties = {
     width: '210mm',
-    minHeight: '297mm',
+    height: '297mm',
     backgroundColor: 'white'
   };
   
@@ -503,33 +503,39 @@ export default function ResumePreview(props: ResumePreviewProps) {
     height: '100%'
   };
 
+  const a4PageEditorStyle: React.CSSProperties = { ...a4PageStyle };
+
   if (isEditor) {
-    a4PageStyle.transform = 'scale(0.8)';
-    a4PageStyle.transformOrigin = 'top center';
-    a4PageStyle.margin = '2rem auto';
-    a4PageStyle.boxShadow = '0 0 10px rgba(0, 0, 0, 0.1)';
+    a4PageEditorStyle.transform = 'scale(0.8)';
+    a4PageEditorStyle.transformOrigin = 'top center';
+    a4PageEditorStyle.margin = '2rem auto';
+    a4PageEditorStyle.boxShadow = '0 0 10px rgba(0, 0, 0, 0.1)';
+    a4PageEditorStyle.minHeight = '297mm';
   }
 
 
   return (
-     <div className={editorWrapperClasses} id="resume-page-container">
-        <div className="md:hidden">
+     <div className={editorWrapperClasses}>
+        {/* This version is for the mobile view and live editing */}
+        <div id="resume-page-mobile" className="md:hidden">
             <div style={{ ...pageStyle, padding: `${style.pageMargins}mm` }}>
                 {renderLayout()}
             </div>
         </div>
+
+        {/* This version is for the desktop preview and PDF export */}
         <div className="hidden md:block">
             <div
                 id="resume-page"
                 className="a4-page"
-                style={a4PageStyle}
+                style={isEditor ? a4PageEditorStyle : a4PageStyle}
                 {...containerProps}
             >
                 <div
-                className="h-full"
-                style={pageContentStyle}
+                    className="h-full"
+                    style={pageContentStyle}
                 >
-                {renderLayout()}
+                  {renderLayout()}
                 </div>
             </div>
         </div>

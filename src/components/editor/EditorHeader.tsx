@@ -16,17 +16,18 @@ export default function EditorHeader({ onToggleSidebar }: EditorHeaderProps) {
   const [isDownloading, setIsDownloading] = React.useState(false);
   
   const handleDownload = async () => {
-    const resumeElement = document.getElementById('resume-page');
+    const isMobile = window.innerWidth < 768;
+    const resumeElement = document.getElementById(isMobile ? 'resume-page-mobile' : 'resume-page');
+
     if (!resumeElement) {
-      console.error("Resume element not found for download.");
+      console.error("Resume element not found for download. Looked for:", isMobile ? 'resume-page-mobile' : 'resume-page');
       return;
     }
     setIsDownloading(true);
     
-    // Store original transform and apply temporary styles for export
-    const originalTransform = resumeElement.style.transform;
-    resumeElement.style.transform = 'scale(1)';
-    document.body.classList.add('pdf-export');
+    // For desktop, the element is already scaled correctly.
+    // For mobile, we might need adjustments if scaling is applied.
+    // The current approach assumes mobile view is 1:1 for this to work.
 
     try {
       const canvas = await html2canvas(resumeElement, {
@@ -35,6 +36,7 @@ export default function EditorHeader({ onToggleSidebar }: EditorHeaderProps) {
         logging: false,
         width: resumeElement.offsetWidth,
         height: resumeElement.offsetHeight,
+        backgroundColor: null, // Use transparent background
       });
       
       const imgData = canvas.toDataURL('image/png');
@@ -54,10 +56,7 @@ export default function EditorHeader({ onToggleSidebar }: EditorHeaderProps) {
     } catch (error) {
       console.error("Error generating PDF:", error);
     } finally {
-      // Restore original styles
-      resumeElement.style.transform = originalTransform;
       setIsDownloading(false);
-      document.body.classList.remove('pdf-export');
     }
   };
 
